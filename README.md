@@ -36,4 +36,4 @@ Currently, we are organized into three subgroups:
 3. Vishrut Malik
 4. Alban Puech
 5. Mira Hajar
-
+6. Maayane Attias
