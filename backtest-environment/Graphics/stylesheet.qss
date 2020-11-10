@@ -1,0 +1,63 @@
+#main_window {
+	background: #232323
+}
+#monte_window {
+	background: #232323
+}
+QPushButton:disabled {
+    background-color: #2b2e33;
+    color: #6b6b6b;
+    border: 1px solid gray;
+}
+QPushButton:pressed {
+    background-color: #2b2e33;
+    border: 1px solid gray;
+}
+QPushButton {
+     background-color: #313534;
+     border: 1px solid white;
+	border-radius: 3 px;
+	color: #FFFFFF;
+}
+QSpinBox {
+    background-color: #202020;
+    color: #FFFFFF;
+    border: 1px solid #202020;
+}
+QLabel {
+	color: #FFFFFF;
+}
+QLabel#bigstatistic {
+	font-size: 20px;
+}
+QLabel#bigstatisticlabel {
+	font-size: 25px;
+	color: #ddeaff;
+	text-align: center;
+}
+QLabel#mediumstatistic {
+	font-size: 15px;
+}
+QLabel#mediumstatisticlabel {
+	font-size: 22px;
+	color: #ddeaff;
+	text-align: center;
+}
+QLabel#performancelabel {
+	color: #ddeaff;
+	font-size: 20px;
+	text-align: center;
+}
+QFrame {
+	color: #FFFFFF;
+}
+QDateEdit {
+	background-color: #202020;
+	color: #FFFFFF;
+	border: 1px solid #202020;
+}
+QLineEdit {
+	background-color: #202020;
+	color: #FFFFFF;
+	border: 1px solid #202020;
+}
