@@ -92,3 +92,5 @@ _deps
 ### CSV files ###
 *.csv
 
+DataHandling/cookies.txt
+DataHandling/crumb.txt
