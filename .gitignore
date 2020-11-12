@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+# Qt generated user files
+*.user
+*Debug
