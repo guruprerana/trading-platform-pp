@@ -1,11 +1,8 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(Trading_plateform VERSION 0.1.0)
-
 include(CTest)
 enable_testing()
-
-
-
+add_executable(Trading_plateform integration.cpp)
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include(CPack)
@@ -18,8 +15,9 @@ if(NOT json_POPULATED)
   FetchContent_Populate(json)
   add_subdirectory(${json_SOURCE_DIR} ${json_BINARY_DIR} EXCLUDE_FROM_ALL)
 endif()
+#target_link_libraries(Trading_plateform PRIVATE nlohmann_json::nlohmann_json)
 set(CURL_LIBRARY "-lcurl")
+set(CURL_INCLUDE_DIR /Users/rayenayari/Desktop/BACHELOR/CSE201/trading-platform-pp/src/api/curl)
 find_package(CURL REQUIRED) 
-add_executable(Trading_plateform main.cpp)
 include_directories(${CURL_INCLUDE_DIR})
-target_link_libraries(Trading_plateform PRIVATE ${CURL_LIBRARIES})
+target_link_libraries(Trading_plateform ${CURL_LIBRARIES} nlohmann_json::nlohmann_json)

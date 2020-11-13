@@ -1,8 +1,8 @@
 #include <iostream>
 #include <string>
 #include <curl/curl.h>
-//#include <json.hpp>
-//using json = nlohmann::json;
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
 // used g++ src/api/integration.cpp -I /Users/rayenayari/Desktop/BACHELOR/CSE201/trading-platform-pp/curl -lcurl -lldap -lz && ./a.out 
 // We have to put curl_global_init(CURL_GLOBAL_DEFAULT) 
 // in the main file 
@@ -44,11 +44,11 @@ if(curl) {
   // 200 means successful transfer
   if (httpCode==200 && result==CURLE_OK ){ 
       //  contains the requested data
-      //json j= json::parse(data);
+      json j= json::parse(data);
       //Print out the data
-      //std::cout << j.dump(4) << std::endl;
+      std::cout << j.dump(4) << std::endl;
       std::cout << data << std::endl;
-
+      
   }
 }
 return 0;
