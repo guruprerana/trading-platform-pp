@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/Users/rayenayari/Desktop/BACHELOR/CSE201/trading-platform-pp/build/_deps/json-subbuild/CMakeFiles/json-populate"
+		},
+		{
+			"file" : "/Users/rayenayari/Desktop/BACHELOR/CSE201/trading-platform-pp/build/_deps/json-subbuild/CMakeFiles/json-populate.rule"
+		},
+		{
+			"file" : "/Users/rayenayari/Desktop/BACHELOR/CSE201/trading-platform-pp/build/_deps/json-subbuild/CMakeFiles/json-populate-complete.rule"
+		},
+		{
+			"file" : "/Users/rayenayari/Desktop/BACHELOR/CSE201/trading-platform-pp/build/_deps/json-subbuild/json-populate-prefix/src/json-populate-stamp/json-populate-install.rule"
+		},
+		{
+			"file" : "/Users/rayenayari/Desktop/BACHELOR/CSE201/trading-platform-pp/build/_deps/json-subbuild/json-populate-prefix/src/json-populate-stamp/json-populate-mkdir.rule"
+		},
+		{
+			"file" : "/Users/rayenayari/Desktop/BACHELOR/CSE201/trading-platform-pp/build/_deps/json-subbuild/json-populate-prefix/src/json-populate-stamp/json-populate-download.rule"
+		},
+		{
+			"file" : "/Users/rayenayari/Desktop/BACHELOR/CSE201/trading-platform-pp/build/_deps/json-subbuild/json-populate-prefix/src/json-populate-stamp/json-populate-update.rule"
+		},
+		{
+			"file" : "/Users/rayenayari/Desktop/BACHELOR/CSE201/trading-platform-pp/build/_deps/json-subbuild/json-populate-prefix/src/json-populate-stamp/json-populate-patch.rule"
+		},
+		{
+			"file" : "/Users/rayenayari/Desktop/BACHELOR/CSE201/trading-platform-pp/build/_deps/json-subbuild/json-populate-prefix/src/json-populate-stamp/json-populate-configure.rule"
+		},
+		{
+			"file" : "/Users/rayenayari/Desktop/BACHELOR/CSE201/trading-platform-pp/build/_deps/json-subbuild/json-populate-prefix/src/json-populate-stamp/json-populate-build.rule"
+		},
+		{
+			"file" : "/Users/rayenayari/Desktop/BACHELOR/CSE201/trading-platform-pp/build/_deps/json-subbuild/json-populate-prefix/src/json-populate-stamp/json-populate-test.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"json-populate"
+		],
+		"name" : "json-populate"
+	}
+}

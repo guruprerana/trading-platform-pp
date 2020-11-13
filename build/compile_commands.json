@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/Users/rayenayari/Desktop/BACHELOR/CSE201/trading-platform-pp/build",
+  "command": "/usr/bin/clang++   -march=core2 -mtune=haswell -mssse3 -ftree-vectorize -fPIC -fPIE -fstack-protector-strong -O2 -pipe -stdlib=libc++ -fvisibility-inlines-hidden -std=c++14 -fmessage-length=0 -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.0.sdk -mmacosx-version-min=10.15 -o CMakeFiles/Trading_plateform.dir/main.cpp.o -c /Users/rayenayari/Desktop/BACHELOR/CSE201/trading-platform-pp/main.cpp",
+  "file": "/Users/rayenayari/Desktop/BACHELOR/CSE201/trading-platform-pp/main.cpp"
+}
+]
