@@ -1,0 +1,17 @@
+---- PUECH Alban ----
+
+What I did :
+- I created the Trello team, the board and I organized it
+- I investigated on the k-means strategy in order to use it to give trading recommendations to the user. However, I realized that this method could not give us the result
+we want but can only classify the different assets according to some criteria.
+- I looked for other strategies that I could implement and chose the momentum strategy.
+- I did a report and a description of the algorithm that I have to implement for my strategy. (available on Trello)
+- I tried to make the backtest environment that we will use to check our implementation work on my computer running windows but I could not do it.
+- I installed Ubuntu on a virtual machine to finally run it.
+
+What I have to do :
+- Start to implement my algorithm for the momentum strategy using the CSV file we already have as input for test. finishing to create all the classes needed to compute the momentum
+at any date would be great.
+- Think about the way to translate the numerical result into a binary recommendation : buy/ sell.
+
+
