@@ -8,13 +8,17 @@ CONFIG += c++11
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+LIBS += -lcurl
+
 SOURCES += \
     api/api.cpp \
+    components/stock.cpp \
     main.cpp \
     gui/mainwindow.cpp
 
 HEADERS += \
     api/api.h \
+    components/stock.h \
     gui/mainwindow.h
 
 FORMS += \

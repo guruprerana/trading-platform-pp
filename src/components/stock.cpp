@@ -2,54 +2,25 @@
 #include "api/api.h"
 
 #include <iostream>
-Stock::Stock(std::string symbol){
-    this->symbol = symbol;
-}
 
-Stock::~Stock(){
+Stock::Stock(std::string symbol) { this->symbol = symbol; }
 
-}
+Stock::~Stock() {}
 
-std::string Stock::getSymbol(){
-    return symbol;
-}
+std::string Stock::getSymbol() { return symbol; }
 
-long Stock::getLatestTimestamp(){
-    return latestTimestamp;
-}
+long Stock::getLatestTimestamp() { return latestTimestamp; }
 
-std::map<long, std::map<std::string, double>> Stock::getData(){
-    return data;
-}
+std::map<long, std::map<std::string, double>> Stock::getData() { return data; }
 
-StockByDay::StockByDay(std::string symbol): Stock(symbol){
+StockByDay::StockByDay(std::string symbol) : Stock(symbol) {}
 
-}
+StockByDay::~StockByDay() {}
 
-StockByDay::~StockByDay(){
+void StockByDay::updateData() {}
 
-}
+StockByMinute::StockByMinute(std::string symbol) : Stock(symbol) {}
 
-void StockByDay::updateData(){
+StockByMinute::~StockByMinute() {}
 
-}
-
-StockByMinute::StockByMinute(std::string symbol): Stock(symbol){
-
-}
-
-StockByMinute::~StockByMinute(){
-
-}
-
-void StockByMinute::updateData(){
-
-}
-
-
-
-
-
-
-
-
+void StockByMinute::updateData() {}

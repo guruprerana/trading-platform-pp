@@ -1,36 +1,37 @@
 #ifndef STOCK_H
 #define STOCK_H
 
-#include <string>
 #include <map>
+#include <string>
 
 class Stock {
 protected:
-    std::string symbol;
-    std::map<long, std::map<std::string, double>> data;
-    long latestTimestamp;
-public:
-    Stock(std::string);
-    ~Stock();
+  std::string symbol;
+  std::map<long, std::map<std::string, double>> data;
+  long latestTimestamp;
 
-    std::string getSymbol();
-    long getLatestTimestamp();
-    std::map<long, std::map<std::string, double>> getData();
-    virtual void updateData()=0;
+public:
+  Stock(std::string);
+  ~Stock();
+
+  std::string getSymbol();
+  long getLatestTimestamp();
+  std::map<long, std::map<std::string, double>> getData();
+  virtual void updateData() = 0;
 };
 
-class StockByDay: public Stock {
+class StockByDay : public Stock {
 public:
-    StockByDay(std::string);
-    ~StockByDay();
-    void updateData();
+  StockByDay(std::string);
+  ~StockByDay();
+  void updateData();
 };
 
-class StockByMinute: public Stock {
+class StockByMinute : public Stock {
 public:
-    StockByMinute(std::string);
-    ~StockByMinute();
-    void updateData();
+  StockByMinute(std::string);
+  ~StockByMinute();
+  void updateData();
 };
 
 #endif // STOCK_H
