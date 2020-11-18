@@ -2,7 +2,7 @@
 
 The first and foremost step is to install Qt.
 
-Follow [this link](https://wiki.qt.io/Qt_for_Beginners) to download the installer.
+Follow [this link](https://www.qt.io/download-qt-installer) to download the installer.
 
 Now, if your IDE is Qt Creator, you have finished. All you need to do is to open `src\trading-platform-pp.pro` with `Qt Creator`, and then `build` it.
 
@@ -12,7 +12,7 @@ If that is not the case, we need to run `scripts\build.sh`, and to run it we nee
 
 To add `qmake` and `make` to `PATH`,
 
-1. Locate your `Qt` folder (default path is `C:/Qt`).
+1. Locate your `Qt` folder (default path is `C:\Qt`).
 
 2. Look for a path that looks like `5.12.34\mingw56_78\bin`, and add it to `PATH`.
 
