@@ -11,11 +11,17 @@ CONFIG += c++11
 SOURCES += \
     api/api.cpp \
     main.cpp \
-    gui/mainwindow.cpp
+    gui/mainwindow.cpp \
+    gui/portfolio/portfolio.cpp \
+    gui/security/security.cpp \
+    gui/trading/trading.cpp
 
 HEADERS += \
     api/api.h \
-    gui/mainwindow.h
+    gui/mainwindow.h \
+    gui/portfolio/portfolio.h \
+    gui/security/security.h \
+    gui/trading/trading.h \
 
 FORMS += \
     gui/mainwindow.ui
