@@ -10,7 +10,7 @@ MainStrategy::MainStrategy(HistoricalCSVDataHandler* i_bars, boost::ptr_vector<E
     // Set instance variables
     bars = i_bars;
     events = i_events;
-    *bars->symbol_list = {string("AAPL")};
+    *bars->symbol_list = {string("SPY")};
     symbol_list = bars->symbol_list;
     
     // Set custom strategy variables
@@ -30,7 +30,7 @@ map<string, bool> MainStrategy::calculate_initial_bought() {
 }
 
 // Calculate Simple Moving Average 
-double calculate_sma(map<long, double> &bars) {
+double MainStrategy::calculate_sma(map<long, double> &bars) {
     assert(!bars.empty());
     double sum = 0;
     for (auto &it : bars) {
