@@ -5,14 +5,15 @@
 #include <map>
 
 class API {
-public:
-	API();
-	~API();
+ public:
+  API();
+  ~API();
 
-	std::map <std::string, double> getStockData(std::string stockSymbol, long startTimestamp, long endTimestamp);
+  std::map <std::string, double> getStockData(std::string stockSymbol,
+      long startTimestamp, long endTimestamp);
 
-private:
-	// CURL object here
+ private:
+  // CURL object here
 };
 
 #endif // API_H
