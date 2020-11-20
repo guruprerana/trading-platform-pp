@@ -1,6 +1,8 @@
 #include "../../api/api.h"
 #include "security.h"
 
+EquitySecurity::EquitySecurity(){};
+
 bool EquitySecurity::operator == (const EquitySecurity &es) {
     return this->getName() == es.getName();
 }

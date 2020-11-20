@@ -1,11 +1,10 @@
-#ifndef TRADING_H
-#define TRADING_H
+#ifndef TRADINGORDER_H
+#define TRADINGORDER_H
 
 #include "../security/security.h"
 
-#include <string>
-
-#include <time.h>
+#include <QDateTime>
+#include <QString>
 
 enum TradingAction {
     Buy,
@@ -35,30 +34,30 @@ enum TradingTiming {
     ExtendedHours
 };
 
-class Trading {
+class TradingOrder {
 public:
     double valuation ();
     
-    void setSymbol (std::string symbol);
-    void setQuantity (double quantity);
+    void setSymbol (QString symbol);
+    void setQuantity (qreal quantity);
     void setStrategy (TradingStrategy strategy);
     void setOrderType (TradingOrderType order_type);
     void setAction (TradingAction action);
-    void setLimitPrice (double limit_price);
+    void setLimitPrice (qreal limit_price);
     
-    void setTradingTime (time_t trading_time);
-    void setValuePerQuantity (double value_per_quantity);
+    void setTradingTime (qint64 trading_order_time_stamp);
+    void setValuePerQuantity (qreal value_per_quantity);
 
 private:
-    std::string symbol;
-    double quantity;
+    QString symbol;
+    qreal quantity;
     TradingStrategy strategy;
     TradingOrderType order_type;
     TradingAction action;
-    double limit_price;
+    qreal limit_price;
 
-    time_t trading_time;
-    double value_per_quantity;
+    qint64 trading_order_time_stamp;
+    qreal value_per_quantity;
 };
 
-#endif // TRADING_H
+#endif // TRADINGORDER_H

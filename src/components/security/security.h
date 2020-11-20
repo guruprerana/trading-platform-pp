@@ -16,6 +16,7 @@ protected:
 
 class EquitySecurity: public Security {
 public:
+    EquitySecurity ();
     EquitySecurity (std::string symbol);
 
     bool operator == (const EquitySecurity &es);

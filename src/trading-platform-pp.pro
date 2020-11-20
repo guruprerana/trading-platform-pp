@@ -12,16 +12,16 @@ SOURCES += \
     api/api.cpp \
     main.cpp \
     gui/mainwindow.cpp \
-    gui/portfolio/portfolio.cpp \
-    gui/security/security.cpp \
-    gui/trading/trading.cpp
+    components/portfolio/portfolio.cpp \
+    components/security/security.cpp \
+    components/trading_order/trading_order.cpp
 
 HEADERS += \
     api/api.h \
     gui/mainwindow.h \
-    gui/portfolio/portfolio.h \
-    gui/security/security.h \
-    gui/trading/trading.h \
+    components/portfolio/portfolio.h \
+    components/security/security.h \
+    components/trading_order/trading_order.h
 
 FORMS += \
     gui/mainwindow.ui
