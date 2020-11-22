@@ -9,7 +9,10 @@ TEMPLATE = app
 LIBS += -lcurl
 
 SOURCES +=  tst_api.cpp \
-    ../../src/api/api.cpp
+    tst_stock.cpp \
+    ../src/api/api.cpp \
+    ../src/components/stock.cpp \
 
 HEADERS += \
-    ../../src/api/api.h
+    ../src/api/api.h \
+    ../src/components/stock.h

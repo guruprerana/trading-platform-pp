@@ -1,37 +1,29 @@
 #ifndef STOCK_H
 #define STOCK_H
 
-#include <map>
 #include <string>
+#include <QJsonObject>
 
 class Stock {
-protected:
+private:
   std::string symbol;
-  std::map<long, std::map<std::string, double>> data;
-  long latestTimestamp;
+  QJsonObject dataByDay;
+  QJsonObject dataByMinute;
+  long latestTimeStampByDay;
+  long latestTimeStampByMinute;
 
 public:
   Stock(std::string);
   ~Stock();
 
+  QJsonObject parseJson(std::string);
   std::string getSymbol();
-  long getLatestTimestamp();
-  std::map<long, std::map<std::string, double>> getData();
-  virtual void updateData() = 0;
-};
-
-class StockByDay : public Stock {
-public:
-  StockByDay(std::string);
-  ~StockByDay();
-  void updateData();
-};
-
-class StockByMinute : public Stock {
-public:
-  StockByMinute(std::string);
-  ~StockByMinute();
-  void updateData();
+  long getLatestTimestampByDay();
+  long getLatestTimestampByMinute();
+  QJsonObject getDataByDay();
+  QJsonObject getDataByMinute();
+  void updateDataByDay();
+  void updateDataByMinute();
 };
 
 #endif // STOCK_H
