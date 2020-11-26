@@ -11,7 +11,8 @@ CONFIG += c++11
 SOURCES += \
     api/api.cpp \
     main.cpp \
-    gui/mainwindow.cpp
+    gui/mainwindow.cpp # \
+#    style.astylerc
 
 HEADERS += \
     api/api.h \
@@ -19,6 +20,9 @@ HEADERS += \
 
 FORMS += \
     gui/mainwindow.ui
+
+DISTFILES += \
+    style.astylerc
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
