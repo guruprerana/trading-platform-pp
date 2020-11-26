@@ -10,16 +10,28 @@ CONFIG += c++11
 
 SOURCES += \
     api/api.cpp \
+    gui/chooseuser.cpp \
+    gui/homepage.cpp \
+    gui/leftnavigationbar.cpp \
+    gui/signup.cpp \
     main.cpp \
     gui/mainwindow.cpp # \
 #    style.astylerc
 
 HEADERS += \
     api/api.h \
-    gui/mainwindow.h
+    gui/chooseuser.h \
+    gui/homepage.h \
+    gui/leftnavigationbar.h \
+    gui/mainwindow.h \
+    gui/signup.h
 
 FORMS += \
-    gui/mainwindow.ui
+    gui/chooseuser.ui \
+    gui/homepage.ui \
+    gui/leftnavigationbar.ui \
+    gui/mainwindow.ui \
+    gui/signup.ui
 
 DISTFILES += \
     style.astylerc
