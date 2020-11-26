@@ -53,7 +53,7 @@ void Stock::updateDataByDay(){
     std::string apiResponse = api->getStockData(getSymbol(), "D", std::max(t-31536000,latestTimeStampByDay), t); // 31536000 represents one year in seconds. Basically we want the api to call one year worth of data with 1-day intervals
     //latestTimeStampByDay = t;  to be implemented when merging QJsonObjects is clearer                                                                          //update latestTimeStamp so that we do not call the api for data we already stored
     if (apiResponse != "{\"s\":\"no_data\"}"){
-    dataByDay = parseJson(apiResponse);
+        dataByDay = parseJson(apiResponse);
     }
 }
 
