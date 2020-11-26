@@ -43,9 +43,8 @@ void Stock::updateDataByMinute(){
     std::string apiResponse = api->getStockData(getSymbol(), "1", std::max(t-604800,latestTimeStampByMinute), t); // 604800 represents one week in seconds. Basically we want the api to call one week worth of data with 1-minute intervals
     //latestTimeStampByMinute = t;                                                                                  //update latestTimeStamp so that we do not call the api for data we already stored
     if (apiResponse != "{\"s\":\"no_data\"}"){
-    dataByDay = parseJson(apiResponse);
+        dataByMinute = parseJson(apiResponse);
     }
-    dataByMinute = parseJson(apiResponse);
 }
 
 void Stock::updateDataByDay(){
