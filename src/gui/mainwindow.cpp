@@ -31,5 +31,8 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow() {
   delete ui;
   delete leftNav;
+  delete signUpPage;
+  delete chooseUserPage;
+  delete homepage;
   delete layout;
 }
