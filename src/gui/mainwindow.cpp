@@ -13,17 +13,17 @@ MainWindow::MainWindow(QWidget *parent)
   // we add all the pages to the layout and then just hide them
   // when they are not displayed
   signUpPage = new SignUp(this);
-  chooseUserPage = new ChooseUser(this);
+  choosePortfolioPage = new ChoosePortfolio(this);
   homepage = new HomePage(this);
 
   QHBoxLayout *layout = new QHBoxLayout;
   layout->addWidget(leftNav);
   layout->addWidget(signUpPage);
-  layout->addWidget(chooseUserPage);
+  layout->addWidget(choosePortfolioPage);
   layout->addWidget(homepage);
 
   signUpPage->hide();
-  chooseUserPage->hide();
+  choosePortfolioPage->hide();
 
   ui->centralwidget->setLayout(layout);
 }
@@ -32,7 +32,7 @@ MainWindow::~MainWindow() {
   delete ui;
   delete leftNav;
   delete signUpPage;
-  delete chooseUserPage;
+  delete choosePortfolioPage;
   delete homepage;
   delete layout;
 }

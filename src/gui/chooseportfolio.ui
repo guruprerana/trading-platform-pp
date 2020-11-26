@@ -2,8 +2,8 @@
  <author/>
  <comment/>
  <exportmacro/>
- <class>ChooseUser</class>
- <widget name="ChooseUser" class="QWidget">
+ <class>ChoosePortfolio</class>
+ <widget name="ChoosePortfolio" class="QWidget">
   <property name="geometry">
    <rect>
     <x>0</x>

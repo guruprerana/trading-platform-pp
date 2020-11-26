@@ -10,7 +10,7 @@ CONFIG += c++11
 
 SOURCES += \
     api/api.cpp \
-    gui/chooseuser.cpp \
+    gui/chooseportfolio.cpp \
     gui/homepage.cpp \
     gui/leftnavigationbar.cpp \
     gui/signup.cpp \
@@ -20,14 +20,14 @@ SOURCES += \
 
 HEADERS += \
     api/api.h \
-    gui/chooseuser.h \
+    gui/chooseportfolio.h \
     gui/homepage.h \
     gui/leftnavigationbar.h \
     gui/mainwindow.h \
     gui/signup.h
 
 FORMS += \
-    gui/chooseuser.ui \
+    gui/chooseportfolio.ui \
     gui/homepage.ui \
     gui/leftnavigationbar.ui \
     gui/mainwindow.ui \

@@ -1,7 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "chooseuser.h"
+#include "chooseportfolio.h"
 #include "homepage.h"
 #include "leftnavigationbar.h"
 #include "signup.h"
@@ -27,7 +27,7 @@ class MainWindow : public QMainWindow {
 
   LeftNavigationBar *leftNav;
   SignUp *signUpPage;
-  ChooseUser *chooseUserPage;
+  ChoosePortfolio *choosePortfolioPage;
   HomePage *homepage;
   QHBoxLayout *layout;
 };
