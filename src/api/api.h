@@ -4,8 +4,6 @@
 #include <curl/curl.h>
 #include <map>
 #include <string>
-//#include <nlohmann/json.hpp>
-// using json = nlohmann::json;
 
 class API {
 public:

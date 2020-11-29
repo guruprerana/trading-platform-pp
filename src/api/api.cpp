@@ -1,5 +1,4 @@
 #include "api.h"
-#include <iostream>
 
 // Constructor of the API class
 API::API() {
@@ -48,12 +47,10 @@ std::string API::getStockData(std::string stockSymbol, std::string resolution,
     // 200 means successful transfer
     if (httpCode == 200 && result == CURLE_OK) {
       //  contains the requested data
-      // json j = json::parse(data);
       return data;
     } else if (httpCode == 429) {
       return "";
     }
   }
-
   return "";
 }

@@ -2,7 +2,6 @@
 #include <QtTest>
 #include <iostream>
 
-
 class TestStock : public QObject {
     Q_OBJECT
 
