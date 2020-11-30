@@ -1,7 +1,13 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "chooseportfolio.h"
+#include "homepage.h"
+#include "leftnavigationbar.h"
+#include "signup.h"
+
 #include <QMainWindow>
+#include <qboxlayout.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -16,7 +22,16 @@ class MainWindow : public QMainWindow {
   MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
 
+  QWidget *getTabComponent(QString tabName);
+
  private:
+  QString currentTabName;
   Ui::MainWindow *ui;
+
+  LeftNavigationBar *leftNav;
+  SignUp *signUpPage;
+  ChoosePortfolio *choosePortfolioPage;
+  HomePage *homepage;
+  QHBoxLayout *layout;
 };
 #endif // MAINWINDOW_H
