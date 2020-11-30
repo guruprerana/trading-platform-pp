@@ -29,11 +29,7 @@ class LeftNavigationBar : public QWidget {
   Ui::LeftNavigationBar *ui;
 
  signals:
-  void switchHomeTab();
-  void switchTradeTab();
-  void switchPerformanceTab();
-  void switchNewsTab();
-  void switchMarketsTab();
+  void switchTab(QString tabName);
 };
 
 #endif // LEFTNAVIGATIONBAR_H

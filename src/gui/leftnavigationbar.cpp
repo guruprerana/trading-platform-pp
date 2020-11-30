@@ -12,21 +12,21 @@ LeftNavigationBar::~LeftNavigationBar() {
 }
 
 void LeftNavigationBar::on_homeButton_released() {
-  emit switchHomeTab();
+  emit switchTab(QString("home"));
 }
 
 void LeftNavigationBar::on_tradeButton_released() {
-  emit switchTradeTab();
+  emit switchTab(QString("trade"));
 }
 
 void LeftNavigationBar::on_performanceButton_released() {
-  emit switchPerformanceTab();
+  emit switchTab(QString("performance"));
 }
 
 void LeftNavigationBar::on_newsButton_released() {
-  emit switchNewsTab();
+  emit switchTab(QString("news"));
 }
 
 void LeftNavigationBar::on_marketsButton_released() {
-  emit switchMarketsTab();
+  emit switchTab(QString("markets"));
 }

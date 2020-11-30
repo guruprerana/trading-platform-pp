@@ -22,7 +22,10 @@ class MainWindow : public QMainWindow {
   MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
 
+  QWidget *getTabComponent(QString tabName);
+
  private:
+  QString currentTabName;
   Ui::MainWindow *ui;
 
   LeftNavigationBar *leftNav;
