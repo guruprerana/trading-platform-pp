@@ -6,7 +6,7 @@
 #include <string>
 
 class API {
-public:
+ public:
   API();
   ~API();
 
@@ -16,7 +16,7 @@ public:
   std::string getStockData(std::string stockSymbol, std::string resolution,
                            long startTimestamp, long endTimestamp);
 
-private:
+ private:
   // CURL object here
   CURL *curl;
   CURLcode result;

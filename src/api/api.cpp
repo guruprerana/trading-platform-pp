@@ -6,7 +6,9 @@ API::API() {
   curl_global_init(CURL_GLOBAL_DEFAULT);
 }
 
-API::~API() { curl = NULL; }
+API::~API() {
+  curl = NULL;
+}
 
 size_t writefunc(void *ptr, size_t size, size_t nmemb, std::string *s) {
   s->append(static_cast<char *>(ptr), size * nmemb);
@@ -23,9 +25,10 @@ std::string API::getStockData(std::string stockSymbol, std::string resolution,
   std::string data;
 
   curl = curl_easy_init();
+
   if (curl) {
     long httpCode(0); // Initialize the http code to 0, it can't be an int it
-                      // must be a long int
+    // must be a long int
     // Website settings
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
     std::string token_header = "X-Finnhub-Token:" + token;
@@ -44,6 +47,7 @@ std::string API::getStockData(std::string stockSymbol, std::string resolution,
     // always cleanup
     curl_easy_cleanup(curl);
     curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpCode);
+
     // 200 means successful transfer
     if (httpCode == 200 && result == CURLE_OK) {
       //  contains the requested data
@@ -52,5 +56,6 @@ std::string API::getStockData(std::string stockSymbol, std::string resolution,
       return "";
     }
   }
+
   return "";
 }

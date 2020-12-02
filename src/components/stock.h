@@ -5,14 +5,14 @@
 #include <QJsonObject>
 
 class Stock {
-private:
+ private:
   std::string symbol;
   QJsonObject dataByDay;
   QJsonObject dataByMinute;
   long latestTimeStampByDay;
   long latestTimeStampByMinute;
 
-public:
+ public:
   Stock(std::string);
   ~Stock();
 
