@@ -41,3 +41,7 @@ build
 # VS files
 .vscode
 .vs
+
+# Mac related
+.DS_*
+*/.DS_*
