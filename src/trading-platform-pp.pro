@@ -17,6 +17,8 @@ SOURCES += \
     gui/homepage.cpp \
     gui/leftnavigationbar.cpp \
     gui/signup.cpp \
+    gui/stockdashboard.cpp \
+    gui/stockgraph.cpp \
     main.cpp \
     gui/mainwindow.cpp \
 
@@ -27,14 +29,18 @@ HEADERS += \
     gui/homepage.h \
     gui/leftnavigationbar.h \
     gui/mainwindow.h \
-    gui/signup.h
+    gui/signup.h \
+    gui/stockdashboard.h \
+    gui/stockgraph.h
 
 FORMS += \
     gui/chooseportfolio.ui \
     gui/homepage.ui \
     gui/leftnavigationbar.ui \
     gui/mainwindow.ui \
-    gui/signup.ui
+    gui/signup.ui \
+    gui/stockdashboard.ui \
+    gui/stockgraph.ui
 
 DISTFILES += \
     style.astylerc

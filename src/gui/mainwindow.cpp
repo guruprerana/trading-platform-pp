@@ -16,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
   signUpPage = new SignUp(this);
   choosePortfolioPage = new ChoosePortfolio(this);
   homepage = new HomePage(this);
+  stockDashboardPage = new StockDashboard(this);
 
   // connect leftNavigationBar's signals to the main window
   connect(leftNav, &LeftNavigationBar::switchTab, [this](QString tabName) {
@@ -32,9 +33,11 @@ MainWindow::MainWindow(QWidget *parent)
   layout->addWidget(signUpPage);
   layout->addWidget(choosePortfolioPage);
   layout->addWidget(homepage);
+  layout->addWidget(stockDashboardPage);
 
   signUpPage->hide();
   choosePortfolioPage->hide();
+  stockDashboardPage->hide();
 
   ui->centralwidget->setLayout(layout);
 }
@@ -51,6 +54,10 @@ MainWindow::~MainWindow() {
 QWidget *MainWindow::getTabComponent(QString tabName) {
   if (tabName == "home") {
     return homepage;
+  }
+
+  if (tabName == "trade") {
+    return stockDashboardPage;
   }
 
   return signUpPage; // placeholders for other tab names for now
