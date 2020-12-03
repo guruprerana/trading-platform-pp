@@ -1,7 +1,7 @@
 #ifndef TRADINGORDER_H
 #define TRADINGORDER_H
 
-#include "../security/security.h"
+#include "../stock/stock.h"
 
 #include <QDateTime>
 #include <QString>

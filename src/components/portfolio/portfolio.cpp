@@ -4,14 +4,14 @@ qreal Portfolio::valuation() {
   return 0;
 }
 
-void Portfolio::addEquitySecurityToWatchList(EquitySecurity es) {
-  if (equity_security_watch_list.indexOf(es) == -1) {
-    equity_security_watch_list.push_back(es);
-  }
+void Portfolio::addStockToWatchList(Stock st) {
+  // if (stock_watch_list.indexOf(st) == -1) {
+  //   stock_watch_list.push_back(st);
+  // }
 }
 
-void Portfolio::removeEquitySecurityFromWatchList(EquitySecurity es) {
-  equity_security_watch_list.removeOne(es);
+void Portfolio::removeStockFromWatchList(Stock st) {
+  // stock_watch_list.removeOne(st);
 }
 
 void Portfolio::addTradingOrder(TradingOrder trading_order) {

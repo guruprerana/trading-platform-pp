@@ -5,10 +5,9 @@
 #ifndef PORTFOLIO_H
 #define PORTFOLIO_H
 
-#include "../security/security.h"
+#include "../stock/stock.h"
 #include "../trading_order/trading_order.h"
 
-#include <QLocale>
 #include <QVector>
 
 class LoadUp {
@@ -27,8 +26,8 @@ class Portfolio {
 
   qreal valuation();
 
-  void addEquitySecurityToWatchList(EquitySecurity es);
-  void removeEquitySecurityFromWatchList(EquitySecurity es);
+  void addStockToWatchList(Stock st);
+  void removeStockFromWatchList(Stock st);
 
   void addTradingOrder(TradingOrder trading_order);
 
@@ -37,7 +36,7 @@ class Portfolio {
  private:
   qreal current_money;
 
-  QVector<EquitySecurity> equity_security_watch_list;
+  QVector<Stock> stock_watch_list;
   QVector<TradingOrder> trading_order_history;
   QVector<LoadUp> load_up_history;
 };
