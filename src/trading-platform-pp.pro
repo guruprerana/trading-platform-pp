@@ -10,21 +10,35 @@ CONFIG += c++11
 
 SOURCES += \
     api/api.cpp \
+    gui/chooseportfolio.cpp \
+    gui/homepage.cpp \
+    gui/leftnavigationbar.cpp \
+    gui/signup.cpp \
     main.cpp \
     gui/mainwindow.cpp \
     components/portfolio/portfolio.cpp \
-    components/security/security.cpp \
     components/trading_order/trading_order.cpp
 
 HEADERS += \
     api/api.h \
+    gui/chooseportfolio.h \
+    gui/homepage.h \
+    gui/leftnavigationbar.h \
+    gui/mainwindow.h \
+    gui/signup.h \
     gui/mainwindow.h \
     components/portfolio/portfolio.h \
-    components/security/security.h \
     components/trading_order/trading_order.h
 
 FORMS += \
-    gui/mainwindow.ui
+    gui/chooseportfolio.ui \
+    gui/homepage.ui \
+    gui/leftnavigationbar.ui \
+    gui/mainwindow.ui \
+    gui/signup.ui
+
+DISTFILES += \
+    style.astylerc
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
