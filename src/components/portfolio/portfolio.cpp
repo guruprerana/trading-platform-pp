@@ -1,7 +1,5 @@
 #include "portfolio.h"
 
-#include <algorithm>
-
 qreal Portfolio::valuation () {
     return 0;
 }
