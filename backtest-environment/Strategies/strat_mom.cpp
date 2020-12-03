@@ -39,6 +39,38 @@ double MainStrategy::calculate_sma(map<long, double> &bars) {
     return sum / bars.size();
 }
 
+
+map<int, double> cache;
+
+
+int momentum(map<int, double> &cache, double moment){
+//1-full, 0-sell, -1-perc
+    if (cache.size()<3)
+    {
+        cache.insert(pair<int, double>(1, moment));
+        if (moment>=1)
+            return 1;
+        return 0;
+
+    }
+
+    if(moment<1)
+        return 0;
+
+    double diff1=cache.at(3)-cache.at(2);
+    double diff2=cache.at(1)-moment;
+    double temp= cache.at(2);
+    cache.at(2) = cache.at(1);
+    cache.at(3) = temp;
+    cache.at(1) = moment;
+    if (diff1<=diff2)
+        return 1;
+    return -1;
+
+
+}
+
+
 // Update map of bought symbols
 void MainStrategy::calculate_signals(MarketEvent i_event) {
     

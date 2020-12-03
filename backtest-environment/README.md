@@ -12,15 +12,26 @@ It is split into several windows because I prefer using GNUplot for realtime upd
 
 ## Installation
 ### Prerequisites
-* Boost (`libboost-all-dev`)
-* GNU Plot (`gnuplot`)
-* CURL (`libcurl4-openssl-dev`)
-* Qt5Widgets
-* GSL (`libgsl-dev`)
+* Boost
+* GNU Plot
+* CURL
+* Qt5Widgets 
+* GSL
 
 ### Ubuntu
 ```
+sudo apt update
+sudo apt upgrade
+sudo snap install cmake
+sudo apt install libboost-all-dev libcurl4-openssl-dev libgsl-dev gnuplot qt5-default
 cmake .
 make
 ./algotester
 ```
+
+## Test your strategy
+Implement your strategy in a `.cpp` file in the folder `Strategies/`, with the same structure with the `mainstrategy.cpp` (especially the `MainStrategy` class). For testing, you can paste your code in the `mainstrategy.cpp` and run `make` again to run the backtesting.
+
+However, do not push the modified `mainstrategy.cpp` file.
+
+The benchmark represents the buy/hold strategy (just buy at the beginning and hold till the end) with S&P500 (symbol `SPY`).
