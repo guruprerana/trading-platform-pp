@@ -10,7 +10,7 @@ MainStrategy::MainStrategy(HistoricalCSVDataHandler* i_bars, boost::ptr_vector<E
     // Set instance variables
     bars = i_bars;
     events = i_events;
-    *bars->symbol_list = {string("SPY")};
+    *bars->symbol_list = {string("AAPL")};
     symbol_list = bars->symbol_list;
     
     // Set custom strategy variables
@@ -30,7 +30,7 @@ map<string, bool> MainStrategy::calculate_initial_bought() {
 }
 
 // Calculate Simple Moving Average 
-double MainStrategy::calculate_sma(map<long, double> &bars) {
+double calculate_sma(map<long, double> &bars) {
     assert(!bars.empty());
     double sum = 0;
     for (auto &it : bars) {
@@ -38,6 +38,9 @@ double MainStrategy::calculate_sma(map<long, double> &bars) {
     }
     return sum / bars.size();
 }
+
+
+
 
 
 map<int, double> cache;
@@ -53,6 +56,7 @@ int momentum(map<int, double> &cache, double moment){
         return 0;
 
     }
+  
 
     if(moment<1)
         return 0;
@@ -71,27 +75,40 @@ int momentum(map<int, double> &cache, double moment){
 }
 
 
+
+
+
+
 // Update map of bought symbols
 void MainStrategy::calculate_signals(MarketEvent i_event) {
     
+    
+            
     // LONG any symbol whose bar is updated by marketevent
     for (int i=0; i < symbol_list->size(); i++) {
         string symbol = (*symbol_list)[i];
-        map<string, map<long, double>> bars_50 = bars->get_latest_bars(symbol, 49);
-        if (bars_50.empty()) continue;
-        map<string, map<long, double>> bars_20 = bars->get_latest_bars(symbol, 19);
-        if (bars_20.empty()) continue;
+        map<string, map<long, double>> bars_10 = bars->get_latest_bars(symbol, 9);
+        if (bars_10.empty()) continue;
+        map<string, map<long, double>> bars_5 = bars->get_latest_bars(symbol, 4);
+        if (bars_5.empty()) continue;
 
-        double sma_50 = calculate_sma(bars_50["open"]);
-        double sma_20 = calculate_sma(bars_20["open"]);
-
-        if (sma_20 > sma_50 && !bought[symbol]) {
-            events->push_back(new SignalEvent(symbol, bars_20["open"].rbegin()->first, 1.0));
-            bought[symbol] = true;
-        }
-        else if (sma_50 > sma_20 && bought[symbol]) {
-            events->push_back(new SignalEvent(symbol, bars_20["open"].rbegin()->first, -1.0));
+        double sma_10 = calculate_sma(bars_10["open"]);
+        double sma_5 = calculate_sma(bars_5["open"]);
+        double moment = sma_5/sma_10;
+        int action = momentum(cache, moment);
+        if (action == 0 && bought[symbol]){
+            events->push_back(new SignalEvent(symbol, bars_5["open"].rbegin()->first, -1.0));
             bought[symbol] = false;
         }
+        else if (action == 1 && !bought[symbol]) {
+            events->push_back(new SignalEvent(symbol, bars_5["open"].rbegin()->first, 1.0));
+            bought[symbol] = true;
+        }
+        else if (action == -1 && !bought[symbol]) {
+            events->push_back(new SignalEvent(symbol, bars_5["open"].rbegin()->first, 0.2));
+            bought[symbol] = true;
+        }
+        
+ 
     }
 }
