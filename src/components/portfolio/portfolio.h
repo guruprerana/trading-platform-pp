@@ -12,34 +12,34 @@
 #include <QVector>
 
 class LoadUp {
-public:
-    LoadUp ();
-    ~LoadUp ();
+ public:
+  LoadUp();
+  ~LoadUp();
 
-private:
-    qint64 time_stamp;
-    qreal quantity;
+ private:
+  qint64 time_stamp;
+  qreal quantity;
 };
 
 class Portfolio {
-public:
-    Portfolio ();
-    
-    qreal valuation ();
+ public:
+  Portfolio();
 
-    void addEquitySecurityToWatchList (EquitySecurity es);
-    void removeEquitySecurityFromWatchList (EquitySecurity es);
+  qreal valuation();
 
-    void addTradingOrder (TradingOrder trading_order);
+  void addEquitySecurityToWatchList(EquitySecurity es);
+  void removeEquitySecurityFromWatchList(EquitySecurity es);
 
-    void addLoadUp (LoadUp load_up);
+  void addTradingOrder(TradingOrder trading_order);
 
-private:
-    qreal current_money;
+  void addLoadUp(LoadUp load_up);
 
-    QVector<EquitySecurity> equity_security_watch_list;
-    QVector<TradingOrder> trading_order_history;
-    QVector<LoadUp> load_up_history;
+ private:
+  qreal current_money;
+
+  QVector<EquitySecurity> equity_security_watch_list;
+  QVector<TradingOrder> trading_order_history;
+  QVector<LoadUp> load_up_history;
 };
 
 #endif // PORTFOLIO_H
