@@ -46,11 +46,13 @@ double calculate_sma(map<long, double> &bars) {
 map<int, double> cache;
 
 
+
 int momentum(map<int, double> &cache, double moment){
 //1-full, 0-sell, -1-perc
     if (cache.size()<3)
     {
-        cache.insert(pair<int, double>(1, moment));
+        int k = cache.size();
+        cache.insert(pair<int, double>(k+1, moment));
         if (moment>=1)
             return 1;
         return 0;
@@ -60,13 +62,11 @@ int momentum(map<int, double> &cache, double moment){
 
     if(moment<1)
         return 0;
-
-    double diff1=cache.at(3)-cache.at(2);
-    double diff2=cache.at(1)-moment;
-    double temp= cache.at(2);
-    cache.at(2) = cache.at(1);
-    cache.at(3) = temp;
-    cache.at(1) = moment;
+    
+    int k = cache.size();
+    double diff1=cache.at(k-2)-cache.at(k-1);
+    double diff2=cache.at(k)-moment;
+    cache.insert(pair<int, double>(k+1, moment));
     if (diff1<=diff2)
         return 1;
     return -1;
@@ -81,7 +81,7 @@ int momentum(map<int, double> &cache, double moment){
 
 // Update map of bought symbols
 void MainStrategy::calculate_signals(MarketEvent i_event) {
-    
+
     
             
     // LONG any symbol whose bar is updated by marketevent
@@ -105,10 +105,11 @@ void MainStrategy::calculate_signals(MarketEvent i_event) {
             bought[symbol] = true;
         }
         else if (action == -1 && !bought[symbol]) {
-            events->push_back(new SignalEvent(symbol, bars_5["open"].rbegin()->first, 0.2));
+            events->push_back(new SignalEvent(symbol, bars_5["open"].rbegin()->first, 0.8));
             bought[symbol] = true;
         }
         
  
     }
 }
+▲
