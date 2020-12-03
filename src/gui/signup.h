@@ -20,6 +20,8 @@ class SignUp : public QWidget {
  signals:
   // need to add the necessary details as arguments to this signal
   void signUpWithDetails();
+private slots:
+  void on_plainTextEdit_4_textChanged();
 };
 
 #endif // SIGNUP_H
