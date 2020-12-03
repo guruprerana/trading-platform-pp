@@ -44,15 +44,17 @@ double calculate_sma(map<long, double> &bars) {
 
 
 map<int, double> cache;
+map<int, long> cache_date;
 
 
 
-int momentum(map<int, double> &cache, double moment){
+int momentum(map<int, double> &cache, double moment, map<string, map<long, double>> bars_5){
 //1-full, 0-sell, -1-perc
     if (cache.size()<3)
     {
         int k = cache.size();
         cache.insert(pair<int, double>(k+1, moment));
+        cache_date.insert(pair<int, long>(k+1, bars_5["open"].rbegin()->first));
         if (moment>=1)
             return 1;
         return 0;
@@ -62,11 +64,13 @@ int momentum(map<int, double> &cache, double moment){
 
     if(moment<1)
         return 0;
-    
+
     int k = cache.size();
     double diff1=cache.at(k-2)-cache.at(k-1);
     double diff2=cache.at(k)-moment;
+
     cache.insert(pair<int, double>(k+1, moment));
+    cache_date.insert(pair<int, long>(k+1, bars_5["open"].rbegin()->first));
     if (diff1<=diff2)
         return 1;
     return -1;
@@ -81,6 +85,8 @@ int momentum(map<int, double> &cache, double moment){
 
 // Update map of bought symbols
 void MainStrategy::calculate_signals(MarketEvent i_event) {
+    std::cout << "start" << cache.size() << "end" <<endl ;
+    std::cout << "start_date" << cache_date.size() << "end" <<endl ;
 
     
             
@@ -95,7 +101,7 @@ void MainStrategy::calculate_signals(MarketEvent i_event) {
         double sma_10 = calculate_sma(bars_10["open"]);
         double sma_5 = calculate_sma(bars_5["open"]);
         double moment = sma_5/sma_10;
-        int action = momentum(cache, moment);
+        int action = momentum(cache, moment,bars_5);
         if (action == 0 && bought[symbol]){
             events->push_back(new SignalEvent(symbol, bars_5["open"].rbegin()->first, -1.0));
             bought[symbol] = false;
@@ -112,4 +118,3 @@ void MainStrategy::calculate_signals(MarketEvent i_event) {
  
     }
 }
-▲
