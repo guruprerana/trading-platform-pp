@@ -5,6 +5,7 @@
 #include "homepage.h"
 #include "leftnavigationbar.h"
 #include "signup.h"
+#include "trade_tab/neworder.h"
 
 #include <QMainWindow>
 #include <qboxlayout.h>
@@ -33,5 +34,7 @@ class MainWindow : public QMainWindow {
   ChoosePortfolio *choosePortfolioPage;
   HomePage *homepage;
   QHBoxLayout *layout;
+
+  NewOrder *new_order;
 };
 #endif // MAINWINDOW_H

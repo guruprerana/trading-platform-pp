@@ -15,8 +15,8 @@ SOURCES += \
     gui/leftnavigationbar.cpp \
     gui/signup.cpp \
     main.cpp \
-    gui/mainwindow.cpp # \
-#    style.astylerc
+    gui/mainwindow.cpp \
+    gui/trade_tab/neworder.cpp
 
 HEADERS += \
     api/api.h \
@@ -24,14 +24,16 @@ HEADERS += \
     gui/homepage.h \
     gui/leftnavigationbar.h \
     gui/mainwindow.h \
-    gui/signup.h
+    gui/signup.h \
+    gui/trade_tab/neworder.h
 
 FORMS += \
     gui/chooseportfolio.ui \
     gui/homepage.ui \
     gui/leftnavigationbar.ui \
     gui/mainwindow.ui \
-    gui/signup.ui
+    gui/signup.ui \
+    gui/trade_tab/neworder.ui
 
 DISTFILES += \
     style.astylerc

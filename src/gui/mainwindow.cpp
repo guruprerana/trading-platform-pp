@@ -16,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
   signUpPage = new SignUp(this);
   choosePortfolioPage = new ChoosePortfolio(this);
   homepage = new HomePage(this);
+  new_order = new NewOrder(this);
 
   // connect leftNavigationBar's signals to the main window
   connect(leftNav, &LeftNavigationBar::switchTab, [this](QString tabName) {
@@ -32,9 +33,11 @@ MainWindow::MainWindow(QWidget *parent)
   layout->addWidget(signUpPage);
   layout->addWidget(choosePortfolioPage);
   layout->addWidget(homepage);
+  layout->addWidget(new_order);
 
   signUpPage->hide();
   choosePortfolioPage->hide();
+  new_order->hide();
 
   ui->centralwidget->setLayout(layout);
 }
@@ -46,12 +49,15 @@ MainWindow::~MainWindow() {
   delete choosePortfolioPage;
   delete homepage;
   delete layout;
+  delete new_order;
 }
 
 QWidget *MainWindow::getTabComponent(QString tabName) {
-  if (tabName == "home") {
+  if (tabName == "home")
     return homepage;
+  else if (tabName == "trade"){
+    return new_order;
   }
-
-  return signUpPage; // placeholders for other tab names for now
+  else 
+    return homepage;  // place holder for other tab names
 }
