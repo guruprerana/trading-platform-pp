@@ -18,7 +18,7 @@ SOURCES += \
     gui/leftnavigationbar.cpp \
     gui/signup.cpp \
     main.cpp \
-    gui/mainwindow.cpp \
+    gui/mainwindow.cpp
 
 HEADERS += \
     api/api.h \
@@ -27,8 +27,9 @@ HEADERS += \
     gui/homepage.h \
     gui/leftnavigationbar.h \
     gui/mainwindow.h \
-    gui/signup.h
-
+    gui/signup.h \
+    helper/QJsonObjectManipulation.h
+    
 FORMS += \
     gui/chooseportfolio.ui \
     gui/homepage.ui \

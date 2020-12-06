@@ -41,7 +41,7 @@ void TestAPI::testGetStockData() {
   QVERIFY(result3 == ""); // "" is returned when receive HTTP code 429
 }
 
-QTEST_APPLESS_MAIN(TestAPI)
+//QTEST_APPLESS_MAIN(TestAPI)
 
 #include "tst_api.moc"
 

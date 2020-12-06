@@ -1,4 +1,5 @@
 #include "../src/components/stock.h"
+#include "../src/helper/QJsonObjectManipulation.h"
 #include <QtTest>
 #include <iostream>
 
@@ -12,7 +13,7 @@ class TestStock : public QObject {
   private slots:
     void initTestCase();
     void cleanupTestCase();
-    void testUpdateDataByDay();
+    void testUpdateData();
   };
 
   TestStock::TestStock() {}
@@ -23,23 +24,22 @@ class TestStock : public QObject {
 
   void TestStock::cleanupTestCase() {}
 
-  void TestStock::testUpdateDataByDay(){
+  void TestStock::testUpdateData(){
       Stock *apple = new Stock("AAPL");
       apple->updateDataByMinute();
       QJsonObject jsonDataMinute = apple->getDataByMinute();
-      QJsonDocument docMinute(jsonDataMinute);
-      QString strJsonMinute(docMinute.toJson(QJsonDocument::Compact));
-      std::string textDataMinute = strJsonMinute.toUtf8().constData();
+      std::string textDataMinute = convertToJson(jsonDataMinute);
       std::cout << textDataMinute << std::endl;
-      QVERIFY(textDataMinute.size() != 0);
+      QVERIFY(textDataMinute.size() != 0 && textDataMinute != "{}");
 
       apple->updateDataByDay();
       QJsonObject jsonDataDay = apple->getDataByDay();
-      QJsonDocument docDay(jsonDataDay);
-      QString strJsonDay(docDay.toJson(QJsonDocument::Compact));
-      std::string textDataDay = strJsonDay.toUtf8().constData();
+      std::string textDataDay = convertToJson(jsonDataDay);
       std::cout << textDataDay << std::endl;
-      QVERIFY(textDataDay.size() != 0);
+      QVERIFY(textDataDay.size() != 0 && textDataDay != "{}");
+
+      QVERIFY(apple->getLatestTimestampByDay() > 0 && apple->getLatestTimestampByDay()-apple->getLatestTimestampByMinute() < 60);
+      //Verify that calling time is smaller than one minute and both functions update the current time correctly
   }
 
 QTEST_APPLESS_MAIN(TestStock)

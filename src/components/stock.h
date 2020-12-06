@@ -5,18 +5,17 @@
 #include <QJsonObject>
 
 class Stock {
- private:
+private:
   std::string symbol;
   QJsonObject dataByDay;
   QJsonObject dataByMinute;
   long latestTimeStampByDay;
   long latestTimeStampByMinute;
 
- public:
+public:
   Stock(std::string);
   ~Stock();
 
-  QJsonObject parseJson(std::string);
   std::string getSymbol();
   long getLatestTimestampByDay();
   long getLatestTimestampByMinute();

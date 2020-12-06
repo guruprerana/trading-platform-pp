@@ -22,8 +22,20 @@ std::string API::getStockData(std::string stockSymbol, std::string resolution,
   std::string url = API_ENDPOINT + stockSymbol + "&resolution=" + resolution +
                     "&from=" + std::to_string(startTimestamp) +
                     "&to=" + std::to_string(endTimestamp) + "&token=" + token;
-  std::string data;
+  return callUrl(url);
+}
 
+std::string API::getNews(std::string stockSymbol, long startTimestamp, long endTimestamp){
+  std::string token = API_TOKEN;
+  std::string url = API_ENDPOINT + stockSymbol +
+                    "&from=" + std::to_string(startTimestamp) +
+                    "&to=" + std::to_string(endTimestamp) + "&token=" + token;
+  return callUrl(url);
+}
+
+std::string API::callUrl(std::string url){
+  std::string data;
+  std::string token = API_TOKEN;
   curl = curl_easy_init();
 
   if (curl) {
