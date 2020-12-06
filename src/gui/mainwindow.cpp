@@ -7,13 +7,20 @@ MainWindow::MainWindow(QWidget *parent)
   ui->setupUi(this);
 
   // nav bar on the left is initialized
-  LeftNavigationBar *leftNav = new LeftNavigationBar(this);
+  leftNav = new LeftNavigationBar(this);
   currentTabName = "home";
 
   // initialize the different pages and add them to the layout
   // we add all the pages to the layout and then just hide them
   // when they are not displayed
   signUpPage = new SignUp(this);
+  // connect sign up button
+  connect(signUpPage, &SignUp::signUpWithDetails, [this]() {
+    getLeftNav()->show();
+    getHomepage()->show();
+    getSignUpPage()->hide();
+  });
+
   choosePortfolioPage = new ChoosePortfolio(this);
   homepage = new HomePage(this);
 
@@ -33,7 +40,8 @@ MainWindow::MainWindow(QWidget *parent)
   layout->addWidget(choosePortfolioPage);
   layout->addWidget(homepage);
 
-  signUpPage->hide();
+  leftNav->hide();
+  homepage->hide();
   choosePortfolioPage->hide();
 
   ui->centralwidget->setLayout(layout);

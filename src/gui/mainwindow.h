@@ -23,6 +23,15 @@ class MainWindow : public QMainWindow {
   ~MainWindow();
 
   QWidget *getTabComponent(QString tabName);
+  QWidget *getLeftNav() {
+    return leftNav;
+  }
+  QWidget *getHomepage() {
+    return homepage;
+  }
+  QWidget *getSignUpPage() {
+    return signUpPage;
+  }
 
  private:
   QString currentTabName;

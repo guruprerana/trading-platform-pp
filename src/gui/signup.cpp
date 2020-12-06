@@ -10,3 +10,9 @@ SignUp::SignUp(QWidget *parent) :
 SignUp::~SignUp() {
   delete ui;
 }
+
+void SignUp::on_submitButton_released() {
+  // submit button clicked so create new user
+
+  emit signUpWithDetails();
+}
