@@ -15,4 +15,9 @@ void SignUp::on_submitButton_released() {
   // submit button clicked so create new user
 
   emit signUpWithDetails();
+
+  // clear all the fields once emitted
+  ui->firstNameTextEdit->clear();
+  ui->lastNameTextEdit->clear();
+  ui->watchlistTextEdit->clear();
 }
