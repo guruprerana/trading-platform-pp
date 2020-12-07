@@ -79,6 +79,10 @@ int momentum(map<int, double> &cache, double moment, map<string, map<long, doubl
 }
 
 
+double plot_data(){
+    return cache;
+}
+
 
 
 
