@@ -16,7 +16,8 @@ class API {
   std::string callUrl(std::string url);
   std::string getStockData(std::string stockSymbol, std::string resolution,
                            long startTimestamp, long endTimestamp);
-  std::string getNews(std::string stockSymbol, long startTimestamp, long endTimestamp);
+  std::string getNews(std::string stockSymbol, long startTimestamp,
+                      long endTimestamp);
 
  private:
   // CURL object here
