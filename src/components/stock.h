@@ -24,5 +24,6 @@ public:
   void updateDataByDay();
   void updateDataByMinute();
 };
+QVector<double> convert_to_vector(QJsonObject ,std::string );
 
 #endif // STOCK_H

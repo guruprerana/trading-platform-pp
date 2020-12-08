@@ -5,7 +5,8 @@
 #include <QString>
 #include <QJsonObject>
 #include <QJsonDocument>
-
+#include <QVariant>
+#include <QVector>
 Stock::Stock(std::string symbol) {
     this->symbol = symbol;
     latestTimeStampByDay = 0;
@@ -60,6 +61,16 @@ void Stock::updateDataByDay(){
     if (apiResponse != "{\"s\":\"no_data\"}"){
         dataByDay = parseJson(apiResponse);
     }
+}
+QVector<double> convert_to_vector(QJsonObject j,std::string k){
+    QVariantMap j_map=j.toVariantMap();
+    QVariantList j_list =j_map[k.c_str()].toList();
+    QVector<double> q;
+    for (int i=0;i<j_list.count();i++)
+    {
+        q.append(j_list[i].toDouble());
+    }
+    return q;
 }
 
 
