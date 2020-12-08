@@ -19,7 +19,7 @@ SOURCES += \
     gui/signup.cpp \
     gui/stockdashboard.cpp \
     main.cpp \
-    gui/mainwindow.cpp \
+    gui/mainwindow.cpp
 
 HEADERS += \
     api/api.h \
@@ -29,8 +29,9 @@ HEADERS += \
     gui/leftnavigationbar.h \
     gui/mainwindow.h \
     gui/signup.h \
-    gui/stockdashboard.h
-
+    gui/stockdashboard.h \
+    helper/QJsonObjectManipulation.h
+    
 FORMS += \
     gui/chooseportfolio.ui \
     gui/homepage.ui \

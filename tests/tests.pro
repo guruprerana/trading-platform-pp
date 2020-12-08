@@ -15,4 +15,5 @@ SOURCES +=  tst_api.cpp \
 
 HEADERS += \
     ../src/api/api.h \
-    ../src/components/stock.h
+    ../src/components/stock.h \
+    ../src/helper/QJsonObjectManipulation.h \

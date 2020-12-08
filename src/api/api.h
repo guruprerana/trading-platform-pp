@@ -11,10 +11,13 @@ class API {
   ~API();
 
   std::string API_ENDPOINT = "https://finnhub.io/api/v1/stock/candle?symbol=";
+  std::string API_NEWS = "https://finnhub.io/api/v1/company-news?symbol=";
   std::string API_TOKEN = "buk0iff48v6r2017bpg0";
-
+  std::string callUrl(std::string url);
   std::string getStockData(std::string stockSymbol, std::string resolution,
                            long startTimestamp, long endTimestamp);
+  std::string getNews(std::string stockSymbol, std::string startTimestamp,
+                      std::string endTimestamp);
 
  private:
   // CURL object here
