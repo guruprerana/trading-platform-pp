@@ -18,6 +18,7 @@ SOURCES += \
     gui/leftnavigationbar.cpp \
     gui/signup.cpp \
     gui/stockdashboard.cpp \
+    gui/stockgraph.cpp \
     main.cpp \
     gui/mainwindow.cpp
 
@@ -30,6 +31,7 @@ HEADERS += \
     gui/mainwindow.h \
     gui/signup.h \
     gui/stockdashboard.h \
+    gui/stockgraph.h \
     helper/QJsonObjectManipulation.h
     
 FORMS += \
@@ -38,7 +40,8 @@ FORMS += \
     gui/leftnavigationbar.ui \
     gui/mainwindow.ui \
     gui/signup.ui \
-    gui/stockdashboard.ui
+    gui/stockdashboard.ui \
+    gui/stockgraph.ui
 
 DISTFILES += \
     style.astylerc
