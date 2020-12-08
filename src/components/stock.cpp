@@ -73,7 +73,13 @@ void Stock::updateDataByDay() {
 }
 
 void Stock::updateNews() {
-
+  API *api = new API();
+  std::time_t t = std::time(0);
+  std::string apiResponse = api->getNews(getSymbol(),
+                                         convertToReadable(t - 7200),
+                                         convertToReadable(t));
+  //7200 represents 2 hours in seconds. Market news up to 2 hours are necessary for trading.
+  stockNews = apiResponse;
 }
 
 
