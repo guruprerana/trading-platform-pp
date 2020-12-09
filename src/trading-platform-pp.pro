@@ -17,6 +17,8 @@ SOURCES += \
     main.cpp \
     gui/mainwindow.cpp \
     gui/trade_tab/neworder.cpp
+    components/portfolio/portfolio.cpp \
+    components/trading_order/trading_order.cpp
 
 HEADERS += \
     api/api.h \
@@ -26,6 +28,9 @@ HEADERS += \
     gui/mainwindow.h \
     gui/signup.h \
     gui/trade_tab/neworder.h
+    gui/mainwindow.h \
+    components/portfolio/portfolio.h \
+    components/trading_order/trading_order.h
 
 FORMS += \
     gui/chooseportfolio.ui \
