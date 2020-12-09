@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>home.jpeg</file>
+        <file>markets.jpeg</file>
+        <file>news.jpeg</file>
+        <file>performance.jpeg</file>
+        <file>trade.jpeg</file>
+    </qresource>
+</RCC>
