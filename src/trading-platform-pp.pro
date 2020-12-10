@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui printsupport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -20,7 +20,9 @@ SOURCES += \
     gui/stockdashboard.cpp \
     gui/stockgraph.cpp \
     main.cpp \
-    gui/mainwindow.cpp
+    gui/mainwindow.cpp \
+    library/qcustomplot.cpp
+
 
 HEADERS += \
     api/api.h \
@@ -32,7 +34,8 @@ HEADERS += \
     gui/signup.h \
     gui/stockdashboard.h \
     gui/stockgraph.h \
-    helper/QJsonObjectManipulation.h
+    helper/QJsonObjectManipulation.h \
+    library/qcustomplot.h
     
 FORMS += \
     gui/chooseportfolio.ui \
