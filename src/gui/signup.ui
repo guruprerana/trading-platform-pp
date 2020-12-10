@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
+    <width>632</width>
     <height>397</height>
    </rect>
   </property>
@@ -103,6 +103,27 @@
       </layout>
      </item>
      <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="1,3">
+       <item>
+        <widget class="QLabel" name="label_7">
+         <property name="text">
+          <string>Username</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPlainTextEdit" name="usernameTextEdit">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>30</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
       <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,3">
        <property name="sizeConstraint">
         <enum>QLayout::SetMaximumSize</enum>
@@ -135,8 +156,7 @@
           </size>
          </property>
          <property name="plainText">
-          <string>
-</string>
+          <string/>
          </property>
         </widget>
        </item>
@@ -169,8 +189,7 @@
           </size>
          </property>
          <property name="plainText">
-          <string>
-</string>
+          <string/>
          </property>
         </widget>
        </item>
