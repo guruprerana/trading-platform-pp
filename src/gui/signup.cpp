@@ -17,7 +17,6 @@ void SignUp::on_submitButton_released() {
   emit signUpWithDetails();
 
   // clear all the fields once emitted
-  ui->firstNameTextEdit->clear();
-  ui->lastNameTextEdit->clear();
-  ui->watchlistTextEdit->clear();
+  ui->portfolioNameTextEdit->clear();
+  ui->initialAmountSpinBox->setValue(0.0);
 }

@@ -17,6 +17,7 @@ SOURCES += \
     gui/homepage.cpp \
     gui/leftnavigationbar.cpp \
     gui/signup.cpp \
+    gui/widgets/selectwatchlistwidget.cpp \
     main.cpp \
     gui/mainwindow.cpp \
     components/portfolio/portfolio.cpp \
@@ -30,6 +31,7 @@ HEADERS += \
     gui/leftnavigationbar.h \
     gui/mainwindow.h \
     gui/signup.h \
+    gui/widgets/selectwatchlistwidget.h \
     helper/QJsonObjectManipulation.h \
     components/portfolio/portfolio.h \
     components/trading_order/trading_order.h
@@ -39,7 +41,8 @@ FORMS += \
     gui/homepage.ui \
     gui/leftnavigationbar.ui \
     gui/mainwindow.ui \
-    gui/signup.ui
+    gui/signup.ui \
+    gui/widgets/selectwatchlistwidget.ui
 
 DISTFILES += \
     style.astylerc
