@@ -19,18 +19,15 @@ class StockGraph : public QWidget {
   void clearData();
   void plot();
 
-private slots:
+ private slots:
+  void realtimeDataSlot();
 
-   void realtimeDataSlot();
-
-
-
-private:
+ private:
   Ui::StockGraph *ui;
-  QVector<double> timestamp,high;
+  QVector<double> timestamp, high;
   QTimer dataTimer;
   Stock *stock;
 };
-QVector<double> convert_to_vector(QJsonObject ,std::string );
+QVector<double> convert_to_vector(QJsonObject, std::string);
 
 #endif // STOCKGRAPH_H

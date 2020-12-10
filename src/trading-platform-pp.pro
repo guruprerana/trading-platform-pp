@@ -23,7 +23,6 @@ SOURCES += \
     gui/mainwindow.cpp \
     library/qcustomplot.cpp
 
-
 HEADERS += \
     api/api.h \
     components/stock.h \
