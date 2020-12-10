@@ -16,7 +16,7 @@ SOURCES += \
     gui/signup.cpp \
     main.cpp \
     gui/mainwindow.cpp \
-    gui/trade_tab/neworder.cpp
+    gui/neworder.cpp \
     components/portfolio/portfolio.cpp \
     components/trading_order/trading_order.cpp
 
@@ -27,7 +27,7 @@ HEADERS += \
     gui/leftnavigationbar.h \
     gui/mainwindow.h \
     gui/signup.h \
-    gui/trade_tab/neworder.h
+    gui/neworder.h \
     gui/mainwindow.h \
     components/portfolio/portfolio.h \
     components/trading_order/trading_order.h
@@ -38,7 +38,7 @@ FORMS += \
     gui/leftnavigationbar.ui \
     gui/mainwindow.ui \
     gui/signup.ui \
-    gui/trade_tab/neworder.ui
+    gui/neworder.ui
 
 DISTFILES += \
     style.astylerc

@@ -5,7 +5,7 @@
 #include "homepage.h"
 #include "leftnavigationbar.h"
 #include "signup.h"
-#include "trade_tab/neworder.h"
+#include "neworder.h"
 
 #include <QMainWindow>
 #include <qboxlayout.h>

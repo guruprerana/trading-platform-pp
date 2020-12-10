@@ -24,7 +24,7 @@
        <item>
         <layout class="QGridLayout" name="gridLayout_2">
          <item row="2" column="0">
-          <widget class="QLabel" name="label_7">
+          <widget class="QLabel" name="orderTypeLabel">
            <property name="minimumSize">
             <size>
              <width>100</width>
@@ -48,7 +48,7 @@
           </widget>
          </item>
          <item row="2" column="4">
-          <widget class="QLabel" name="label_9">
+          <widget class="QLabel" name="timingLabel">
            <property name="font">
             <font>
              <pointsize>16</pointsize>
@@ -63,7 +63,7 @@
           </widget>
          </item>
          <item row="3" column="0">
-          <widget class="QComboBox" name="comboBox_3">
+          <widget class="QComboBox" name="orderTypeValueComboBox">
            <property name="minimumSize">
             <size>
              <width>100</width>
@@ -104,7 +104,7 @@
           </widget>
          </item>
          <item row="3" column="4">
-          <widget class="QComboBox" name="comboBox_4">
+          <widget class="QComboBox" name="timingValueComboBox">
            <property name="maximumSize">
             <size>
              <width>100</width>
@@ -139,7 +139,7 @@
           </widget>
          </item>
          <item row="1" column="2">
-          <widget class="QSpinBox" name="spinBox">
+          <widget class="QSpinBox" name="quantityValueSpinBox">
            <property name="minimumSize">
             <size>
              <width>0</width>
@@ -149,7 +149,7 @@
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QComboBox" name="comboBox_2">
+          <widget class="QComboBox" name="actionsValueComboBox">
            <property name="minimumSize">
             <size>
              <width>100</width>
@@ -180,7 +180,7 @@
           </widget>
          </item>
          <item row="0" column="0">
-          <widget class="QLabel" name="label_4">
+          <widget class="QLabel" name="actionsLabel">
            <property name="minimumSize">
             <size>
              <width>100</width>
@@ -223,7 +223,7 @@
           </spacer>
          </item>
          <item row="0" column="2">
-          <widget class="QLabel" name="label_5">
+          <widget class="QLabel" name="quantityLabel">
            <property name="minimumSize">
             <size>
              <width>100</width>
@@ -250,7 +250,7 @@
           </widget>
          </item>
          <item row="2" column="2">
-          <widget class="QLabel" name="label_8">
+          <widget class="QLabel" name="limitPriceLabel">
            <property name="font">
             <font>
              <pointsize>16</pointsize>
@@ -261,19 +261,6 @@
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="2">
-          <widget class="QPlainTextEdit" name="plainTextEdit">
-           <property name="maximumSize">
-            <size>
-             <width>100</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="plainText">
-            <string>0</string>
            </property>
           </widget>
          </item>
@@ -293,6 +280,13 @@
            </property>
           </spacer>
          </item>
+         <item row="3" column="2">
+          <widget class="QLineEdit" name="limitPriceValueLineEdit">
+           <property name="text">
+            <string>0</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>
@@ -301,7 +295,7 @@
           <enum>QLayout::SetDefaultConstraint</enum>
          </property>
          <item>
-          <widget class="QLabel" name="label_6">
+          <widget class="QLabel" name="estimatedValueLabel">
            <property name="minimumSize">
             <size>
              <width>3</width>
@@ -329,7 +323,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QTextBrowser" name="textBrowser">
+          <widget class="QTextBrowser" name="estimatedValueTextBrowser">
            <property name="maximumSize">
             <size>
              <width>250</width>
@@ -346,8 +340,8 @@
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:16pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8.25pt;&quot;&gt;0&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8.25pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;0&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
           </widget>
          </item>
@@ -357,7 +351,7 @@ p, li { white-space: pre-wrap; }
             <enum>QLayout::SetMinimumSize</enum>
            </property>
            <item>
-            <widget class="QPushButton" name="pushButton">
+            <widget class="QPushButton" name="cancelPushButton">
              <property name="minimumSize">
               <size>
                <width>50</width>
@@ -376,7 +370,7 @@ p, li { white-space: pre-wrap; }
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_2">
+            <widget class="QPushButton" name="orderPushButton">
              <property name="maximumSize">
               <size>
                <width>100</width>
@@ -395,7 +389,7 @@ p, li { white-space: pre-wrap; }
       </layout>
      </item>
      <item row="0" column="1">
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="titleLabel">
        <property name="minimumSize">
         <size>
          <width>700</width>
@@ -432,7 +426,7 @@ p, li { white-space: pre-wrap; }
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
          </property>
          <item row="0" column="0">
-          <widget class="QLabel" name="label_2">
+          <widget class="QLabel" name="symbolLabel">
            <property name="minimumSize">
             <size>
              <width>100</width>
@@ -456,7 +450,7 @@ p, li { white-space: pre-wrap; }
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QLineEdit" name="lineEdit">
+          <widget class="QLineEdit" name="symbolValueLineEdit">
            <property name="minimumSize">
             <size>
              <width>100</width>
@@ -480,7 +474,7 @@ p, li { white-space: pre-wrap; }
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QLabel" name="label_3">
+          <widget class="QLabel" name="strategyLabel">
            <property name="minimumSize">
             <size>
              <width>100</width>
@@ -504,7 +498,7 @@ p, li { white-space: pre-wrap; }
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QComboBox" name="comboBox">
+          <widget class="QComboBox" name="strategyValueComboBox">
            <property name="minimumSize">
             <size>
              <width>100</width>
