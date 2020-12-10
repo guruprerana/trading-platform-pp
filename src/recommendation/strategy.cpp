@@ -25,47 +25,74 @@ Strategy::~Strategy(){
 }
 
 
-map<std::string, bool> Strategy::calculate_initial_bought() {
-    //We initialize the map: all stocks are not bought yey
-    bought = {};
-    for (std::vector<int>::iterator i= this.stock.begin(); i!= this.stock.end(); i++){
-        bought[(*i).getSymbol()] = false;
-    }
-    return bought;
-}
 
 //EACH TEAM NEEDS TO FILL ITS STRATEGY: the output is true if the stocks is bought, false otherwise and push back the event
-bool Strategy::exponential_moving_average():
+bool Strategy::exponential_moving_average(symbol):{
+    
+    map<string, map<long, double>> bars_11 = bars->get_latest_bars(symbol,11);
+    if (bars_11.empty()) continue; // check if empty and include more bars
+    map<string, map<long, double>> bars_6 = bars->get_latest_bars(symbol,6);
+    if (bars_11.empty()) continue; // check if empty and include more bars
+    double ema_11 = calculate_ema(bars_11["open"]); // Longer Moving Average
+    double ema_06 = calculate_ema(bars_6["open"]);  // Shorter Moving Average
+    double markup = 0.05;// markup introduces anticipation into our strategy:
+    if (ema_06 > (1-markup)*ema_11 && !bought[symbol]) {
+        return true;
+    }
+    else if (ema_11 > (1+markup)*ema_06 && bought[symbol]) {
+        return false;
+    }
+    }
+
+
+
+bool Strategy::momentum(symbol):{
+    
+    map<int, double> cache;
+    map<int, long> cache_date;
+    map<string, map<long, double>> bars_10 = bars->get_latest_bars(symbol, 9); // get the price of the _ latest days for the stock "symbol"
+    if (bars_10.empty()) continue;
+    map<string, map<long, double>> bars_5 = bars->get_latest_bars(symbol, 4);
+    if (bars_5.empty()) continue;
+    double sma_10 = calculate_sma(bars_10["open"]);
+    double sma_5 = calculate_sma(bars_5["open"]);
+    double moment = sma_5/sma_10;
+    int action = momentum(cache, cache_date, moment,bars_5);
+    if (action == 0 && bought[symbol]){
+        return true, 1.0;
+    }
+    else if (action == 1 && !bought[symbol]) {
+        return true, 1.0;
+    }
+    else if (action == -1 && !bought[symbol]) {
+        return true, 0.8;
+    }      
+
+        }
+    
+
+    
+
+bool Strategy::linear_regression(symbol):
     //to be completed
     return true;
 
-bool Strategy::momentum():
-    //to be completed
-    return true;
 
-bool Strategy::linear_regression():
-    //to be completed
-    return true;
-
-
-void Strategy::calculate_signals(){
+void Strategy::calculate_signals(symbol){
     //provides outcome of the chosen strategy
-    map<std::string, bool> bought_map = calculate_initial_bought();
-    for (std::vector<int>::iterator i= this.stock.begin(); i!= this.stock.end(); i++){
-        std::string symbol = (*i).getSymbol();
         bool bought;
+        double percentage;
+        percentage = 1.0;
         if (this.get_name() == 'EMA'){ //exponential moving average
-        bought = exponential_moving_average();
+        bought = exponential_moving_average(symbol);
         }
         if (this.get_name() == 'MOM'){//momentum
-            bought = exponential_moving_average();
+            bought = exponential_moving_average(symbol);
         }
         if (this.sget_name() == 'LR'){//linear regression
-            bought = linear_regression();
+            bought, percentage = linear_regression(symbol);
         }
-        if (bought){
-            bought_map[symbol] = true;
-        }        
+        
 
     }
    
@@ -116,4 +143,58 @@ std::vector<Stock*> Strategy::get_stock(){
 std::string Strategy::get_name(){
     return  this->strategy_name;
 }
+
+// auxiliary functions needed for the strategies 
+int momentum(map<int, double> &cache, map<int, double> &cache_date, double moment, map<string, map<long, double>> bars_5){
+//1-full, 0-sell, -1-perc
+    if (cache.size()<3)
+    {
+        int k = cache.size();
+        cache.insert(pair<int, double>(k+1, moment));
+        cache_date.insert(pair<int, long>(k+1, bars_5["open"].rbegin()->first));
+        if (moment>=1)
+            return 1;
+        return 0;
+
+    }
+  
+
+    if(moment<1)
+        return 0;
+
+    int k = cache.size();
+    double diff1=cache.at(k-2)-cache.at(k-1);
+    double diff2=cache.at(k)-moment;
+
+    cache.insert(pair<int, double>(k+1, moment));
+    cache_date.insert(pair<int, long>(k+1, bars_5["open"].rbegin()->first));
+    if (diff1<=diff2)
+        return 1;
+    return -1;}
+
+
+    // Calculate Simple Moving Average 
+    double calculate_sma(map<long, double> &bars) {
+        assert(!bars.empty());
+        double sum = 0;
+        for (auto &it : bars) {
+            sum += it.second;
+        }
+        return sum / bars.size();
+    }
+
+    
+    // Calculate Exponential Moving Average
+    double calculate_ema(map<long, double> &bars) {
+        assert(!bars.empty());
+        double e_MovingAverage = 0;
+        double smoothing_parameter = 0.4; //decay factor of terms in Moving Average
+        int weight_factor = 0; // degree of the smoothing_parameter for a given summand
+        for (auto &it : bars) {
+            e_MovingAverage += smoothing_parameter * (std::pow((1-smoothing_parameter),weight_factor)) * it.second;
+            weight_factor += 1;
+        }
+        return e_MovingAverage;
+    }
+    
 
