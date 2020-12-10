@@ -31,7 +31,6 @@ HEADERS += \
     gui/mainwindow.h \
     gui/signup.h \
     helper/QJsonObjectManipulation.h \
-    gui/mainwindow.h \
     components/portfolio/portfolio.h \
     components/trading_order/trading_order.h
     
