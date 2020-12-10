@@ -18,7 +18,9 @@ SOURCES += \
     gui/leftnavigationbar.cpp \
     gui/signup.cpp \
     main.cpp \
-    gui/mainwindow.cpp
+    gui/mainwindow.cpp \
+    components/portfolio/portfolio.cpp \
+    components/trading_order/trading_order.cpp
 
 HEADERS += \
     api/api.h \
@@ -28,7 +30,10 @@ HEADERS += \
     gui/leftnavigationbar.h \
     gui/mainwindow.h \
     gui/signup.h \
-    helper/QJsonObjectManipulation.h
+    helper/QJsonObjectManipulation.h \
+    gui/mainwindow.h \
+    components/portfolio/portfolio.h \
+    components/trading_order/trading_order.h
     
 FORMS += \
     gui/chooseportfolio.ui \
