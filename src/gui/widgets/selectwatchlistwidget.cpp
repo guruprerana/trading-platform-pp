@@ -11,7 +11,7 @@ SelectWatchlistWidget::SelectWatchlistWidget(QWidget *parent) :
   ui(new Ui::SelectWatchlistWidget) {
   ui->setupUi(this);
 
-  QFile symbolsFile("/home/guru/Documents/bachelorAnnee2/cse201/trading-platform-pp/src/data/symbols.json");
+  QFile symbolsFile(":/data/symbols.json");
 
   if (!symbolsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
     return;

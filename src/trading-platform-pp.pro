@@ -21,7 +21,7 @@ SOURCES += \
     main.cpp \
     gui/mainwindow.cpp \
     components/portfolio/portfolio.cpp \
-    components/trading_order/trading_order.cpp
+    components/trading_order/trading_order.cpp \
 
 HEADERS += \
     api/api.h \
@@ -46,6 +46,9 @@ FORMS += \
 
 DISTFILES += \
     style.astylerc
+
+RESOURCES += \
+    application.qrc
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
