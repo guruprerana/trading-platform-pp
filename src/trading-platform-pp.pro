@@ -8,8 +8,11 @@ CONFIG += c++11
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+LIBS += -lcurl
+
 SOURCES += \
     api/api.cpp \
+    components/stock.cpp \
     gui/chooseportfolio.cpp \
     gui/homepage.cpp \
     gui/leftnavigationbar.cpp \
@@ -21,15 +24,16 @@ SOURCES += \
 
 HEADERS += \
     api/api.h \
+    components/stock.h \
     gui/chooseportfolio.h \
     gui/homepage.h \
     gui/leftnavigationbar.h \
     gui/mainwindow.h \
     gui/signup.h \
-    gui/mainwindow.h \
+    helper/QJsonObjectManipulation.h \
     components/portfolio/portfolio.h \
     components/trading_order/trading_order.h
-
+    
 FORMS += \
     gui/chooseportfolio.ui \
     gui/homepage.ui \
