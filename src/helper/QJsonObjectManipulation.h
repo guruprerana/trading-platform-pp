@@ -16,7 +16,7 @@ inline QJsonObject parseJson(std::string apiResponse) {
 
 
 //converts QJsonObject to string
-inline std::string convertToJson(QJsonObject jsonData) {
+inline std::string convertToString(QJsonObject jsonData) {
   QJsonDocument doc(jsonData);
   QString strJson(doc.toJson(QJsonDocument::Compact));
   std::string textData = strJson.toUtf8().constData();
