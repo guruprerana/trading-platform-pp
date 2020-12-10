@@ -9,7 +9,7 @@ StockGraph::StockGraph(QWidget *parent) :
   ui->setupUi(this);
 
   stock = new Stock("AAPL");
-  ui->setupUi(this);
+
   ui->plot->addGraph();
   ui->plot->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssTriangle, QPen(Qt::red, 1.5), QBrush(Qt::darkRed), 3));
   ui->plot->graph(0)->setLineStyle(QCPGraph::lsLine);
