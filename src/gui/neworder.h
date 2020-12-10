@@ -1,7 +1,7 @@
 #ifndef NEWORDER_H
 #define NEWORDER_H
 
-#include "../components/trading_order/trading_order.h"
+#include "../components/trading_order.h"
 
 #include <QDateTime>
 #include <QDebug>

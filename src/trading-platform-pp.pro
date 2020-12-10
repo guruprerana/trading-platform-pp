@@ -8,20 +8,35 @@ CONFIG += c++11
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+linux-g++* {
+  LIBS += -lcurl
+}
+
+win32 {
+  # remember to put libcurl-x64 to mingw folder
+  LIBS += C:/curl-7.74.0-win64-mingw/lib/libcurl.a \
+          C:/curl-7.74.0-win64-mingw/lib/libcurl.dll.a
+  INCLUDEPATH += C:/curl-7.74.0-win64-mingw/include
+}
+
 SOURCES += \
     api/api.cpp \
+    components/stock.cpp \
+    components/portfolio.cpp \
+    components/trading_order.cpp \
     gui/chooseportfolio.cpp \
     gui/homepage.cpp \
     gui/leftnavigationbar.cpp \
     gui/signup.cpp \
-    main.cpp \
     gui/mainwindow.cpp \
     gui/neworder.cpp \
-    components/portfolio/portfolio.cpp \
-    components/trading_order/trading_order.cpp
+    main.cpp
 
 HEADERS += \
     api/api.h \
+    components/stock.h \
+    components/portfolio.h \
+    components/trading_order.h \
     gui/chooseportfolio.h \
     gui/homepage.h \
     gui/leftnavigationbar.h \
@@ -29,9 +44,8 @@ HEADERS += \
     gui/signup.h \
     gui/neworder.h \
     gui/mainwindow.h \
-    components/portfolio/portfolio.h \
-    components/trading_order/trading_order.h
-
+    helper/QJsonObjectManipulation.h
+    
 FORMS += \
     gui/chooseportfolio.ui \
     gui/homepage.ui \

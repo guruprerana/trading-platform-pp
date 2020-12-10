@@ -1,7 +1,7 @@
 #ifndef TRADINGORDER_H
 #define TRADINGORDER_H
 
-#include "../stock/stock.h"
+#include "stock.h"
 
 #include <QJsonObject>
 #include <QMetaEnum>
