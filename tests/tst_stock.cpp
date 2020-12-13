@@ -40,9 +40,17 @@ class TestStock : public QObject {
 
       QVERIFY(apple->getLatestTimestampByDay() > 0 && apple->getLatestTimestampByDay()-apple->getLatestTimestampByMinute() < 60);
       //Verify that calling time is smaller than one minute and both functions update the current time correctly
-
-      apple->updateNews();
-      std::cout << apple->getNews() << std::endl;
+      std::map<std::string, std::map<long, double>> mapDataDay = convertToMap(jsonDataDay);
+      for (auto it : mapDataDay) {
+          std::cout << it.first << " : ";
+          std::map<long, double> &internal_map = it.second;
+          for (auto it2: internal_map) {
+                  std::cout << ",";
+              std::cout << it2.first << ":" << it2.second;
+          }
+      }
+      //apple->updateNews();
+      //std::cout << apple->getNews() << std::endl;
   }
 
 QTEST_APPLESS_MAIN(TestStock)
