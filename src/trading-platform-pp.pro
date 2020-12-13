@@ -12,6 +12,7 @@ LIBS += -lcurl
 
 SOURCES += \
     api/api.cpp \
+    components/news.cpp \
     components/stock.cpp \
     gui/chooseportfolio.cpp \
     gui/homepage.cpp \
@@ -24,6 +25,7 @@ SOURCES += \
 
 HEADERS += \
     api/api.h \
+    components/news.h \
     components/stock.h \
     gui/chooseportfolio.h \
     gui/homepage.h \
