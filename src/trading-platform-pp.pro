@@ -15,6 +15,8 @@ SOURCES += \
     gui/leftnavigationbar.cpp \
     gui/signup.cpp \
     main.cpp \
+    recommendation/strategy.cpp \
+
     gui/mainwindow.cpp # \
 #    style.astylerc
 
@@ -24,7 +26,8 @@ HEADERS += \
     gui/homepage.h \
     gui/leftnavigationbar.h \
     gui/mainwindow.h \
-    gui/signup.h
+    gui/signup.h \
+    recommendation/strategy.h \
 
 FORMS += \
     gui/chooseportfolio.ui \
