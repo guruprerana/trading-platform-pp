@@ -3,6 +3,9 @@
 #include "library/qcustomplot.h"
 
 #include <iostream>
+#include <algorithm>
+#include <chrono>
+
 StockGraph::StockGraph(QWidget *parent) :
   QWidget(parent),
   ui(new Ui::StockGraph) {
@@ -10,12 +13,15 @@ StockGraph::StockGraph(QWidget *parent) :
 
   stock = new Stock("AAPL");
   ui->plot->addGraph();
-  ui->plot->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssTriangle,
-                                      QPen(Qt::red, 1.5), QBrush(Qt::darkRed), 3));
+  ui->plot->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle,
+                                      QPen(Qt::black, 1.5), QBrush(Qt::white), 3));
   ui->plot->graph(0)->setLineStyle(QCPGraph::lsLine);
-  ui->plot->graph(0)->setPen(QPen(Qt::red));
+  ui->plot->graph(0)->setPen(QPen(QColor(120, 120, 120), 2));
   ui->plot->xAxis->setUpperEnding(QCPLineEnding::esSpikeArrow);
   ui->plot->yAxis->setUpperEnding(QCPLineEnding::esSpikeArrow);
+
+  QBrush shadowBrush(QColor(0, 0, 0), Qt::Dense7Pattern);
+  ui->plot->graph(0)->setBrush(shadowBrush);
 
   QSharedPointer<QCPAxisTickerDateTime> dateTimeTicker(new QCPAxisTickerDateTime);
   dateTimeTicker->setDateTimeSpec(Qt::UTC);
@@ -32,23 +38,18 @@ StockGraph::StockGraph(QWidget *parent) :
   ui->plot->xAxis->scaleRange(1.025, ui->plot->xAxis->range().center());
   ui->plot->yAxis->scaleRange(1.1, ui->plot->yAxis->range().center());
 
-  qDebug() << "done preparing!\n";
-
   stock->updateDataByDay();
   QJsonObject dataByDay = stock->getDataByDay();
-
-  qDebug() << "done updating!\n";
 
   //Converts Json data to Vector
   timestamp = convert_to_vector(dataByDay, "t"); //Get timestamp values
   high = convert_to_vector(dataByDay,
                            "h"); //Get high values corresponding to timestamp
-  // setup a timer that repeatedly calls MainWindow::realtimeDataSlot:
+  // setup a timer that repeatedly calls StockGraph::realtimeDataSlot:
   connect(&dataTimer, SIGNAL(timeout()), this, SLOT(realtimeDataSlot()));
   dataTimer.start(1000); // Interval 0 means to refresh as fast as possible
   //ui->plot->graph(0)->addData(timestamp,high);
   ui->plot->replot();
-  qDebug() << "done graphing!\n";
 }
 
 StockGraph::~StockGraph() {
@@ -63,27 +64,31 @@ void StockGraph::clearData() {
 
 void StockGraph::plot() {
   ui->plot->graph(0)->setData(timestamp, high);
-  //ui->plot->xAxis->setRangeUpper(*std::max_element(timestamp.begin(),timestamp.end())*1.25);
-  //ui->plot->xAxis->setRange(timestamp[0], timestamp[timestamp.length()-1]);
-  //ui->plot->yAxis->setRangeUpper(*std::max_element(high.begin(),high.end())*1.25);
-  //ui->plot->yAxis->setRange(*std::min_element(high.begin(), high.end()),*std::max_element(high.begin(),high.end()));
-  ui->plot->graph(0)->rescaleAxes();
+  ui->plot->xAxis->setRange(timestamp[0],
+                            timestamp[timestamp.length() - 1]);
+  ui->plot->yAxis->setRange(std::max(0.0, *std::min_element(high.begin(),
+                                     high.end()) * 0.8),
+                            *std::max_element(high.begin(), high.end()) * 1.25);
   ui->plot->replot();
   ui->plot->update(); //updates data
   ui->plot->yAxis->setTickLabels(true);
-
 }
 
 void StockGraph::realtimeDataSlot() {
+//  auto start = std::chrono::high_resolution_clock::now();
+
   static QTime time(QTime::currentTime());
   //calculate two new data points:
   double key = time.elapsed() /
                1000.0; // time elapsed since start of demo, in seconds
   static double lastPointKey = 0;
 
-  if (key - lastPointKey > 2) { // at most add point every 6 s
+  if (key - lastPointKey > 2) {
     stock->updateDataByDay();
+
+
     QJsonObject dataByDay = stock->getDataByDay();
+
     QVector<double> time, h;
     time = convert_to_vector(dataByDay, "t");
     h = convert_to_vector(dataByDay, "h");
@@ -100,6 +105,11 @@ void StockGraph::realtimeDataSlot() {
       plot();
     }
   }
+
+//  auto stop = std::chrono::high_resolution_clock::now();
+//  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>
+//                  (stop - start);
+//  std::cout << duration.count() << std::endl;
 }
 
 QVector<double> convert_to_vector(QJsonObject j, std::string k) {
@@ -112,7 +122,6 @@ QVector<double> convert_to_vector(QJsonObject j, std::string k) {
   }
 
   return q;
-
 }
 
 
