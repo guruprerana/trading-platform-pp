@@ -45,3 +45,6 @@ build
 # Mac related
 .DS_*
 */.DS_*
+
+# Builds
+build-*
