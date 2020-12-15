@@ -29,7 +29,7 @@ std::string API::getNewsCompany(std::string stockSymbol,
                                 std::string startTimestamp,
                                 std::string endTimestamp) {
   std::string token = API_TOKEN;
-  std::string url = API_NEWSCOMAPNY + stockSymbol +
+  std::string url = API_NEWSCOMPANY + stockSymbol +
                     "&from=" + startTimestamp +
                     "&to=" + endTimestamp + "&token=" + token;
   return callUrl(url);
@@ -37,7 +37,7 @@ std::string API::getNewsCompany(std::string stockSymbol,
 
 std::string API::getNewsMarket() {
   std::string token = API_TOKEN;
-  std::string url = API_NEWSCOMAPNY + "&token=" + token;
+  std::string url = API_NEWSMARKET + "&token=" + token;
   return callUrl(url);
 }
 

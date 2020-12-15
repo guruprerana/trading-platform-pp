@@ -11,7 +11,7 @@ class API {
   ~API();
 
   std::string API_ENDPOINT = "https://finnhub.io/api/v1/stock/candle?symbol=";
-  std::string API_NEWSCOMAPNY = "https://finnhub.io/api/v1/company-news?symbol=";
+  std::string API_NEWSCOMPANY = "https://finnhub.io/api/v1/company-news?symbol=";
   std::string API_NEWSMARKET =
     "https://finnhub.io/api/v1/news?category=general&token=";
   std::string API_TOKEN = "buk0iff48v6r2017bpg0";
