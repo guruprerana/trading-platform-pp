@@ -6,6 +6,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <chrono>
+#include <map>
 
 //converts string to QJsonObject
 inline QJsonObject parseJson(std::string apiResponse) {
