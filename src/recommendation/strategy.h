@@ -5,29 +5,36 @@
 #include <api.h>
 #include <QtWidgets>
 #include <QtCharts/QtCharts>
-#include <vector>
+#include <iostream>
 
 class Strategy
 {
 public:
     Strategy();
 
-    Strategy(char& strategy_name, std::vector<Stock*> stocks_vector, bool data_by_minute, std::string price_type); // stock = stock to be chosen by user
+    Strategy(char& strategy_name, Stock*& stock, bool data_by_minute, std::string price_type); // stock = stock to be chosen by user
 
     ~Strategy();
 
     void set_stock(Stock* stock);
     std::vector<Stock*> get_stock();
     std::string get_name();
-    map<string, bool> calculate_initial_bought();
+    std::string get_price_type();
+    std::map<long, double> get_data(int N, int k =0);
+    bool calculate_sma(map<long, double> &bars);
+    bool calculate_ema(map<long, double> &bars);
+    int auxiliary_momentum(map<int, double> &cache, map<int, double> &cache_date, double moment, map<long, double> bars);
     bool exponential_moving_average();
+    double compute_average_value(map<long, double> &bars);
+    double compute_average_key(map<long, double> &bars);
+    double auxiliary_linear_regression(map<long, double> &bars);
     bool linear_regression();
-    bool momentum();
+    std::tuple<bool, double> momentum();
 
 
 
 protected:
-    virtual void calculate_signals();
+    std::tuple<bool, double> calculate_signals();
     // The heart of each strategy, which we have already implemented within subteams
 
     /* virtual */ void simulate();
@@ -44,10 +51,9 @@ protected:
 
     // Data members
     std::string strategy_name;
-    Stock* stock; // stock under consideration
+    Stock*& stock; // stock under consideration
     bool data_by_minute;
-    std::string price_type;// price_type is a lower case string in { 'o','c','h','l'} 
-    //indicating if we consider opening,closing,highest, lowest prices
+    std::string price_type;// price_type is a lower case string in ['o','c','h','l','v']
 
 
 };
