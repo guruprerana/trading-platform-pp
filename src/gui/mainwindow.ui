@@ -10,17 +10,16 @@
     <height>600</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <kerning>true</kerning>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
    <string notr="true"/>
-  </property>
-  <property name="iconSize">
-   <size>
-    <width>64</width>
-    <height>40</height>
-   </size>
   </property>
   <property name="toolButtonStyle">
    <enum>Qt::ToolButtonTextUnderIcon</enum>
@@ -53,11 +52,11 @@
     <bool>false</bool>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(64, 65, 66);
+    <string notr="true">background-color: rgb(51,51,51);
 color: rgb(189, 191, 192);
 font-weight: bold;
-font-size: 11px;
-</string>
+font-size: 10px;
+spacing: 5px;</string>
    </property>
    <property name="movable">
     <bool>false</bool>
@@ -67,7 +66,7 @@ font-size: 11px;
    </property>
    <property name="iconSize">
     <size>
-     <width>80</width>
+     <width>64</width>
      <height>40</height>
     </size>
    </property>
@@ -85,6 +84,7 @@ font-size: 11px;
    <addaction name="actionPerformance"/>
    <addaction name="actionNews"/>
    <addaction name="actionMarkets"/>
+   <addaction name="separator"/>
   </widget>
   <action name="actionHome">
    <property name="checkable">
@@ -95,7 +95,8 @@ font-size: 11px;
    </property>
    <property name="icon">
     <iconset resource="../resources/resources.qrc">
-     <normaloff>:/home.jpeg</normaloff>:/home.jpeg</iconset>
+     <normaloff>:/home.png</normaloff>
+     <activeon>:/home_on.png</activeon>:/home.png</iconset>
    </property>
    <property name="text">
     <string>Home</string>
@@ -107,7 +108,8 @@ font-size: 11px;
    </property>
    <property name="icon">
     <iconset resource="../resources/resources.qrc">
-     <normaloff>:/trade.jpeg</normaloff>:/trade.jpeg</iconset>
+     <normaloff>:/trade.png</normaloff>
+     <activeon>:/trade_on.png</activeon>:/trade.png</iconset>
    </property>
    <property name="text">
     <string>Trade</string>
@@ -119,7 +121,8 @@ font-size: 11px;
    </property>
    <property name="icon">
     <iconset resource="../resources/resources.qrc">
-     <normaloff>:/performance.jpeg</normaloff>:/performance.jpeg</iconset>
+     <normaloff>:/performance.png</normaloff>
+     <activeon>:/performance_on.png</activeon>:/performance.png</iconset>
    </property>
    <property name="text">
     <string>Performance</string>
@@ -131,7 +134,8 @@ font-size: 11px;
    </property>
    <property name="icon">
     <iconset resource="../resources/resources.qrc">
-     <normaloff>:/news.jpeg</normaloff>:/news.jpeg</iconset>
+     <normaloff>:/news.png</normaloff>
+     <activeon>:/news_on.png</activeon>:/news.png</iconset>
    </property>
    <property name="text">
     <string>News</string>
@@ -143,7 +147,8 @@ font-size: 11px;
    </property>
    <property name="icon">
     <iconset resource="../resources/resources.qrc">
-     <normaloff>:/markets.jpeg</normaloff>:/markets.jpeg</iconset>
+     <normaloff>:/markets.png</normaloff>
+     <activeon>:/markets_on.png</activeon>:/markets.png</iconset>
    </property>
    <property name="text">
     <string>Markets</string>

@@ -22,7 +22,6 @@ HEADERS += \
     api/api.h \
     gui/chooseportfolio.h \
     gui/homepage.h \
-    gui/mainwindow.h \
     gui/signup.h \
     gui/mainwindow.h \
     components/portfolio/portfolio.h \
