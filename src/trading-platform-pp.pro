@@ -12,23 +12,29 @@ LIBS += -lcurl
 
 SOURCES += \
     api/api.cpp \
+    components/news.cpp \
     components/stock.cpp \
     gui/chooseportfolio.cpp \
     gui/homepage.cpp \
     gui/leftnavigationbar.cpp \
     gui/signup.cpp \
     main.cpp \
-    gui/mainwindow.cpp
+    gui/mainwindow.cpp \
+    components/portfolio/portfolio.cpp \
+    components/trading_order/trading_order.cpp
 
 HEADERS += \
     api/api.h \
+    components/news.h \
     components/stock.h \
     gui/chooseportfolio.h \
     gui/homepage.h \
     gui/leftnavigationbar.h \
     gui/mainwindow.h \
     gui/signup.h \
-    helper/QJsonObjectManipulation.h
+    helper/QJsonObjectManipulation.h \
+    components/portfolio/portfolio.h \
+    components/trading_order/trading_order.h
     
 FORMS += \
     gui/chooseportfolio.ui \
