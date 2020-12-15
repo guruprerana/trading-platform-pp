@@ -15,7 +15,6 @@ SOURCES += \
     components/stock.cpp \
     gui/chooseportfolio.cpp \
     gui/homepage.cpp \
-    gui/leftnavigationbar.cpp \
     gui/signup.cpp \
     main.cpp \
     gui/mainwindow.cpp \
@@ -27,8 +26,6 @@ HEADERS += \
     components/stock.h \
     gui/chooseportfolio.h \
     gui/homepage.h \
-    gui/leftnavigationbar.h \
-    gui/mainwindow.h \
     gui/signup.h \
     helper/QJsonObjectManipulation.h \
     components/portfolio/portfolio.h \
@@ -37,7 +34,6 @@ HEADERS += \
 FORMS += \
     gui/chooseportfolio.ui \
     gui/homepage.ui \
-    gui/leftnavigationbar.ui \
     gui/mainwindow.ui \
     gui/signup.ui
 
@@ -48,3 +44,6 @@ DISTFILES += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    resources/resources.qrc
