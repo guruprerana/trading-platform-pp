@@ -24,6 +24,7 @@ SOURCES += \
 HEADERS += \
     api/api.h \
     components/stock.h \
+    gui/mainwindow.h \
     gui/chooseportfolio.h \
     gui/homepage.h \
     gui/signup.h \
