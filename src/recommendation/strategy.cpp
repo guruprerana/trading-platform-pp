@@ -38,7 +38,7 @@ std::map<long, double> Startegy::get_data(int N, int k=0){
     }
     std::map<std::string, std::map<long, double>> mapData = convertToMap(jsonData); //converts the QJsonObject with the data of the last 6 months into a std::map<std::string, std::ap<long, double>> {price_type : {time:price}}
     for (auto it = mapData.begin(); it != mapData.end(); ++it){
-        if (it->first == this.get_price_type()){ //take the map <long, double> associated to the price_type chosen at the beginning
+        if (it->first == this->get_price_type()){ //take the map <long, double> associated to the price_type chosen at the beginning
             std::map<long, double> price_map = it->second;
         }
     }
@@ -57,12 +57,12 @@ std::map<long, double> Startegy::get_data(int N, int k=0){
 
 bool Strategy::exponential_moving_average(){
 
-    std::map<long, double> bars_11 = this.get_data(11);
+    std::map<long, double> bars_11 = this->get_data(11);
     if (bars_11.empty()) continue; // check if empty and include more bars
-    std::map<long, double> bars_6 = this.get_data(6);
+    std::map<long, double> bars_6 = this->get_data(6);
     if (bars_11.empty()) continue; // check if empty and include more bars
-    double ema_11 = calculate_ema(bars_11); // Longer Moving Average
-    double ema_06 = calculate_ema(bars_6);  // Shorter Moving Average
+    double ema_11 = this->calculate_ema(bars_11); // Longer Moving Average
+    double ema_06 = this->calculate_ema(bars_6);  // Shorter Moving Average
     double markup = 0.05;// markup introduces anticipation into our strategy:
     if (ema_06 > (1-markup)*ema_11 ) {
         return true;
@@ -74,7 +74,7 @@ bool Strategy::exponential_moving_average(){
 
 
 // Calculate Simple Moving Average 
-double Strategy::calculate_sma(map<long, double> &bars) {
+double Strategy::calculate_sma(std::map<long, double> &bars) {
          assert(!bars.empty());
          double sum = 0;
          for (auto &it : bars) {
@@ -85,7 +85,7 @@ double Strategy::calculate_sma(map<long, double> &bars) {
 
 
 // Calculate Exponential Moving Average
-double Strategy::calculate_ema(map<long, double> &bars) {
+double Strategy::calculate_ema(std::map<long, double> &bars) {
          assert(!bars.empty());
          double e_MovingAverage = 0;
          double smoothing_parameter = 0.4; //decay factor of terms in Moving Average
@@ -98,54 +98,43 @@ double Strategy::calculate_ema(map<long, double> &bars) {
      }
 
 
-int Strategy::auxiliary_momentum(map<int, double> &cache, map<int, double> &cache_date, double moment, map<long, double> bars_5){
+int Strategy::auxiliary_momentum(std::map<int, double> &cache){
  //1-full, 0-sell, -1-perc
-     if (cache.size()<3)
-     {
-         int k = cache.size();
-         cache.insert(pair<int, double>(k+1, moment));
-         cache_date.insert(pair<int, long>(k+1, bars_5.rbegin()->first));
-         if (moment>=1)
-             return 1;
+     if(cache.at(0)<1)
          return 0;
-     }
-     if(moment<1)
-         return 0;
+     double diff1=cache.at(3)-cache.at(2);
+     double diff2=cache.at(1)-diff2=cache.at(0);
 
-     int k = cache.size();
-     double diff1=cache.at(k-2)-cache.at(k-1);
-     double diff2=cache.at(k)-moment;
-
-     cache.insert(pair<int, double>(k+1, moment));
-     cache_date.insert(pair<int, long>(k+1, bars_5.rbegin()->first));
      if (diff1<=diff2)
          return 1;
      return -1;}
     
 std::tuple<bool, double> Strategy::momentum(){
-     map<int, double> cache;
-     map<int, long> cache_date;
-     map<long, double> bars_10 = this.get_data(9); // get the price of the N latest days for the stock 
-     if (bars_10.empty()) continue;
-     map<long, double> bars_5 = this.get_data(4);
-     if (bars_5.empty()) continue;
-     double sma_10 = calculate_sma(bars_10);
-     double sma_5 = calculate_sma(bars_5);
-     double moment = sma_5/sma_10;
-     int action = auxiliary_momentum(cache, cache_date, moment,bars_5);
-     if (action == 0 ){
+
+     std::map<int, double> cache;
+     for (int k=0, k<4, k++){
+         std::map<long, double> bars_10 = this->get_data(9,k);
+         std::map<long, double> bars_5 = this->get_data(4,k);
+         double sma_10 = this->calculate_sma(bars_10);
+         double sma_5 = this->calculate_sma(bars_5);
+         double moment = sma_5/sma_10;
+         cache.insert(pair<int, double>(k, moment));
+     }
+
+     int action = this->auxiliary_momentum(cache);
+     if (action == 0){
          return true, 1.0;
      }
-     else if (action == 1 ) {
+     else if (action == 1) {
          return true, 1.0;
      }
-     else if (action == -1 ) {
+     else if (action == -1) {
          return true, 0.8;
      }      
 
 }
 
-double Strategy::compute_average_key(map<long, double> &bars){
+double Strategy::compute_average_key(std::map<long, double> &bars){
     double key_average = 0;
     for (auto &item : bars) {
             key_average += item.first;
@@ -153,7 +142,7 @@ double Strategy::compute_average_key(map<long, double> &bars){
     return (key_average/bars.size());
 }
 
-double Strategy::compute_average_value(map<long, double> &bars){
+double Strategy::compute_average_value(std::map<long, double> &bars){
     double value_average = 0;
     for (auto &item : bars) {
             value_average += item.second;
@@ -161,10 +150,10 @@ double Strategy::compute_average_value(map<long, double> &bars){
     return (value_average/bars.size());
 }
 
-double Strategy::auxiliary_linear_regression(map<long, double> &bars){
+double Strategy::auxiliary_linear_regression(std::map<long, double> &bars){
     assert(!bars.empty());
-    double value_average= compute_average_value(bars);
-    double key_average= compute_average_key(bars);
+    double value_average= this->compute_average_value(bars);
+    double key_average= this->compute_average_key(bars);
     double ss_xy = 0;
     double ss_xx = 0;
     for (auto &item : bars) {
@@ -178,8 +167,8 @@ double Strategy::auxiliary_linear_regression(map<long, double> &bars){
 }
 
 bool Strategy::linear_regression(){
-    map<long, double> bars = this.get_data(20);
-    double slope = auxiliary_linear_regression(bars);
+    std::map<long, double> bars = this->get_data(20);
+    double slope = this->auxiliary_linear_regression(bars);
     if (slope <= 0){ 
         return false;
     }
@@ -192,20 +181,29 @@ std::tuple<bool, double> Strategy::calculate_signals(){
     bool bought;
     double percentage = 1.0;
     //provides outcome of the chosen strategy
-    if (this.get_name() == 'EMA'){ //exponential moving average
-        bought =  exponential_moving_average();
+    if (this->get_name() == 'EMA'){ //exponential moving average
+        bought =  this->exponential_moving_average();
     }
-    if (this.get_name() == 'MOM'){//momentum
-        bought, percentage = momentum();
+    if (this->get_name() == 'MOM'){//momentum
+        bought, percentage = this->momentum();
     }
-    if (this.get_name() == 'LR'){//linear regression
-        bought= linear_regression();
+    if (this->get_name() == 'LR'){//linear regression
+        bought= this->linear_regression();
     } 
     return bought,percentage;
 }
 
 void Strategy::simulate(){
-    //frederic will add it
+
+    if (this->get_name() == 'EMA'){ //exponential moving average
+        //
+    }
+    if (this->get_name() == 'MOM'){//momentum
+        
+    }
+    if (this->get_name() == 'LR'){//linear regression
+        //
+    } 
 }
 
 void Strategy::evaluate(){
