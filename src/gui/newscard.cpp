@@ -2,8 +2,6 @@
 #include "ui_newscard.h"
 
 #include <QDebug>
-#include <QDesktopServices>
-#include <QUrl>
 
 NewsCard::NewsCard(QString id, QString headline, QString category,
                    QString timestamp, QString url, QWidget *parent) :

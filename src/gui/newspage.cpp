@@ -40,7 +40,7 @@ NewsPage::NewsPage(QWidget *parent) :
       json["url"].toString(),
       this);
     layout->addWidget(newsCard);
-    newsCard->debug();
+//    newsCard->debug();
   }
 }
 
