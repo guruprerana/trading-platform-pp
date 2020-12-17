@@ -45,8 +45,19 @@ std::string helper::convertToFullTimeReadable(long unixTimeStamp) {
   std::tm *t = std::localtime(&unixTimeStamp);
   std::string fullDate = "";
   std::string basicDate = helper::convertToReadable(unixTimeStamp);
-  fullDate += basicDate + " " + std::to_string(t->tm_hour) + ":" + std::to_string(
-                t->tm_min);
+  std::string strHour = std::to_string(t->tm_hour);
+
+  while (strHour.size() < 2) {
+    strHour = '0' + strHour;
+  }
+
+  std::string strMin = std::to_string(t->tm_min);
+
+  while (strMin.size() < 2) {
+    strMin = '0' + strMin;
+  }
+
+  fullDate += basicDate + " " + strHour + ":" + strMin;
   return fullDate;
 
 }
