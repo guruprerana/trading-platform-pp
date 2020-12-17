@@ -1,7 +1,8 @@
 #ifndef TRADINGORDER_H
 #define TRADINGORDER_H
 
-#include "../stock/stock.h"
+#include "../stock.h"
+#include "../serializable.h"
 
 #include <QDateTime>
 #include <QString>
@@ -36,6 +37,9 @@ enum TradingTiming {
 
 class TradingOrder {
  public:
+  TradingOrder() {};
+  ~TradingOrder() {};
+
   double valuation();
 
   void setSymbol(QString symbol);
@@ -45,8 +49,11 @@ class TradingOrder {
   void setAction(TradingAction action);
   void setLimitPrice(qreal limit_price);
 
-  void setTradingTime(qint64 trading_order_time_stamp);
+  void setTradingTime(qlonglong trading_order_time_stamp);
   void setValuePerQuantity(qreal value_per_quantity);
+
+  void load(const QJsonObject &json);
+  void save(QJsonObject &json) const;
 
  private:
   QString symbol;
@@ -56,7 +63,7 @@ class TradingOrder {
   TradingAction action;
   qreal limit_price;
 
-  qint64 trading_order_time_stamp;
+  qlonglong trading_order_time_stamp;
   qreal value_per_quantity;
 };
 

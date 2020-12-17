@@ -12,6 +12,7 @@ LIBS += -lcurl
 
 SOURCES += \
     api/api.cpp \
+    components/session/session.cpp \
     components/stock.cpp \
     gui/chooseportfolio.cpp \
     gui/homepage.cpp \
@@ -23,6 +24,7 @@ SOURCES += \
 
 HEADERS += \
     api/api.h \
+    components/session/session.h \
     components/stock.h \
     gui/mainwindow.h \
     gui/chooseportfolio.h \
