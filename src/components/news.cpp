@@ -1,20 +1,21 @@
 #include "news.h"
-#include "../api/api.h"
+#include "api/api.h"
+#include "helper/helper.h"
 
 News::News() {
-  marketNews = "";
+  marketNews = QJsonArray();
 }
 
 News::~News() {
 
 }
 
-std::string News::getMarketNews() {
+QJsonArray News::getMarketNews() {
   return marketNews;
 }
 
 void News::updateMarketNews() {
   API *api = new API();
   std::string apiResponse = api->getNewsMarket();
-  marketNews = apiResponse;
+  marketNews = helper::convertStringToQJsonArray(apiResponse);
 }

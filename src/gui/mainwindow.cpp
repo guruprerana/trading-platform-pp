@@ -13,14 +13,17 @@ MainWindow::MainWindow(QWidget *parent)
   signUpPage = new SignUp(this);
   choosePortfolioPage = new ChoosePortfolio(this);
   homepage = new HomePage(this);
+  newsPage = new NewsPage(this);
 
   QHBoxLayout *layout = new QHBoxLayout;
   layout->addWidget(signUpPage);
   layout->addWidget(choosePortfolioPage);
   layout->addWidget(homepage);
+  layout->addWidget(newsPage);
 
   signUpPage->hide();
   choosePortfolioPage->hide();
+  newsPage->hide();
 
   ui->centralwidget->setLayout(layout);
 }
@@ -30,6 +33,7 @@ MainWindow::~MainWindow() {
   delete signUpPage;
   delete choosePortfolioPage;
   delete homepage;
+  delete newsPage;
   delete layout;
 }
 
@@ -37,6 +41,7 @@ void MainWindow::hideAllPages() {
   homepage->hide();
   signUpPage->hide();
   choosePortfolioPage->hide();
+  newsPage->hide();
 }
 
 void MainWindow::uncheckAllTabs() {
@@ -70,6 +75,7 @@ void MainWindow::on_actionNews_triggered() {
   hideAllPages();
   uncheckAllTabs();
   ui->actionNews->setChecked(true);
+  newsPage->show();
 }
 
 void MainWindow::on_actionMarkets_triggered() {

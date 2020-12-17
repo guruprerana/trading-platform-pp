@@ -1,15 +1,7 @@
-#ifndef QJSONOBJECTMANIPULATION_H
-#define QJSONOBJECTMANIPULATION_H
-
-#include <QString>
-#include <QJsonObject>
-#include <QJsonArray>
-#include <QJsonDocument>
-#include <chrono>
-#include <map>
+#include "helper.h"
 
 //converts string to QJsonObject
-inline QJsonObject parseJson(std::string apiResponse) {
+QJsonObject helper::parseJson(std::string apiResponse) {
   QString QapiResponse = QString::fromStdString(apiResponse);
   QJsonDocument doc = QJsonDocument::fromJson(QapiResponse.toUtf8());
   QJsonObject jsonData = doc.object();
@@ -18,7 +10,7 @@ inline QJsonObject parseJson(std::string apiResponse) {
 
 
 //converts QJsonObject to string
-inline std::string convertToString(QJsonObject jsonData) {
+std::string helper::convertToString(QJsonObject jsonData) {
   QJsonDocument doc(jsonData);
   QString strJson(doc.toJson(QJsonDocument::Compact));
   std::string textData = strJson.toUtf8().constData();
@@ -27,7 +19,7 @@ inline std::string convertToString(QJsonObject jsonData) {
 
 //converts unix timestamp to human-readable in YYYY-MM-DD format (the rest of seconds is neglected)
 //needed to call the api about market news. Will be called in api.h
-inline std::string convertToReadable(long unixTimeStamp) {
+std::string helper::convertToReadable(long unixTimeStamp) {
   std::tm *t = std::localtime(&unixTimeStamp);
   std::string date = std::to_string(t->tm_year + 1900);
   date += "-";
@@ -48,12 +40,12 @@ inline std::string convertToReadable(long unixTimeStamp) {
 }
 
 //converts QJsonValue to std::string
-inline std::string convertQJValueToStdString(QJsonValue value) {
+std::string helper::convertQJValueToStdString(QJsonValue value) {
   return value.toString().toUtf8().constData();
 }
 
 //converts the QJsonObject that we have to a std::map<std::string, std::map<long, double>>
-inline std::map<std::string, std::map<long, double>> convertToMap(
+std::map<std::string, std::map<long, double>> helper::convertToMap(
 QJsonObject data) {
   std::map<std::string, std::map<long, double>> res;
   std::map<long, double> mappingTimeToValue;
@@ -80,5 +72,38 @@ QJsonObject data) {
   return res;
 }
 
+// converts std::string to QJsonArray
+QJsonArray helper::convertStringToQJsonArray(std::string apiResponse) {
+  QJsonArray jsonArray;
+  std::string cur = "";
+  bool open = true;
 
-#endif // QJSONOBJECTMANIPULATION_H
+  for (auto &c : apiResponse) {
+    if (c == '[' || c == ']') {
+      continue;
+    }
+
+    if (c == ',' && !open) {
+      open = true;
+
+      if (!cur.empty()) {
+        jsonArray.append(parseJson(cur));
+        cur = "";
+      }
+    }
+
+    else {
+      cur += c;
+    }
+
+    if (c == '}') {
+      open = false;
+    }
+  }
+
+  if (!cur.empty()) {
+    jsonArray.append(parseJson(cur));
+  }
+
+  return jsonArray;
+}

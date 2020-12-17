@@ -1,17 +1,17 @@
 #ifndef NEWS_H
 #define NEWS_H
 
-#include <string>
+#include <QJsonArray>
 
 class News {
  private:
-  std::string marketNews;
+  QJsonArray marketNews;
 
  public:
   News();
   ~News();
 
-  std::string getMarketNews();
+  QJsonArray getMarketNews();
   void updateMarketNews();
 
 };
