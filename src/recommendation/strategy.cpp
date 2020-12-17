@@ -241,10 +241,11 @@ void Strategy::simulate(){
     if (this->get_name() == 'LR'){//linear regression
         std::map<long, double> bars = this->get_data(20);
         auto res = this->auxiliary_linear_regression(bars);
-        slope = std::get<0>(res);
-        yintercept = std::get<1>(res);
+        double slope = std::get<0>(res);
+        double yintercept = std::get<1>(res);
         for (int k=0, k<nb_points, k++){
-        data_plot_short.insert(pair<int, double>(k, slope*(-k)+yintercept));
+        double image = slope*(-k)+yintercept;
+        data_plot_short.insert(pair<int, double>(k, image));
         }
     } 
     
