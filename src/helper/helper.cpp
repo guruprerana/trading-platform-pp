@@ -41,10 +41,10 @@ std::string helper::convertToReadable(long unixTimeStamp) {
 
 //converts unix timestamp to human-readable in YYYY-MM-DD HH:MM format (the rest of seconds is neglected)
 //needed to call the api about market news. Will be called in api.h
-inline std::string convertToFullTimeReadable(long unixTimeStamp) {
+std::string helper::convertToFullTimeReadable(long unixTimeStamp) {
   std::tm *t = std::localtime(&unixTimeStamp);
   std::string fullDate = "";
-  std::string basicDate = convertToReadable(unixTimeStamp);
+  std::string basicDate = helper::convertToReadable(unixTimeStamp);
   fullDate += basicDate + " " + std::to_string(t->tm_hour) + ":" + std::to_string(
                 t->tm_min);
   return fullDate;

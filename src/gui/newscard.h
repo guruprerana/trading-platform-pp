@@ -12,7 +12,7 @@ class NewsCard : public QWidget {
 
  public:
   explicit NewsCard(QString id, QString headline, QString category,
-                    QString timestamp, QWidget *parent = nullptr);
+                    QString timestamp, QString url, QWidget *parent = nullptr);
   ~NewsCard();
 
   void debug();

@@ -2,15 +2,22 @@
 #include "ui_newscard.h"
 
 #include <QDebug>
+#include <QDesktopServices>
+#include <QUrl>
 
 NewsCard::NewsCard(QString id, QString headline, QString category,
-                   QString timestamp, QWidget *parent) :
+                   QString timestamp, QString url, QWidget *parent) :
   QWidget(parent),
   ui(new Ui::NewsCard) {
   ui->setupUi(this);
 
   ui->id->setText(id);
-  ui->headline->setText(headline);
+  ui->headline->setText("<a href=" + url +
+                        " style=\"color:black;\" > " + headline +
+                        "</a>");
+  ui->headline->setTextFormat(Qt::RichText);
+  ui->headline->setTextInteractionFlags(Qt::TextBrowserInteraction);
+  ui->headline->setOpenExternalLinks(true);
   ui->category->setText(category);
   ui->timestamp->setText(timestamp);
 }

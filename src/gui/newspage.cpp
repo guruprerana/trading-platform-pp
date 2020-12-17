@@ -30,13 +30,14 @@ NewsPage::NewsPage(QWidget *parent) :
   for (auto v : newsArray) {
     QJsonObject json = v.toObject();
     long unixTimestamp = json["datetime"].toVariant().toInt();
-    std::string readableTime = helper::convertToReadable(unixTimestamp);
+    std::string readableTime = helper::convertToFullTimeReadable(unixTimestamp);
 
     NewsCard *newsCard = new NewsCard(
       QString::number(++count),
       json["headline"].toString(),
       json["category"].toString(),
       QString(readableTime.c_str()),
+      json["url"].toString(),
       this);
     layout->addWidget(newsCard);
     newsCard->debug();

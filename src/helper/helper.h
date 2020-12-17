@@ -15,6 +15,7 @@ std::string convertToReadable(long unixTimeStamp);
 std::string convertQJValueToStdString(QJsonValue value);
 std::map<std::string, std::map<long, double>> convertToMap(QJsonObject data);
 QJsonArray convertStringToQJsonArray(std::string apiResponse);
+std::string convertToFullTimeReadable(long unixTimeStamp);
 }
 
 
