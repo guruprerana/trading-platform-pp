@@ -205,7 +205,49 @@ std::tuple<bool, double> Strategy::calculate_signals(){
 }
 
 void Strategy::simulate(){
+    
+     std::map<int, double> data_plot_short; // map (day --> momentum/ short_ema/ linear regression  ) where day = 1 is yesterday,
+    // day = 2 is the day before, ...
+     std::map<int, double> data_plot_long; // map (day --> long_ema) where day = 1 is yesterday,
+    // day = 2 is the day before, ...
+    int nb_points = 7; // number of points in our plot (ex : plot of the momentum of the 7 latest days)
+    
 
+    if (this->get_name() == 'EMA'){ //exponential moving average
+        for (int k=0, k<nb_points, k++){
+        std::map<long, double> bars_11 = this->get_data(11);
+        std::map<long, double> bars_6 = this->get_data(6);
+        double ema_11 = this->calculate_ema(bars_11); // Longer Moving Average
+        double ema_06 = this->calculate_ema(bars_6);
+        data_plot_short.insert(pair<int, double>(k, ema_6));
+        data_plot_long.insert(pair<int, double>(k, ema_11));
+        }
+    }
+    
+    
+    if (this->get_name() == 'MOM'){//momentum
+        for (int k=0, k<nb_points, k++){
+         std::map<long, double> bars_10 = this->get_data(9,k);
+         std::map<long, double> bars_5 = this->get_data(4,k);
+         double sma_10 = this->calculate_sma(bars_10);
+         double sma_5 = this->calculate_sma(bars_5);
+         double moment = sma_5/sma_10;
+         data_plot_short.insert(pair<int, double>(k, moment));
+        }
+    }
+    
+    
+    
+    if (this->get_name() == 'LR'){//linear regression
+        std::map<long, double> bars = this->get_data(20);
+        auto res = this->auxiliary_linear_regression(bars);
+        slope = std::get<0>(res);
+        yintercept = std::get<1>(res);
+        for (int k=0, k<nb_points, k++){
+        data_plot_short.insert(pair<int, double>(k, slope*(-k)+yintercept));
+        }
+    } 
+    
 }
 
 void Strategy::evaluate(){
