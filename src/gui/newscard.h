@@ -7,15 +7,17 @@ namespace Ui {
 class NewsCard;
 }
 
-class NewsCard : public QWidget
-{
+class NewsCard : public QWidget {
   Q_OBJECT
 
-  public:
-  explicit NewsCard(QWidget *parent = nullptr);
+ public:
+  explicit NewsCard(QString id, QString headline, QString category,
+                    QString timestamp, QWidget *parent = nullptr);
   ~NewsCard();
 
-  private:
+  void debug();
+
+ private:
   Ui::NewsCard *ui;
 };
 

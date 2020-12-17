@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "components/news.h"
+#include <QVBoxLayout>
 
 namespace Ui {
 class NewsPage;
@@ -18,6 +19,7 @@ class NewsPage : public QWidget {
  private:
   Ui::NewsPage *ui;
   News *news;
+  QVBoxLayout *layout;
 };
 
 #endif // NEWSPAGE_H
