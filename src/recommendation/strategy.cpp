@@ -5,6 +5,11 @@
 #include <tuple>
 #include <map>
 #include <cmath>
+#include <QString>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QJsonDocument>
+
 using std::string;
 using std::map;
 
@@ -30,16 +35,18 @@ Strategy::~Strategy(){
 
 
 //Return only a map {time:price} for the last n days of starting from k days ago (k=0 for today, k=1 for yesterday...)
-std::map<long, double> Strategy::get_data(int N, int){
+std::map<long, double> Strategy::get_data(int N, int k){
+    QJsonObject jsonData;
     if (this->data_by_minute){
         this->stock->updateDataByMinute();
-        QJsonObject jsonData = this->stock->getDataByMinute();
+        jsonData = this->stock->getDataByMinute();
     }
     else{
         this->stock->updateDataByDay();
-        QJsonObject jsonData = this->stock->getDataByDay();
+        jsonData = this->stock->getDataByDay();
     }
     std::map<std::string, std::map<long, double>> mapData = convertToMap(jsonData); //converts the QJsonObject with the data of the last 6 months into a std::map<std::string, std::ap<long, double>> {price_type : {time:price}}
+    std::map<long, double> price_map;
     for (auto it = mapData.begin(); it != mapData.end(); ++it){
         if (it->first == this->get_price_type()){ //take the map <long, double> associated to the price_type chosen at the beginning
             std::map<long, double> price_map = it->second;
@@ -186,7 +193,7 @@ std::tuple<bool, double> Strategy::calculate_signals(){
     if (str1.compare(name) == 0){ //exponential moving average
         bought =  this->exponential_moving_average();
      }
-    else if (str2.compare(name) == 0){
+    if (str2.compare(name) == 0){
         auto res = this->momentum();
         bought = std::get<0>(res);
         percentage = std::get<1>(res);

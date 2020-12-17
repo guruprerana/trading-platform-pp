@@ -3,8 +3,10 @@
 
 #include <QString>
 #include <QJsonObject>
+#include <QJsonArray>
 #include <QJsonDocument>
 #include <chrono>
+#include <map>
 
 //converts string to QJsonObject
 inline QJsonObject parseJson(std::string apiResponse) {
@@ -45,4 +47,36 @@ inline std::string convertToReadable(long unixTimeStamp) {
   return date;
 }
 
-#endif // QJSONOBJECTMANIPULATION_H
+//converts QJsonValue to std::string
+inline std::string convertQJValueToStdString(QJsonValue value) {
+  return value.toString().toUtf8().constData();
+}
+
+//converts the QJsonObject that we have to a std::map<std::string, std::map<long, double>>
+inline std::map<std::string, std::map<long, double>> convertToMap(
+QJsonObject data) {
+  std::map<std::string, std::map<long, double>> res;
+  std::map<long, double> mappingTimeToValue;
+  QJsonObject::iterator i;
+
+  QJsonArray timeStamp = data["t"].toArray();
+  data.remove("t");
+  data.remove("s");
+
+  for (i = data.begin(); i != data.end(); ++i) {
+    QJsonValue key = i.key();
+    QJsonValue value = i.value();
+    std::string k = convertQJValueToStdString(key);
+    QJsonArray arr = value.toArray();
+
+    for (int k = 0; k < timeStamp.count(); k ++) {
+      mappingTimeToValue.insert({timeStamp[k].toInt(), arr[k].toDouble()});
+    }
+
+    res.insert({k, mappingTimeToValue});
+    mappingTimeToValue.clear();
+  }
+
+  return res;
+}
+#endif

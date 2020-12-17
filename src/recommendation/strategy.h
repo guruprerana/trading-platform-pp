@@ -19,7 +19,7 @@ public:
     Stock* get_stock();
     std::string get_name();
     std::string get_price_type();    
-    std::map<long, double> get_data(int N, int k =0);
+    std::map<long, double> get_data(int N, int k = 0);
     double calculate_sma(std::map<long, double> &bars);
     double calculate_ema(std::map<long, double> &bars);
     int auxiliary_momentum(std::map<int, double> &cache);
