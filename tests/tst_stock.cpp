@@ -54,6 +54,8 @@ class TestStock : public QObject {
       }
       apple->updateNews();
       std::cout << apple->getNews() << std::endl;
+
+      std::cout << convertToFullTimeReadable(apple->getLatestTimestampByDay()) << std::endl;
   }
 
   void TestStock::testNewsClass(){

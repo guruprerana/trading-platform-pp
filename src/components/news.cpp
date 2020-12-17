@@ -1,6 +1,7 @@
 #include "news.h"
 #include "../api/api.h"
 
+
 News::News() {
   marketNews = "";
 }
