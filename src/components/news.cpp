@@ -2,6 +2,7 @@
 #include "api/api.h"
 #include "helper/helper.h"
 
+
 News::News() {
   marketNews = QJsonArray();
 }
