@@ -1,6 +1,6 @@
-#include "../src/components/stock.h"
-#include "../src/components/news.h"
-#include "../src/helper/QJsonObjectManipulation.h"
+#include "components/stock.h"
+#include "components/news.h"
+#include "helper/helper.h"
 #include <QtTest>
 #include <iostream>
 
@@ -30,19 +30,19 @@ class TestStock : public QObject {
       Stock *apple = new Stock("AAPL");
       apple->updateDataByMinute();
       QJsonObject jsonDataMinute = apple->getDataByMinute();
-      std::string textDataMinute = convertToString(jsonDataMinute);
+      std::string textDataMinute = helper::convertToString(jsonDataMinute);
       std::cout << textDataMinute << std::endl;
       QVERIFY(textDataMinute.size() != 0 && textDataMinute != "{}");
 
       apple->updateDataByDay();
       QJsonObject jsonDataDay = apple->getDataByDay();
-      std::string textDataDay = convertToString(jsonDataDay);
+      std::string textDataDay = helper::convertToString(jsonDataDay);
       std::cout << textDataDay << std::endl;
       QVERIFY(textDataDay.size() != 0 && textDataDay != "{}");
 
       QVERIFY(apple->getLatestTimestampByDay() > 0 && apple->getLatestTimestampByDay()-apple->getLatestTimestampByMinute() < 60);
       //Verify that calling time is smaller than one minute and both functions update the current time correctly
-      std::map<std::string, std::map<long, double>> mapDataDay = convertToMap(jsonDataDay);
+      std::map<std::string, std::map<long, double>> mapDataDay = helper::convertToMap(jsonDataDay);
 
       for (auto it : mapDataDay) {
           std::cout << it.first << " : ";
@@ -55,13 +55,13 @@ class TestStock : public QObject {
       apple->updateNews();
       std::cout << apple->getNews() << std::endl;
 
-      std::cout << convertToFullTimeReadable(apple->getLatestTimestampByDay()) << std::endl;
+      std::cout << helper::convertToFullTimeReadable(apple->getLatestTimestampByDay()) << std::endl;
   }
 
   void TestStock::testNewsClass(){
       News *markets = new News();
       markets->updateMarketNews();
-      std::cout << markets->getMarketNews() << std::endl;
+      qDebug() << markets->getMarketNews() << endl;
   }
 
 
