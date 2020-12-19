@@ -25,7 +25,7 @@ inline std::string convertToString(QJsonObject jsonData) {
 
 //converts unix timestamp to human-readable in YYYY-MM-DD format (the rest of seconds is neglected)
 //needed to call the api about market news. Will be called in api.h
-inline std::string convertToReadable(long long unixTimeStamp) {
+inline std::string convertToReadable(long unixTimeStamp) {
   std::tm *t = std::localtime(&unixTimeStamp);
   std::string date = std::to_string(t->tm_year + 1900);
   date += "-";
