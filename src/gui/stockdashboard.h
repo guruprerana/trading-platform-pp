@@ -2,8 +2,8 @@
 #define STOCKDASHBOARD_H
 
 #include <QWidget>
-#include <QVBoxLayout>
 #include "stockgraph.h"
+#include "components/stock.h"
 
 namespace Ui {
 class StockDashboard;
@@ -18,7 +18,7 @@ class StockDashboard : public QWidget {
 
  private:
   Ui::StockDashboard *ui;
-
+  QVector<Stock *> stocks;
   StockGraph *stockGraph;
 };
 

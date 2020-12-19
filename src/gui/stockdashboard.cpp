@@ -6,9 +6,15 @@ StockDashboard::StockDashboard(QWidget *parent) :
   ui(new Ui::StockDashboard) {
   ui->setupUi(this);
 
-  stockGraph = new StockGraph();
+  stocks.append(new Stock("AAPL")); // Apple
+  stocks.append(new Stock("MSFT")); // Microsoft
+  stocks.append(new Stock("AMZN")); // Amazon
+  stocks.append(new Stock("FB")); // Facebook
 
-  ui->verticalLayout->addWidget(stockGraph);
+  stockGraph = new StockGraph(stocks[1], this);
+
+  ui->verticalLayout_2->addWidget(stockGraph);
+  ui->symbol->setText(QString((stocks[1]->getSymbol()).c_str()));
 }
 
 StockDashboard::~StockDashboard() {

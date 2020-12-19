@@ -2,26 +2,17 @@
 #include "ui_stockgraph.h"
 #include "library/qcustomplot.h"
 
-#include <iostream>
-#include <algorithm>
-#include <chrono>
-
-StockGraph::StockGraph(QWidget *parent) :
+StockGraph::StockGraph(Stock *stock, QWidget *parent) :
+  stock(stock),
   QWidget(parent),
   ui(new Ui::StockGraph) {
   ui->setupUi(this);
 
-  stock = new Stock("AAPL");
-  ui->plot->addGraph();
-  ui->plot->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle,
-                                      QPen(Qt::black, 1.5), QBrush(Qt::white), 3));
-  ui->plot->graph(0)->setLineStyle(QCPGraph::lsLine);
-  ui->plot->graph(0)->setPen(QPen(QColor(120, 120, 120), 2));
-  ui->plot->xAxis->setUpperEnding(QCPLineEnding::esSpikeArrow);
-  ui->plot->yAxis->setUpperEnding(QCPLineEnding::esSpikeArrow);
+  ui->plot->legend->setVisible(true);
+  ui->plot->legend->setSelectableParts(QCPLegend::spItems);
 
-  QBrush shadowBrush(QColor(0, 0, 0), Qt::Dense7Pattern);
-  ui->plot->graph(0)->setBrush(shadowBrush);
+  initCandleStick();
+  initLineChart();
 
   QSharedPointer<QCPAxisTickerDateTime> dateTimeTicker(new QCPAxisTickerDateTime);
   dateTimeTicker->setDateTimeSpec(Qt::UTC);
@@ -37,13 +28,17 @@ StockGraph::StockGraph(QWidget *parent) :
   ui->plot->xAxis->scaleRange(1.025, ui->plot->xAxis->range().center());
   ui->plot->yAxis->scaleRange(1.1, ui->plot->yAxis->range().center());
 
+  // Get data from stock
   stock->updateDataByDay();
   QJsonObject dataByDay = stock->getDataByDay();
 
-  //Converts Json data to Vector
-  timestamp = convert_to_vector(dataByDay, "t"); //Get timestamp values
-  high = convert_to_vector(dataByDay,
-                           "h"); //Get high values corresponding to timestamp
+  // Convert Json data to Vector
+  timestamp = convert_to_vector(dataByDay, "t");
+  open = convert_to_vector(dataByDay, "o");
+  high = convert_to_vector(dataByDay, "h");
+  low = convert_to_vector(dataByDay, "l");
+  close = convert_to_vector(dataByDay, "c");
+
   // setup a timer that repeatedly calls StockGraph::realtimeDataSlot:
   connect(&dataTimer, SIGNAL(timeout()), this, SLOT(realtimeDataSlot()));
   dataTimer.start(1000); // Interval 0 means to refresh as fast as possible
@@ -53,29 +48,56 @@ StockGraph::StockGraph(QWidget *parent) :
 
 StockGraph::~StockGraph() {
   delete ui;
-  delete stock;
   clearData();
 }
+
 void StockGraph::clearData() {
   timestamp.clear();
+  open.clear();
   high.clear();
+  low.clear();
+  close.clear();
+}
+
+void StockGraph::initLineChart() {
+  lineChart = new QCPGraph(ui->plot->xAxis, ui->plot->yAxis);
+  lineChart->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle,
+                             QPen(Qt::black, 1.5), QBrush(Qt::white), 3));
+  lineChart->setLineStyle(QCPGraph::lsLine);
+  lineChart->setPen(QPen(QColor(120, 120, 120), 2));
+  lineChart->keyAxis()->setUpperEnding(QCPLineEnding::esSpikeArrow);
+  lineChart->valueAxis()->setUpperEnding(QCPLineEnding::esSpikeArrow);
+
+  QBrush shadowBrush(QColor(0, 0, 0), Qt::Dense7Pattern);
+  lineChart->setBrush(shadowBrush);
+  lineChart->setName("Line chart");
+}
+
+void StockGraph::initCandleStick() {
+  candleStick = new QCPFinancial(ui->plot->xAxis,
+                                 ui->plot->yAxis);
+  candleStick->setChartStyle(QCPFinancial::csCandlestick);
+  candleStick->setData(timestamp, open, high, low, close);
+  candleStick->setTwoColored(true);
+  candleStick->setWidth(3600 * 24 * 0.5);
+  candleStick->setName("Candlestick");
 }
 
 void StockGraph::plot() {
-  ui->plot->graph(0)->setData(timestamp, high);
+  lineChart->setData(timestamp, close);
+  candleStick->setData(timestamp, open, high, low, close);
   ui->plot->xAxis->setRange(timestamp[0],
                             timestamp[timestamp.length() - 1]);
-  ui->plot->yAxis->setRange(std::max(0.0, *std::min_element(high.begin(),
-                                     high.end()) * 0.8),
-                            *std::max_element(high.begin(), high.end()) * 1.25);
+  ui->plot->yAxis->setRange(
+    std::max(0.0, *std::min_element(low.begin(),
+                                    low.end()) * 0.8),
+    *std::max_element(high.begin(), high.end()) * 1.25);
   ui->plot->replot();
-  ui->plot->update(); //updates data
+  ui->plot->update(); // updates data
   ui->plot->yAxis->setTickLabels(true);
 }
 
 void StockGraph::realtimeDataSlot() {
-//  auto start = std::chrono::high_resolution_clock::now();
-
   static QTime time(QTime::currentTime());
   //calculate two new data points:
   double key = time.elapsed() /
@@ -86,27 +108,23 @@ void StockGraph::realtimeDataSlot() {
     stock->updateDataByDay();
     QJsonObject dataByDay = stock->getDataByDay();
 
-    QVector<double> time, h;
+    QVector<double> time, o, h, l, c;
     time = convert_to_vector(dataByDay, "t");
+    o = convert_to_vector(dataByDay, "o");
     h = convert_to_vector(dataByDay, "h");
+    l = convert_to_vector(dataByDay, "l");
+    c = convert_to_vector(dataByDay, "c");
 
-    if (not time.isEmpty() && not h.isEmpty()) {
-      for (int i = 0; i < std::min(time.count(), h.count()); i++) {
-
-        if (not std::count(timestamp.begin(), timestamp.end(), time[i])) {
-          timestamp.append(time[i]);
-          high.append(h[i]);
-        }
-      }
-
-      plot();
+    for (int i = timestamp.size(); i < time.size(); i++) {
+      timestamp.append(time[i]);
+      open.append(o[i]);
+      high.append(h[i]);
+      low.append(l[i]);
+      close.append(c[i]);
     }
-  }
 
-//  auto stop = std::chrono::high_resolution_clock::now();
-//  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>
-//                  (stop - start);
-//  std::cout << duration.count() << std::endl;
+    plot();
+  }
 }
 
 QVector<double> convert_to_vector(QJsonObject j, std::string k) {
