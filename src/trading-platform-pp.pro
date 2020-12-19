@@ -41,7 +41,8 @@ HEADERS += \
     gui/signup.h \
     gui/neworder.h \
     gui/mainwindow.h \
-    helper/QJsonObjectManipulation.h
+    helper/QJsonObjectManipulation.h \
+    helper/QEnumManipulation.h
     
 FORMS += \
     gui/chooseportfolio.ui \

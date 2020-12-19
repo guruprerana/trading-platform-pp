@@ -518,12 +518,12 @@ p, li { white-space: pre-wrap; }
            </item>
            <item>
             <property name="text">
-             <string>Put</string>
+             <string>ETF</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>Stock/ETF</string>
+             <string>Put</string>
             </property>
            </item>
           </widget>

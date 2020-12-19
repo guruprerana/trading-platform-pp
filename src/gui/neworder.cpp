@@ -1,5 +1,6 @@
 #include "neworder.h"
 #include "ui_neworder.h"
+#include "../helper/QEnumManipulation.h"
 
 NewOrder::NewOrder(QWidget *parent) :
   QWidget(parent),
@@ -43,32 +44,27 @@ void NewOrder::setDefault() {
   ui->estimatedValueTextBrowser->setText("0");
 }
 
-template <typename T>
-T QtStringToEnum(const QString &s) {
-  return static_cast<T>(QMetaEnum::fromType<T>().keyToValue(s.toLocal8Bit()));
-}
-
 void NewOrder::write(TradingOrder &trading_order) const {
   trading_order.setSymbol(ui->symbolValueLineEdit->text());
 
   QString strategy = ui->strategyValueComboBox->currentText();
-  trading_order.setStrategy(QtStringToEnum<TradingOrder::TradingStrategy>
+  trading_order.setStrategy(QStringToQEnum<TradingOrder::TradingStrategy>
                             (strategy));
 
   QString actions = ui->actionsValueComboBox->currentText();
-  trading_order.setAction(QtStringToEnum<TradingOrder::TradingAction>
+  trading_order.setAction(QStringToQEnum<TradingOrder::TradingAction>
                           (actions));
 
   trading_order.setQuantity(ui->quantityValueSpinBox->value());
 
   QString order_type = ui->orderTypeValueComboBox->currentText();
-  trading_order.setOrderType(QtStringToEnum<TradingOrder::TradingOrderType>
+  trading_order.setOrderType(QStringToQEnum<TradingOrder::TradingOrderType>
                              (order_type));
 
   trading_order.setLimitPrice(ui->limitPriceValueLineEdit->text().toDouble());
 
   QString timimg = ui->timingValueComboBox->currentText();
-  trading_order.setTiming(QtStringToEnum<TradingOrder::TradingTiming>
+  trading_order.setTiming(QStringToQEnum<TradingOrder::TradingTiming>
                           (timimg));
 
   trading_order.setTradingTime(QDateTime::currentDateTime().toTime_t());

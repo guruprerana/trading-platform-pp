@@ -21,9 +21,9 @@ class TradingOrder {
   Q_ENUM(TradingAction)
 
   enum TradingStrategy {
-    StockETF,
-    CallOption,
-    PutOption
+    ETF,
+    Call,
+    Put
   };
   Q_ENUM(TradingStrategy)
 

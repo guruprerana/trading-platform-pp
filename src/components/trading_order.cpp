@@ -1,4 +1,5 @@
 #include "trading_order.h"
+#include "../helper/QEnumManipulation.h"
 
 TradingOrder::TradingOrder() {
   trading_order_time_stamp = -1;
@@ -54,43 +55,40 @@ void TradingOrder::read(const QJsonObject &json) {
   }
 
   if (json.contains("strategy") && json["strategy"].isString()) {
-    symbol = json["strategy"].toString();
+    strategy = QStringToQEnum<TradingOrder::TradingStrategy>
+               (json["strategy"].toString());
   }
 
   if (json.contains("order_type") && json["order_type"].isString()) {
-    symbol = json["order_type"].toString();
+    order_type = QStringToQEnum<TradingOrder::TradingOrderType>
+                 (json["order_type"].toString());
   }
 
   if (json.contains("action") && json["action"].isString()) {
-    symbol = json["action"].toString();
+    action = QStringToQEnum<TradingOrder::TradingAction>(json["action"].toString());
   }
 
   if (json.contains("limit_price") && json["limit_price"].isDouble()) {
-    symbol = json["limit_price"].toDouble();
+    limit_price = json["limit_price"].toDouble();
   }
 
   if (json.contains("trading_order_time_stamp") &&
       json["trading_order_time_stamp"].isDouble()) {
-    symbol = json["trading_order_time_stamp"].toInt();
+    trading_order_time_stamp = json["trading_order_time_stamp"].toInt();
   }
 
   if (json.contains("value_per_quantity") &&
       json["value_per_quantity"].isDouble()) {
-    symbol = json["value_per_quantity"].toDouble();
+    value_per_quantity = json["value_per_quantity"].toDouble();
   }
-}
-
-template<typename QEnum>
-QString QtEnumToString(const QEnum value) {
-  return QString(QMetaEnum::fromType<QEnum>().valueToKey(value));
 }
 
 void TradingOrder::write(QJsonObject &json) const {
   json["symbol"] = symbol;
   json["quantity"] = quantity;
-  json["strategy"] = QtEnumToString<TradingOrder::TradingStrategy>(strategy);
-  json["order_type"] = QtEnumToString<TradingOrder::TradingOrderType>(order_type);
-  json["action"] = QtEnumToString <TradingOrder::TradingAction> (action);
+  json["strategy"] = QEnumToQString<TradingOrder::TradingStrategy>(strategy);
+  json["order_type"] = QEnumToQString<TradingOrder::TradingOrderType>(order_type);
+  json["action"] = QEnumToQString <TradingOrder::TradingAction> (action);
   json["limit_price"] = limit_price;
   json["trading_order_time_stamp"] = trading_order_time_stamp;
   json["value_per_quantity"] = value_per_quantity;

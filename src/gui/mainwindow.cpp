@@ -62,6 +62,7 @@ void MainWindow::on_actionTrade_triggered() {
   hideAllPages();
   uncheckAllTabs();
   ui->actionTrade->setChecked(true);
+  new_order->show();
 }
 
 void MainWindow::on_actionPerformance_triggered() {
