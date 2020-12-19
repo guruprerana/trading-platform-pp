@@ -28,8 +28,7 @@ StockGraph::StockGraph(QWidget *parent) :
   dateTimeTicker->setDateTimeFormat("dd/MM/yyyy");
   double now = QDateTime::currentDateTime().toTime_t();
   //2628288 is the number of seconds per month: Here we show a 6-month interval
-  ui->plot->xAxis->setRange(now - 2628288 * 6,
-                            now + 2628288 * 6);
+  ui->plot->xAxis->setRange(now - 2628288 * 6, now);
   ui->plot->yAxis->setTickLabels(false);
   ui->plot->xAxis->ticker()->setTickCount(10);
   ui->plot->xAxis->setTicker(dateTimeTicker);
@@ -81,12 +80,10 @@ void StockGraph::realtimeDataSlot() {
   //calculate two new data points:
   double key = time.elapsed() /
                1000.0; // time elapsed since start of demo, in seconds
-  static double lastPointKey = 0;
+  static double lastPointKey = -1e9;
 
-  if (key - lastPointKey > 2) {
+  if (key - lastPointKey >= 60) { // 1 minute
     stock->updateDataByDay();
-
-
     QJsonObject dataByDay = stock->getDataByDay();
 
     QVector<double> time, h;
