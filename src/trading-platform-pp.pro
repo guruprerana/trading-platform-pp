@@ -15,31 +15,32 @@ SOURCES += \
     components/stock.cpp \
     gui/chooseportfolio.cpp \
     gui/homepage.cpp \
-    gui/leftnavigationbar.cpp \
     gui/signup.cpp \
     gui/stockdashboard.cpp \
     gui/stockgraph.cpp \
     main.cpp \
     gui/mainwindow.cpp \
-    library/qcustomplot.cpp
+    library/qcustomplot.cpp \
+    components/portfolio/portfolio.cpp \
+    components/trading_order/trading_order.cpp
 
 HEADERS += \
     api/api.h \
     components/stock.h \
+    gui/mainwindow.h \
     gui/chooseportfolio.h \
     gui/homepage.h \
-    gui/leftnavigationbar.h \
-    gui/mainwindow.h \
     gui/signup.h \
     gui/stockdashboard.h \
     gui/stockgraph.h \
     helper/QJsonObjectManipulation.h \
-    library/qcustomplot.h
+    library/qcustomplot.h \
+    components/portfolio/portfolio.h \
+    components/trading_order/trading_order.h
     
 FORMS += \
     gui/chooseportfolio.ui \
     gui/homepage.ui \
-    gui/leftnavigationbar.ui \
     gui/mainwindow.ui \
     gui/signup.ui \
     gui/stockdashboard.ui \
@@ -52,3 +53,6 @@ DISTFILES += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    resources/resources.qrc

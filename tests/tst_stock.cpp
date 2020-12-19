@@ -28,13 +28,13 @@ class TestStock : public QObject {
       Stock *apple = new Stock("AAPL");
       apple->updateDataByMinute();
       QJsonObject jsonDataMinute = apple->getDataByMinute();
-      std::string textDataMinute = convertToJson(jsonDataMinute);
+      std::string textDataMinute = convertToString(jsonDataMinute);
       std::cout << textDataMinute << std::endl;
       QVERIFY(textDataMinute.size() != 0 && textDataMinute != "{}");
 
       apple->updateDataByDay();
       QJsonObject jsonDataDay = apple->getDataByDay();
-      std::string textDataDay = convertToJson(jsonDataDay);
+      std::string textDataDay = convertToString(jsonDataDay);
       std::cout << textDataDay << std::endl;
       QVERIFY(textDataDay.size() != 0 && textDataDay != "{}");
 

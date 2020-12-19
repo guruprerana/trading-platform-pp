@@ -1,14 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <iostream>
 
 MainWindow::MainWindow(QWidget *parent)
   : QMainWindow(parent)
   , ui(new Ui::MainWindow) {
   ui->setupUi(this);
-
-  // nav bar on the left is initialized
-  LeftNavigationBar *leftNav = new LeftNavigationBar(this);
-  currentTabName = "home";
 
   // initialize the different pages and add them to the layout
   // we add all the pages to the layout and then just hide them
@@ -18,18 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
   homepage = new HomePage(this);
   stockDashboardPage = new StockDashboard(this);
 
-  // connect leftNavigationBar's signals to the main window
-  connect(leftNav, &LeftNavigationBar::switchTab, [this](QString tabName) {
-    if (tabName != currentTabName) {
-      getTabComponent(currentTabName)->hide();
-      getTabComponent(tabName)->show();
-    }
-
-    currentTabName = tabName;
-  });
-
   QHBoxLayout *layout = new QHBoxLayout;
-  layout->addWidget(leftNav);
   layout->addWidget(signUpPage);
   layout->addWidget(choosePortfolioPage);
   layout->addWidget(homepage);
@@ -44,21 +30,56 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow() {
   delete ui;
-  delete leftNav;
   delete signUpPage;
   delete choosePortfolioPage;
   delete homepage;
   delete layout;
+  delete stockDashboardPage;
 }
 
-QWidget *MainWindow::getTabComponent(QString tabName) {
-  if (tabName == "home") {
-    return homepage;
-  }
+void MainWindow::hideAllPages() {
+  homepage->hide();
+  signUpPage->hide();
+  choosePortfolioPage->hide();
+  stockDashboardPage->hide();
+}
 
-  if (tabName == "trade") {
-    return stockDashboardPage;
-  }
+void MainWindow::uncheckAllTabs() {
+  ui->actionHome->setChecked(false);
+  ui->actionTrade->setChecked(false);
+  ui->actionPerformance->setChecked(false);
+  ui->actionNews->setChecked(false);
+  ui->actionMarkets->setChecked(false);
+}
 
-  return signUpPage; // placeholders for other tab names for now
+void MainWindow::on_actionHome_triggered() {
+  hideAllPages();
+  uncheckAllTabs();
+  ui->actionHome->setChecked(true);
+  homepage->show();
+}
+
+void MainWindow::on_actionTrade_triggered() {
+  hideAllPages();
+  uncheckAllTabs();
+  ui->actionTrade->setChecked(true);
+  stockDashboardPage->show();
+}
+
+void MainWindow::on_actionPerformance_triggered() {
+  hideAllPages();
+  uncheckAllTabs();
+  ui->actionPerformance->setChecked(true);
+}
+
+void MainWindow::on_actionNews_triggered() {
+  hideAllPages();
+  uncheckAllTabs();
+  ui->actionNews->setChecked(true);
+}
+
+void MainWindow::on_actionMarkets_triggered() {
+  hideAllPages();
+  uncheckAllTabs();
+  ui->actionMarkets->setChecked(true);
 }
