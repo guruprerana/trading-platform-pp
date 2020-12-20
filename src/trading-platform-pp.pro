@@ -51,7 +51,7 @@ FORMS += \
     gui/homepage.ui \
     gui/mainwindow.ui \
     gui/signup.ui \
-    gui/neworder.ui
+    gui/neworder.ui \
     gui/widgets/selectwatchlistwidget.ui
 
 DISTFILES += \

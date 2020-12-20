@@ -48,6 +48,7 @@ void MainWindow::hideAllPages() {
   homepage->hide();
   signUpPage->hide();
   choosePortfolioPage->hide();
+  new_order->hide();
 }
 
 void MainWindow::uncheckAllTabs() {
