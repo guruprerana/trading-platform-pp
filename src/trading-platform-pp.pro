@@ -16,10 +16,11 @@ SOURCES += \
     gui/chooseportfolio.cpp \
     gui/homepage.cpp \
     gui/signup.cpp \
+    gui/widgets/selectwatchlistwidget.cpp \
     main.cpp \
     gui/mainwindow.cpp \
     components/portfolio/portfolio.cpp \
-    components/trading_order/trading_order.cpp
+    components/trading_order/trading_order.cpp \
 
 HEADERS += \
     api/api.h \
@@ -28,6 +29,7 @@ HEADERS += \
     gui/chooseportfolio.h \
     gui/homepage.h \
     gui/signup.h \
+    gui/widgets/selectwatchlistwidget.h \
     helper/QJsonObjectManipulation.h \
     components/portfolio/portfolio.h \
     components/trading_order/trading_order.h
@@ -36,15 +38,16 @@ FORMS += \
     gui/chooseportfolio.ui \
     gui/homepage.ui \
     gui/mainwindow.ui \
-    gui/signup.ui
+    gui/signup.ui \
+    gui/widgets/selectwatchlistwidget.ui
 
 DISTFILES += \
     style.astylerc
+
+RESOURCES += \
+    resources/resources.qrc
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
-
-RESOURCES += \
-    resources/resources.qrc
