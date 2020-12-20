@@ -11,19 +11,29 @@ MainWindow::MainWindow(QWidget *parent)
   // we add all the pages to the layout and then just hide them
   // when they are not displayed
   signUpPage = new SignUp(this);
+  connect(signUpPage, &SignUp::signUpWithDetails, [this]() {
+    // initially toolbar is hidden and shown when submit button pressed
+    this->ui->toolBar->show();
+    this->on_actionHome_triggered();
+  });
+
   choosePortfolioPage = new ChoosePortfolio(this);
   homepage = new HomePage(this);
   newsPage = new NewsPage(this);
+  new_order = new NewOrder(this);
 
   QHBoxLayout *layout = new QHBoxLayout;
   layout->addWidget(signUpPage);
   layout->addWidget(choosePortfolioPage);
   layout->addWidget(homepage);
   layout->addWidget(newsPage);
+  layout->addWidget(new_order);
 
-  signUpPage->hide();
+  homepage->hide();
   choosePortfolioPage->hide();
   newsPage->hide();
+  new_order->hide();
+  ui->toolBar->hide();
 
   ui->centralwidget->setLayout(layout);
 }
@@ -35,6 +45,7 @@ MainWindow::~MainWindow() {
   delete homepage;
   delete newsPage;
   delete layout;
+  delete new_order;
 }
 
 void MainWindow::hideAllPages() {
@@ -63,6 +74,7 @@ void MainWindow::on_actionTrade_triggered() {
   hideAllPages();
   uncheckAllTabs();
   ui->actionTrade->setChecked(true);
+  new_order->show();
 }
 
 void MainWindow::on_actionPerformance_triggered() {
