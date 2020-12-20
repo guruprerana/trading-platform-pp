@@ -21,12 +21,16 @@ win32 {
 
 SOURCES += \
     api/api.cpp \
+    components/news.cpp \
     components/stock.cpp \
     components/portfolio.cpp \
     components/trading_order.cpp \
     gui/chooseportfolio.cpp \
     gui/homepage.cpp \
+    gui/newscard.cpp \
+    gui/newspage.cpp \
     gui/signup.cpp \
+    helper/helper.cpp \
     gui/widgets/selectwatchlistwidget.cpp \
     main.cpp \
     gui/mainwindow.cpp \
@@ -34,22 +38,29 @@ SOURCES += \
 
 HEADERS += \
     api/api.h \
+    components/news.h \
     components/stock.h \
     components/portfolio.h \
     components/trading_order.h \
     gui/chooseportfolio.h \
     gui/homepage.h \
+    gui/newscard.h \
+    gui/newspage.h \
     gui/signup.h \
+    components/portfolio/portfolio.h \
+    components/trading_order/trading_order.h \
+    helper/helper.h \
     gui/neworder.h \
     gui/mainwindow.h \
     gui/widgets/selectwatchlistwidget.h \
-    helper/QJsonObjectManipulation.h \
-    helper/QEnumManipulation.h
+    helper/helper.h
     
 FORMS += \
     gui/chooseportfolio.ui \
     gui/homepage.ui \
     gui/mainwindow.ui \
+    gui/newscard.ui \
+    gui/newspage.ui \
     gui/signup.ui \
     gui/neworder.ui \
     gui/widgets/selectwatchlistwidget.ui

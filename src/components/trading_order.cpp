@@ -1,5 +1,5 @@
 #include "trading_order.h"
-#include "../helper/QEnumManipulation.h"
+#include "helper/helper.h"
 
 TradingOrder::TradingOrder() {
   trading_order_time_stamp = -1;
@@ -55,17 +55,18 @@ void TradingOrder::read(const QJsonObject &json) {
   }
 
   if (json.contains("strategy") && json["strategy"].isString()) {
-    strategy = QStringToQEnum<TradingOrder::TradingStrategy>
+    strategy = helper::QStringToQEnum<TradingOrder::TradingStrategy>
                (json["strategy"].toString());
   }
 
   if (json.contains("order_type") && json["order_type"].isString()) {
-    order_type = QStringToQEnum<TradingOrder::TradingOrderType>
+    order_type = helper::QStringToQEnum<TradingOrder::TradingOrderType>
                  (json["order_type"].toString());
   }
 
   if (json.contains("action") && json["action"].isString()) {
-    action = QStringToQEnum<TradingOrder::TradingAction>(json["action"].toString());
+    action = helper::QStringToQEnum<TradingOrder::TradingAction>
+             (json["action"].toString());
   }
 
   if (json.contains("limit_price") && json["limit_price"].isDouble()) {
@@ -86,9 +87,11 @@ void TradingOrder::read(const QJsonObject &json) {
 void TradingOrder::write(QJsonObject &json) const {
   json["symbol"] = symbol;
   json["quantity"] = quantity;
-  json["strategy"] = QEnumToQString<TradingOrder::TradingStrategy>(strategy);
-  json["order_type"] = QEnumToQString<TradingOrder::TradingOrderType>(order_type);
-  json["action"] = QEnumToQString <TradingOrder::TradingAction> (action);
+  json["strategy"] = helper::QEnumToQString<TradingOrder::TradingStrategy>
+                     (strategy);
+  json["order_type"] = helper::QEnumToQString<TradingOrder::TradingOrderType>
+                       (order_type);
+  json["action"] = helper::QEnumToQString <TradingOrder::TradingAction> (action);
   json["limit_price"] = limit_price;
   json["trading_order_time_stamp"] = trading_order_time_stamp;
   json["value_per_quantity"] = value_per_quantity;

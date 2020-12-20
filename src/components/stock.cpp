@@ -1,6 +1,6 @@
 #include "stock.h"
-#include "../api/api.h"
-#include "../helper/QJsonObjectManipulation.h"
+#include "api/api.h"
+#include "helper/helper.h"
 #include <ctime>
 #include <QString>
 #include <QJsonObject>
@@ -54,7 +54,7 @@ void Stock::updateDataByMinute() {
 
   //update latestTimeStampByMinute
   if (apiResponse != "{\"s\":\"no_data\"}") {
-    dataByMinute = parseJson(apiResponse);
+    dataByMinute = helper::parseJson(apiResponse);
   }
 }
 
@@ -68,17 +68,18 @@ void Stock::updateDataByDay() {
 
   //update latestTimeStampByDay
   if (apiResponse != "{\"s\":\"no_data\"}") {
-    dataByDay = parseJson(apiResponse);
+    dataByDay = helper::parseJson(apiResponse);
   }
 }
 
 void Stock::updateNews() {
   API *api = new API();
   std::time_t t = std::time(0);
-  std::string apiResponse = api->getNews(getSymbol(),
-                                         convertToReadable(t - 7200),
-                                         convertToReadable(t));
-  //7200 represents 2 hours in seconds. Market news up to 2 hours are necessary for trading.
+  std::string apiResponse = api->getNewsCompany(getSymbol(),
+                            helper::convertToReadable(t),
+                            helper::convertToReadable(t));
+  //We do not change convertToReadable(t) because it gives the current date and the api gives news with day intervals.
+  // Basically, we want all the news today regardless of the exact time.
   stockNews = apiResponse;
 }
 

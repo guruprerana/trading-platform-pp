@@ -1,6 +1,6 @@
 #include "neworder.h"
 #include "ui_neworder.h"
-#include "../helper/QEnumManipulation.h"
+#include "helper/helper.h"
 
 NewOrder::NewOrder(QWidget *parent) :
   QWidget(parent),
@@ -48,23 +48,24 @@ void NewOrder::write(TradingOrder &trading_order) const {
   trading_order.setSymbol(ui->symbolValueLineEdit->text());
 
   QString strategy = ui->strategyValueComboBox->currentText();
-  trading_order.setStrategy(QStringToQEnum<TradingOrder::TradingStrategy>
+  trading_order.setStrategy(helper::QStringToQEnum<TradingOrder::TradingStrategy>
                             (strategy));
 
   QString actions = ui->actionsValueComboBox->currentText();
-  trading_order.setAction(QStringToQEnum<TradingOrder::TradingAction>
+  trading_order.setAction(helper::QStringToQEnum<TradingOrder::TradingAction>
                           (actions));
 
   trading_order.setQuantity(ui->quantityValueSpinBox->value());
 
   QString order_type = ui->orderTypeValueComboBox->currentText();
-  trading_order.setOrderType(QStringToQEnum<TradingOrder::TradingOrderType>
-                             (order_type));
+  trading_order.setOrderType(
+    helper::QStringToQEnum<TradingOrder::TradingOrderType>
+    (order_type));
 
   trading_order.setLimitPrice(ui->limitPriceValueLineEdit->text().toDouble());
 
   QString timimg = ui->timingValueComboBox->currentText();
-  trading_order.setTiming(QStringToQEnum<TradingOrder::TradingTiming>
+  trading_order.setTiming(helper::QStringToQEnum<TradingOrder::TradingTiming>
                           (timimg));
 
   trading_order.setTradingTime(QDateTime::currentDateTime().toTime_t());
