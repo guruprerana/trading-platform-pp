@@ -53,6 +53,7 @@ void MainWindow::hideAllPages() {
   signUpPage->hide();
   choosePortfolioPage->hide();
   newsPage->hide();
+  new_order->hide();
 }
 
 void MainWindow::uncheckAllTabs() {
