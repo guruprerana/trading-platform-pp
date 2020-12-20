@@ -30,8 +30,6 @@ SOURCES += \
     gui/widgets/selectwatchlistwidget.cpp \
     main.cpp \
     gui/mainwindow.cpp \
-    components/portfolio/portfolio.cpp \
-    components/trading_order/trading_order.cpp \
     gui/neworder.cpp
 
 HEADERS += \
