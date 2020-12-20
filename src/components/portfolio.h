@@ -5,8 +5,8 @@
 #ifndef PORTFOLIO_H
 #define PORTFOLIO_H
 
-#include "../stock/stock.h"
-#include "../trading_order/trading_order.h"
+#include "stock.h"
+#include "trading_order.h"
 
 #include <QVector>
 

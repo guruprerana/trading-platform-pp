@@ -19,14 +19,17 @@ MainWindow::MainWindow(QWidget *parent)
 
   choosePortfolioPage = new ChoosePortfolio(this);
   homepage = new HomePage(this);
+  new_order = new NewOrder(this);
 
   QHBoxLayout *layout = new QHBoxLayout;
   layout->addWidget(signUpPage);
   layout->addWidget(choosePortfolioPage);
   layout->addWidget(homepage);
+  layout->addWidget(new_order);
 
   homepage->hide();
   choosePortfolioPage->hide();
+  new_order->hide();
   ui->toolBar->hide();
 
   ui->centralwidget->setLayout(layout);
@@ -38,6 +41,7 @@ MainWindow::~MainWindow() {
   delete choosePortfolioPage;
   delete homepage;
   delete layout;
+  delete new_order;
 }
 
 void MainWindow::hideAllPages() {
@@ -65,6 +69,7 @@ void MainWindow::on_actionTrade_triggered() {
   hideAllPages();
   uncheckAllTabs();
   ui->actionTrade->setChecked(true);
+  new_order->show();
 }
 
 void MainWindow::on_actionPerformance_triggered() {
