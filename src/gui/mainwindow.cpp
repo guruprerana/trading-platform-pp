@@ -11,6 +11,12 @@ MainWindow::MainWindow(QWidget *parent)
   // we add all the pages to the layout and then just hide them
   // when they are not displayed
   signUpPage = new SignUp(this);
+  connect(signUpPage, &SignUp::signUpWithDetails, [this]() {
+    // initially toolbar is hidden and shown when submit button pressed
+    this->ui->toolBar->show();
+    this->on_actionHome_triggered();
+  });
+
   choosePortfolioPage = new ChoosePortfolio(this);
   homepage = new HomePage(this);
   new_order = new NewOrder(this);
@@ -21,9 +27,10 @@ MainWindow::MainWindow(QWidget *parent)
   layout->addWidget(homepage);
   layout->addWidget(new_order);
 
-  signUpPage->hide();
+  homepage->hide();
   choosePortfolioPage->hide();
   new_order->hide();
+  ui->toolBar->hide();
 
   ui->centralwidget->setLayout(layout);
 }
