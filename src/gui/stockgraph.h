@@ -20,11 +20,12 @@ class StockGraph : public QWidget {
   void plot();
   void initLineChart();
   void initCandleStick();
+  virtual void initTimeRange() = 0;
 
- private slots:
-  void realtimeDataSlot();
+ protected slots:
+  virtual void realtimeDataSlot() = 0;
 
- private:
+ protected:
   Stock *stock;
   Ui::StockGraph *ui;
   QCPGraph *lineChart;
@@ -33,5 +34,9 @@ class StockGraph : public QWidget {
   QTimer dataTimer;
 };
 QVector<double> convert_to_vector(QJsonObject, std::string);
+
+#define StockGraph_iid "com.acme.StockGraph"
+
+Q_DECLARE_INTERFACE(StockGraph, StockGraph_iid)
 
 #endif // STOCKGRAPH_H

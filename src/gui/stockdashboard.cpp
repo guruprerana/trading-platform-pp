@@ -11,13 +11,19 @@ StockDashboard::StockDashboard(QWidget *parent) :
   stocks.append(new Stock("AMZN")); // Amazon
   stocks.append(new Stock("FB")); // Facebook
 
-  stockGraph = new StockGraph(stocks[1], this);
+  stockGraphThreeDays = new StockGraphThreeDays(stocks[1], this);
+  stockGraphSixMonths = new StockGraphSixMonths(stocks[1], this);
+  stockGraphOneMonth = new StockGraphOneMonth(stocks[1], this);
 
-  ui->verticalLayout_2->addWidget(stockGraph);
+  ui->threeDays->layout()->addWidget(stockGraphThreeDays);
+  ui->oneMonth->layout()->addWidget(stockGraphOneMonth);
+  ui->sixMonths->layout()->addWidget(stockGraphSixMonths);
   ui->symbol->setText(QString((stocks[1]->getSymbol()).c_str()));
 }
 
 StockDashboard::~StockDashboard() {
   delete ui;
-  delete stockGraph;
+  delete stockGraphThreeDays;
+  delete stockGraphOneMonth;
+  delete stockGraphSixMonths;
 }

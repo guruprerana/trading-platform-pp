@@ -18,6 +18,9 @@ SOURCES += \
     gui/signup.cpp \
     gui/stockdashboard.cpp \
     gui/stockgraph.cpp \
+    gui/stockgraphonemonth.cpp \
+    gui/stockgraphsixmonths.cpp \
+    gui/stockgraphthreedays.cpp \
     main.cpp \
     gui/mainwindow.cpp \
     library/qcustomplot.cpp \
@@ -33,6 +36,9 @@ HEADERS += \
     gui/signup.h \
     gui/stockdashboard.h \
     gui/stockgraph.h \
+    gui/stockgraphonemonth.h \
+    gui/stockgraphsixmonths.h \
+    gui/stockgraphthreedays.h \
     helper/QJsonObjectManipulation.h \
     library/qcustomplot.h \
     components/portfolio/portfolio.h \
