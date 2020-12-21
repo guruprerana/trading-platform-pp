@@ -2,6 +2,7 @@
 #define HOMEPAGE_H
 
 #include <QWidget>
+#include "stockdashboard.h"
 
 namespace Ui {
 class HomePage;
@@ -16,6 +17,7 @@ class HomePage : public QWidget {
 
  private:
   Ui::HomePage *ui;
+  StockDashboard *stockDashboard;
 };
 
 #endif // HOMEPAGE_H

@@ -13,17 +13,14 @@ MainWindow::MainWindow(QWidget *parent)
   signUpPage = new SignUp(this);
   choosePortfolioPage = new ChoosePortfolio(this);
   homepage = new HomePage(this);
-  stockDashboardPage = new StockDashboard(this);
 
   QHBoxLayout *layout = new QHBoxLayout;
   layout->addWidget(signUpPage);
   layout->addWidget(choosePortfolioPage);
   layout->addWidget(homepage);
-  layout->addWidget(stockDashboardPage);
 
   signUpPage->hide();
   choosePortfolioPage->hide();
-  stockDashboardPage->hide();
 
   ui->centralwidget->setLayout(layout);
 }
@@ -34,14 +31,12 @@ MainWindow::~MainWindow() {
   delete choosePortfolioPage;
   delete homepage;
   delete layout;
-  delete stockDashboardPage;
 }
 
 void MainWindow::hideAllPages() {
   homepage->hide();
   signUpPage->hide();
   choosePortfolioPage->hide();
-  stockDashboardPage->hide();
 }
 
 void MainWindow::uncheckAllTabs() {
@@ -63,7 +58,6 @@ void MainWindow::on_actionTrade_triggered() {
   hideAllPages();
   uncheckAllTabs();
   ui->actionTrade->setChecked(true);
-  stockDashboardPage->show();
 }
 
 void MainWindow::on_actionPerformance_triggered() {

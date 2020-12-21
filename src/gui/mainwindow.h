@@ -4,7 +4,6 @@
 #include "chooseportfolio.h"
 #include "homepage.h"
 #include "signup.h"
-#include "stockdashboard.h"
 
 #include <QMainWindow>
 #include <qboxlayout.h>
@@ -42,7 +41,6 @@ class MainWindow : public QMainWindow {
   SignUp *signUpPage;
   ChoosePortfolio *choosePortfolioPage;
   HomePage *homepage;
-  StockDashboard *stockDashboardPage;
   QHBoxLayout *layout;
 };
 #endif // MAINWINDOW_H
