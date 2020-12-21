@@ -10,7 +10,7 @@ Stock::Stock(std::string symbol) {
   this->symbol = symbol;
   latestTimeStampByDay = 0;
   latestTimeStampByMinute = 0;
-  stockNews = "";
+  stockNews = QJsonArray();
 }
 //latestTimeStamp = 0 is an initializtion that represents that all our data will be taken after 00:00, Jan 1, 1970, UTC.
 
@@ -39,7 +39,7 @@ QJsonObject Stock::getDataByMinute() {
   return dataByMinute;
 }
 
-std::string Stock::getNews() {
+QJsonArray Stock::getNews() {
   return stockNews;
 }
 
@@ -80,7 +80,7 @@ void Stock::updateNews() {
                             helper::convertToReadable(t));
   //We do not change convertToReadable(t) because it gives the current date and the api gives news with day intervals.
   // Basically, we want all the news today regardless of the exact time.
-  stockNews = apiResponse;
+  stockNews = helper::convertStringToQJsonArray(apiResponse);
 }
 
 

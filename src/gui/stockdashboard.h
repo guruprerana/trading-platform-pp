@@ -18,7 +18,13 @@ class StockDashboard : public QWidget {
   explicit StockDashboard(QWidget *parent = nullptr);
   ~StockDashboard();
 
+ private slots:
+  void on_leftButton_clicked();
+
+  void on_rightButton_clicked();
+
  private:
+  int newsId;
   Ui::StockDashboard *ui;
   QVector<Stock *> stocks;
   StockGraphThreeDays *stockGraphThreeDays;

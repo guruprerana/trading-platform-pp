@@ -26,6 +26,7 @@ SOURCES += \
     components/portfolio.cpp \
     components/trading_order.cpp \
     gui/chooseportfolio.cpp \
+    gui/companynewscard.cpp \
     gui/homepage.cpp \
     gui/newscard.cpp \
     gui/newspage.cpp \
@@ -49,6 +50,7 @@ HEADERS += \
     components/portfolio.h \
     components/trading_order.h \
     gui/chooseportfolio.h \
+    gui/companynewscard.h \
     gui/homepage.h \
     gui/newscard.h \
     gui/newspage.h \
@@ -66,6 +68,7 @@ HEADERS += \
     
 FORMS += \
     gui/chooseportfolio.ui \
+    gui/companynewscard.ui \
     gui/homepage.ui \
     gui/mainwindow.ui \
     gui/signup.ui \

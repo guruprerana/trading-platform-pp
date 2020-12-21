@@ -3,6 +3,7 @@
 
 #include <string>
 #include <QJsonObject>
+#include <QJsonArray>
 
 class Stock {
  private:
@@ -11,7 +12,7 @@ class Stock {
   QJsonObject dataByMinute;
   long latestTimeStampByDay;
   long latestTimeStampByMinute;
-  std::string stockNews;
+  QJsonArray stockNews;
 
  public:
   Stock(std::string);
@@ -22,7 +23,7 @@ class Stock {
   long getLatestTimestampByMinute();
   QJsonObject getDataByDay();
   QJsonObject getDataByMinute();
-  std::string getNews();
+  QJsonArray getNews();
   void updateDataByDay();
   void updateDataByMinute();
   void updateNews();
