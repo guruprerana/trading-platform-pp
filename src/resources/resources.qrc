@@ -10,5 +10,7 @@
         <file>news_on.png</file>
         <file>performance_on.png</file>
         <file>trade_on.png</file>
+        
+        <file>data/symbols.json</file>
     </qresource>
 </RCC>
