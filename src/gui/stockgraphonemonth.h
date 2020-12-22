@@ -11,6 +11,7 @@ class StockGraphOneMonth : public StockGraph {
   explicit StockGraphOneMonth(Stock *stock, QWidget *parent = nullptr);
   ~StockGraphOneMonth();
   void initTimeRange();
+  void setCandlestickBinSize();
 
  private slots:
   void realtimeDataSlot();

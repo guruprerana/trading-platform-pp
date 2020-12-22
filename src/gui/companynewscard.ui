@@ -20,16 +20,45 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
-    <widget class="QLabel" name="headline">
+   <item row="1" column="0" colspan="2">
+    <widget class="QLabel" name="summary">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>1400</width>
+       <height>16777215</height>
+      </size>
+     </property>
      <property name="font">
       <font>
-       <weight>75</weight>
-       <bold>true</bold>
+       <pointsize>9</pointsize>
+       <italic>true</italic>
+       <kerning>false</kerning>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(85, 87, 83);
+margin-top: 0px;
+margin-bottom: 0px;
+margin-left: 10px;
+padding: 0px;</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
      <property name="text">
-      <string>Headline</string>
+      <string>Summary</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+     <property name="margin">
+      <number>0</number>
      </property>
     </widget>
    </item>
@@ -54,29 +83,16 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0" colspan="2">
-    <widget class="QLabel" name="summary">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
+   <item row="0" column="0">
+    <widget class="QLabel" name="headline">
      <property name="font">
       <font>
-       <pointsize>9</pointsize>
-       <italic>true</italic>
+       <weight>75</weight>
+       <bold>true</bold>
       </font>
      </property>
-     <property name="styleSheet">
-      <string notr="true">color: rgb(85, 87, 83);
-margin-left: 10px;</string>
-     </property>
      <property name="text">
-      <string>Summary</string>
-     </property>
-     <property name="margin">
-      <number>0</number>
+      <string>Headline</string>
      </property>
     </widget>
    </item>

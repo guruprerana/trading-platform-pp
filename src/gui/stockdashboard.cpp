@@ -14,6 +14,7 @@ StockDashboard::StockDashboard(QWidget *parent) :
   stocks.append(new Stock("AMZN")); // Amazon
   stocks.append(new Stock("FB")); // Facebook
 
+  stockGraphOneDay = new StockGraphOneDay(stocks[0], this);
   stockGraphThreeDays = new StockGraphThreeDays(stocks[0], this);
   stockGraphSixMonths = new StockGraphSixMonths(stocks[0], this);
   stockGraphOneMonth = new StockGraphOneMonth(stocks[0], this);
@@ -35,6 +36,7 @@ StockDashboard::StockDashboard(QWidget *parent) :
     ui->stackedWidget->addWidget(companyNewsCard);
   }
 
+  ui->oneDay->layout()->addWidget(stockGraphOneDay);
   ui->threeDays->layout()->addWidget(stockGraphThreeDays);
   ui->oneMonth->layout()->addWidget(stockGraphOneMonth);
   ui->sixMonths->layout()->addWidget(stockGraphSixMonths);

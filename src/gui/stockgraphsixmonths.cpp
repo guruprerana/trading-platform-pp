@@ -4,6 +4,7 @@
 StockGraphSixMonths::StockGraphSixMonths(Stock *stock, QWidget *parent) :
   StockGraph(stock, parent) {
   initTimeRange();
+  setCandlestickBinSize();
 }
 
 StockGraphSixMonths::~StockGraphSixMonths() {
@@ -26,6 +27,10 @@ void StockGraphSixMonths::initTimeRange() {
   ui->plot->yAxis->scaleRange(1.1, ui->plot->yAxis->range().center());
 }
 
+void StockGraphSixMonths::setCandlestickBinSize() {
+  candleStick->setWidth(3600 * 24 * 0.5);
+}
+
 void StockGraphSixMonths::realtimeDataSlot() {
   static QTime time(QTime::currentTime());
   //calculate two new data points:
@@ -33,7 +38,7 @@ void StockGraphSixMonths::realtimeDataSlot() {
                1000.0; // time elapsed since start of demo, in seconds
   static double lastPointKey = -1e9;
 
-  if (key - lastPointKey >= 60) { // 1 minute
+  if (key - lastPointKey >= 250) { // 250 seconds
     stock->updateDataByDay();
     QJsonObject dataByDay = stock->getDataByDay();
 

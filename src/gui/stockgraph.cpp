@@ -56,7 +56,6 @@ void StockGraph::initCandleStick() {
   candleStick->setChartStyle(QCPFinancial::csCandlestick);
   candleStick->setData(timestamp, open, high, low, close);
   candleStick->setTwoColored(true);
-  candleStick->setWidth(3600 * 24 * 0.5);
   candleStick->setName("Candlestick");
 }
 
@@ -67,14 +66,15 @@ void StockGraph::plot() {
                             timestamp[timestamp.length() - 1]);
   ui->plot->yAxis->setRange(
     std::max(0.0, *std::min_element(low.begin(),
-                                    low.end()) * 0.8),
-    *std::max_element(high.begin(), high.end()) * 1.25);
+                                    low.end()) * 0.95),
+    *std::max_element(high.begin(), high.end()) * 1.05);
   ui->plot->replot();
   ui->plot->update(); // updates data
   ui->plot->yAxis->setTickLabels(true);
 }
 
 QVector<double> convert_to_vector(QJsonObject j, std::string k) {
+//  qDebug() << j << endl;
   QVariantMap j_map = j.toVariantMap();
   QVariantList j_list = j_map[k.c_str()].toList();
   QVector<double> q;

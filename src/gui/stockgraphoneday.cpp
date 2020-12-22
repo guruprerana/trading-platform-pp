@@ -1,23 +1,23 @@
-#include "stockgraphthreedays.h"
+#include "stockgraphoneday.h"
 #include "ui_stockgraph.h"
 
-StockGraphThreeDays::StockGraphThreeDays(Stock *stock, QWidget *parent) :
+StockGraphOneDay::StockGraphOneDay(Stock *stock, QWidget *parent) :
   StockGraph(stock, parent) {
   initTimeRange();
   setCandlestickBinSize();
 }
 
-StockGraphThreeDays::~StockGraphThreeDays() {
+StockGraphOneDay::~StockGraphOneDay() {
 
 }
 
-void StockGraphThreeDays::initTimeRange() {
+void StockGraphOneDay::initTimeRange() {
   QSharedPointer<QCPAxisTickerDateTime> dateTimeTicker(new QCPAxisTickerDateTime);
   dateTimeTicker->setDateTimeSpec(Qt::UTC);
   dateTimeTicker->setDateTimeFormat("dd/MM hh:mm");
   double now = QDateTime::currentDateTime().toTime_t();
-  // 86400 is the number of seconds per day: Here we show a 3-day interval
-  ui->plot->xAxis->setRange(now - 3 * 86400, now);
+  // 86400 is the number of seconds per day: Here we show a 1-day interval
+  ui->plot->xAxis->setRange(now - 86400, now);
   ui->plot->yAxis->setTickLabels(false);
   ui->plot->xAxis->ticker()->setTickCount(10);
   ui->plot->xAxis->setTicker(dateTimeTicker);
@@ -27,11 +27,11 @@ void StockGraphThreeDays::initTimeRange() {
   ui->plot->yAxis->scaleRange(1.1, ui->plot->yAxis->range().center());
 }
 
-void StockGraphThreeDays::setCandlestickBinSize() {
-  candleStick->setWidth(300 * 0.5);
+void StockGraphOneDay::setCandlestickBinSize() {
+  candleStick->setWidth(60 * 0.5);
 }
 
-void StockGraphThreeDays::realtimeDataSlot() {
+void StockGraphOneDay::realtimeDataSlot() {
   static QTime time(QTime::currentTime());
   //calculate two new data points:
   double key = time.elapsed() /
@@ -50,13 +50,18 @@ void StockGraphThreeDays::realtimeDataSlot() {
     c = convert_to_vector(dataByMinute, "c");
 
     clearData();
+    double now = QDateTime::currentDateTime().toTime_t();
+    // 86400 is the number of seconds per day: Here we show a 1-day interval
+    ui->plot->xAxis->setRange(now - 86400, now);
 
-    for (int i = 0; i < time.size(); i += 5) {
-      timestamp.append(time[i]);
-      open.append(o[i]);
-      high.append(h[i]);
-      low.append(l[i]);
-      close.append(c[i]);
+    for (int i = 0; i < time.size(); i++) {
+      if (time[i] >= now - 86400 && time[i] <= now) {
+        timestamp.append(time[i]);
+        open.append(o[i]);
+        high.append(h[i]);
+        low.append(l[i]);
+        close.append(c[i]);
+      }
     }
 
     plot();
