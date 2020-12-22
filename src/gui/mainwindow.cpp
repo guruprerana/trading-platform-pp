@@ -88,6 +88,7 @@ void MainWindow::on_actionNews_triggered() {
   hideAllPages();
   uncheckAllTabs();
   ui->actionNews->setChecked(true);
+  newsPage->update();
   newsPage->show();
 }
 
