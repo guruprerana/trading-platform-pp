@@ -21,6 +21,7 @@ class StockGraph : public QWidget {
   void initLineChart();
   void initCandleStick();
   virtual void initTimeRange() = 0;
+  virtual void setCandlestickBinSize() = 0;
 
  protected slots:
   virtual void realtimeDataSlot() = 0;

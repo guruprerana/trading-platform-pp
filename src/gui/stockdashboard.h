@@ -2,6 +2,7 @@
 #define STOCKDASHBOARD_H
 
 #include <QWidget>
+#include "stockgraphoneday.h"
 #include "stockgraphthreedays.h"
 #include "stockgraphonemonth.h"
 #include "stockgraphsixmonths.h"
@@ -21,6 +22,7 @@ class StockDashboard : public QWidget {
  private:
   Ui::StockDashboard *ui;
   QVector<Stock *> stocks;
+  StockGraphOneDay *stockGraphOneDay;
   StockGraphThreeDays *stockGraphThreeDays;
   StockGraphOneMonth *stockGraphOneMonth;
   StockGraphSixMonths *stockGraphSixMonths;

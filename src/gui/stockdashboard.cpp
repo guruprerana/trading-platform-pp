@@ -11,10 +11,12 @@ StockDashboard::StockDashboard(QWidget *parent) :
   stocks.append(new Stock("AMZN")); // Amazon
   stocks.append(new Stock("FB")); // Facebook
 
+  stockGraphOneDay = new StockGraphOneDay(stocks[1], this);
   stockGraphThreeDays = new StockGraphThreeDays(stocks[1], this);
   stockGraphSixMonths = new StockGraphSixMonths(stocks[1], this);
   stockGraphOneMonth = new StockGraphOneMonth(stocks[1], this);
 
+  ui->oneDay->layout()->addWidget(stockGraphOneDay);
   ui->threeDays->layout()->addWidget(stockGraphThreeDays);
   ui->oneMonth->layout()->addWidget(stockGraphOneMonth);
   ui->sixMonths->layout()->addWidget(stockGraphSixMonths);

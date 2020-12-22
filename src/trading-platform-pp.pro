@@ -32,6 +32,7 @@ SOURCES += \
     gui/signup.cpp \
     gui/stockdashboard.cpp \
     gui/stockgraph.cpp \
+    gui/stockgraphoneday.cpp \
     gui/stockgraphonemonth.cpp \
     gui/stockgraphsixmonths.cpp \
     gui/stockgraphthreedays.cpp \
@@ -55,6 +56,7 @@ HEADERS += \
     gui/signup.h \
     gui/stockdashboard.h \
     gui/stockgraph.h \
+    gui/stockgraphoneday.h \
     gui/stockgraphonemonth.h \
     gui/stockgraphsixmonths.h \
     gui/stockgraphthreedays.h \
