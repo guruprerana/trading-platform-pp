@@ -47,8 +47,6 @@ HEADERS += \
     gui/newscard.h \
     gui/newspage.h \
     gui/signup.h \
-    components/portfolio/portfolio.h \
-    components/trading_order/trading_order.h \
     helper/helper.h \
     gui/neworder.h \
     gui/mainwindow.h \
