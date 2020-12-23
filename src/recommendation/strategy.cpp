@@ -26,6 +26,7 @@ Strategy::Strategy(char& strategy_name, Stock *stock, bool data_by_minute, std::
     this->stock = stock;
     this->data_by_minute = data_by_minute; //if false, the data is provided by day
     this->price_type = price_type;
+
 }
 
 Strategy::~Strategy(){
@@ -115,7 +116,7 @@ int Strategy::auxiliary_momentum(std::map<int, double> &cache){
 
      if (diff1<=diff2)
          return 1;
-     return -1;}
+     else {return -1;}}
     
 std::tuple<bool, double> Strategy::momentum(){
      std::map<int, double> cache;
@@ -129,14 +130,16 @@ std::tuple<bool, double> Strategy::momentum(){
      }
 
      int action = this->auxiliary_momentum(cache);
-     if (action == 0 || action == 1){
-         return std::make_tuple(true, 1.0);
+     if (action == 0){
+         return std::make_tuple(false, 1.0);
      }
      else if (action == -1) {
          return std::make_tuple(true, 0.8);
      }      
+     if (action == 1){
+         return std::make_tuple(true, 1.0);
 
-}
+}}
 
 double Strategy::compute_average_key(std::map<long, double> &bars){
     double key_average = 0;
@@ -182,23 +185,22 @@ bool Strategy::linear_regression(){
     } 
 }
 
+
+
 std::tuple<bool, double> Strategy::calculate_signals(){
     bool bought;
     double percentage = 1.0;
     //provides outcome of the chosen strategy
-    std::string str1 ("EMA");
-    std::string str2 ("MOM");
-    std::string str3 ("LR");
     std::string name = this->get_name();
-    if (str1.compare(name) == 0){ //exponential moving average
+    if (this->str1.compare(name) == 0){ //exponential moving average
         bought =  this->exponential_moving_average();
      }
-    if (str2.compare(name) == 0){
+    if (this->str2.compare(name) == 0){
         auto res = this->momentum();
         bought = std::get<0>(res);
         percentage = std::get<1>(res);
     }
-    if (str3.compare(name) == 0){//linear regression
+    if (this->str3.compare(name) == 0){//linear regression
         bought= this->linear_regression();
     } 
     return std::make_tuple(bought, percentage);
@@ -211,41 +213,41 @@ void Strategy::simulate(){
      std::map<int, double> data_plot_long; // map (day --> long_ema) where day = 1 is yesterday,
     // day = 2 is the day before, ...
     int nb_points = 7; // number of points in our plot (ex : plot of the momentum of the 7 latest days)
-    
+    std::string name = this->get_name();
 
-    if (this->get_name() == 'EMA'){ //exponential moving average
-        for (int k=0, k<nb_points, k++){
+    if (this->str1.compare(name) == 0){ //exponential moving average
+        for (int k=0; k<nb_points; k++){
         std::map<long, double> bars_11 = this->get_data(11);
         std::map<long, double> bars_6 = this->get_data(6);
         double ema_11 = this->calculate_ema(bars_11); // Longer Moving Average
         double ema_06 = this->calculate_ema(bars_6);
-        data_plot_short.insert(pair<int, double>(k, ema_6));
-        data_plot_long.insert(pair<int, double>(k, ema_11));
+        data_plot_short.insert(std::pair<int, double>(k, ema_06));
+        data_plot_long.insert(std::pair<int, double>(k, ema_11));
         }
     }
     
     
-    if (this->get_name() == 'MOM'){//momentum
-        for (int k=0, k<nb_points, k++){
+    if (this->str2.compare(name) == 0){//momentum
+        for (int k=0; k<nb_points; k++){
          std::map<long, double> bars_10 = this->get_data(9,k);
          std::map<long, double> bars_5 = this->get_data(4,k);
          double sma_10 = this->calculate_sma(bars_10);
          double sma_5 = this->calculate_sma(bars_5);
          double moment = sma_5/sma_10;
-         data_plot_short.insert(pair<int, double>(k, moment));
+         data_plot_short.insert(std::pair<int, double>(k, moment));
         }
     }
     
     
     
-    if (this->get_name() == 'LR'){//linear regression
+    if (this->str3.compare(name) == 0){//linear regression
         std::map<long, double> bars = this->get_data(20);
         auto res = this->auxiliary_linear_regression(bars);
         double slope = std::get<0>(res);
         double yintercept = std::get<1>(res);
-        for (int k=0, k<nb_points, k++){
+        for (int k=0; k<nb_points; k++){
         double image = slope*(-k)+yintercept;
-        data_plot_short.insert(pair<int, double>(k, image));
+        data_plot_short.insert(std::pair<int, double>(k, image));
         }
     } 
     

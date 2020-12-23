@@ -31,6 +31,7 @@ public:
     std::tuple<bool, double> momentum();
 
 
+
 protected:
     std::tuple<bool, double> calculate_signals();
     // The heart of each strategy, which we have already implemented within subteams
@@ -52,6 +53,11 @@ protected:
     Stock* stock; // stock under consideration
     bool data_by_minute;
     std::string price_type;// price_type is a lower case string in ['o','c','h','l','v']
+    std::string str1 = "EMA";
+    std::string str2 = "MOM";
+    std::string str3 = "LR";
+
+
 
 
 };

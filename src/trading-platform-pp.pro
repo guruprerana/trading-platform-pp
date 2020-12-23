@@ -19,7 +19,8 @@ SOURCES += \
     main.cpp \
     gui/mainwindow.cpp \
     components/portfolio/portfolio.cpp \
-    components/trading_order/trading_order.cpp
+    components/trading_order/trading_order.cpp \
+    recommendation/strategy.cpp
 
 HEADERS += \
     api/api.h \
@@ -30,7 +31,8 @@ HEADERS += \
     gui/signup.h \
     helper/QJsonObjectManipulation.h \
     components/portfolio/portfolio.h \
-    components/trading_order/trading_order.h
+    components/trading_order/trading_order.h \
+    recommendation/strategy.h
     
 FORMS += \
     gui/chooseportfolio.ui \
