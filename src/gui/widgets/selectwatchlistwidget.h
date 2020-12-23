@@ -5,6 +5,8 @@
 #include <QListWidgetItem>
 #include <QStringList>
 
+const int LIST_ITEM_WIDGET_DATA_ROLE = 300;
+
 namespace Ui {
 class SelectWatchlistWidget;
 }
@@ -19,8 +21,6 @@ class SelectWatchlistWidget : public QWidget {
   QStringList getSelectedWatchList() const;
 
  private:
-  const int LIST_ITEM_WIDGET_DATA_ROLE = 300;
-
   Ui::SelectWatchlistWidget *ui;
 };
 

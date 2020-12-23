@@ -7,12 +7,12 @@
 #include "portfolio.h"
 #include "stock.h"
 
+const QString SAVE_FILE_NAME = "save.json";
+
 class Session {
  public:
   Session();
   ~Session();
-
-  const QString SAVE_FILE_NAME = "save.json";
 
   Portfolio *getCurrentPortfolio() const {
     if (currentPortfolio == nullptr) {
