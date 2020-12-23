@@ -75,7 +75,8 @@ void TradingOrder::read(const QJsonObject &json) {
 
   if (json.contains("trading_order_time_stamp") &&
       json["trading_order_time_stamp"].isDouble()) {
-    trading_order_time_stamp = json["trading_order_time_stamp"].toInt();
+    trading_order_time_stamp =
+      json["trading_order_time_stamp"].toVariant().toLongLong();
   }
 
   if (json.contains("value_per_quantity") &&
