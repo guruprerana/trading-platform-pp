@@ -19,47 +19,38 @@ std::string helper::convertToString(QJsonObject jsonData) {
 
 //converts unix timestamp to human-readable in YYYY-MM-DD format (the rest of seconds is neglected)
 //needed to call the api about market news. Will be called in api.h
-std::string helper::convertToReadable(long unixTimeStamp) {
-  std::tm *t = std::localtime(&unixTimeStamp);
-  std::string date = std::to_string(t->tm_year + 1900);
-  date += "-";
+std::string helper::convertToReadable(qint64 unixTimeStamp) {
+  QString date =
+    QDateTime::fromMSecsSinceEpoch(unixTimeStamp).toString("yyyy-MM-dd");
 
-  if (t->tm_mon + 1 < 10) {
-    date += "0";
-  }
-
-  date += std::to_string(t->tm_mon + 1);
-  date += "-";
-
-  if (t->tm_mday < 10) {
-    date += "0";
-  }
-
-  date += std::to_string(t->tm_mday);
-  return date;
+  return date.toStdString();
 }
 
 //converts unix timestamp to human-readable in YYYY-MM-DD HH:MM format (the rest of seconds is neglected)
 //needed to call the api about market news. Will be called in api.h
-std::string helper::convertToFullTimeReadable(long unixTimeStamp) {
-  std::tm *t = std::localtime(&unixTimeStamp);
-  std::string fullDate = "";
-  std::string basicDate = helper::convertToReadable(unixTimeStamp);
-  std::string strHour = std::to_string(t->tm_hour);
+std::string helper::convertToFullTimeReadable(qint64 unixTimeStamp) {
+  QString fullDate =
+    QDateTime::fromMSecsSinceEpoch(unixTimeStamp).toString("yyyy-MM-dd HH:MM");
 
-  while (strHour.size() < 2) {
-    strHour = '0' + strHour;
-  }
+  return fullDate.toStdString();
+}
 
-  std::string strMin = std::to_string(t->tm_min);
+// Returns current Unix timestamp time.
+qint64 helper::getCurrentTime() {
+  return QDateTime::currentSecsSinceEpoch();
+}
 
-  while (strMin.size() < 2) {
-    strMin = '0' + strMin;
-  }
+// Returns the current day in the format YYYY-MM-DD
+std::string helper::getCurrentDate() {
+  QString currentDate = QDateTime::currentDateTime().toString("yyyy-MM-dd");
+  return currentDate.toStdString();
+}
 
-  fullDate += basicDate + " " + strHour + ":" + strMin;
-  return fullDate;
-
+// Returns the current day in the format YYYY-MM-DD HH:MM
+std::string helper::getCurrentFullDate() {
+  QString currentFullDate =
+    QDateTime::currentDateTime().toString("yyyy-MM-dd HH:MM");
+  return currentFullDate.toStdString();
 }
 
 //converts QJsonValue to std::string

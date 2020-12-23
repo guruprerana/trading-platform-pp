@@ -40,7 +40,7 @@ void NewsPage::update() {
 
   for (auto v : newsArray) {
     QJsonObject json = v.toObject();
-    long unixTimestamp = json["datetime"].toVariant().toInt();
+    qint64 unixTimestamp = json["datetime"].toVariant().toLongLong();
     std::string readableTime = helper::convertToFullTimeReadable(unixTimestamp);
 
     NewsCard *newsCard = new NewsCard(

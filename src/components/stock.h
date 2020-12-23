@@ -9,8 +9,8 @@ class Stock {
   std::string symbol;
   QJsonObject dataByDay;
   QJsonObject dataByMinute;
-  long latestTimeStampByDay;
-  long latestTimeStampByMinute;
+  qint64 latestTimeStampByDay;
+  qint64 latestTimeStampByMinute;
   std::string stockNews;
 
  public:
@@ -18,8 +18,8 @@ class Stock {
   ~Stock();
 
   std::string getSymbol();
-  long getLatestTimestampByDay();
-  long getLatestTimestampByMinute();
+  qint64 getLatestTimestampByDay();
+  qint64 getLatestTimestampByMinute();
   QJsonObject getDataByDay();
   QJsonObject getDataByMinute();
   std::string getNews();

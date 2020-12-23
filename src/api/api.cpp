@@ -1,5 +1,15 @@
 #include "api.h"
 
+// Initializes "static const" variables
+
+const std::string API::API_ENDPOINT =
+  "https://finnhub.io/api/v1/stock/candle?symbol=";
+const std::string API::API_NEWSCOMPANY =
+  "https://finnhub.io/api/v1/company-news?symbol=";
+const std::string API::API_NEWSMARKET =
+  "https://finnhub.io/api/v1/news?category=general&token=";
+const std::string API::API_TOKEN = "buk0iff48v6r2017bpg0";
+
 // Constructor of the API class
 API::API() {
   // Initiate the CURL object
@@ -17,7 +27,7 @@ size_t writefunc(void *ptr, size_t size, size_t nmemb, std::string *s) {
 
 // Gets the stock data from the API
 std::string API::getStockData(std::string stockSymbol, std::string resolution,
-                              long startTimestamp, long endTimestamp) {
+                              qint64 startTimestamp, qint64 endTimestamp) {
   std::string token = API_TOKEN;
   std::string url = API_ENDPOINT + stockSymbol + "&resolution=" + resolution +
                     "&from=" + std::to_string(startTimestamp) +

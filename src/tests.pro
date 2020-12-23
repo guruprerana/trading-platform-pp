@@ -6,7 +6,16 @@ CONFIG -= app_bundle
 
 TEMPLATE = app
 
-LIBS += -lcurl
+linux-g++* {
+  LIBS += -lcurl
+}
+
+win32 {
+  # remember to put libcurl-x64 to mingw folder
+  LIBS += C:/curl-7.74.0-win64-mingw/lib/libcurl.a \
+          C:/curl-7.74.0-win64-mingw/lib/libcurl.dll.a
+  INCLUDEPATH += C:/curl-7.74.0-win64-mingw/include
+}
 
 SOURCES += \
     tests/tst_api.cpp \

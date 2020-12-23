@@ -4,30 +4,35 @@
 #include <curl/curl.h>
 #include <map>
 #include <string>
+#include <QObject>
 
 class API {
  public:
   API();
   ~API();
 
-  std::string API_ENDPOINT = "https://finnhub.io/api/v1/stock/candle?symbol=";
-  std::string API_NEWSCOMPANY = "https://finnhub.io/api/v1/company-news?symbol=";
-  std::string API_NEWSMARKET =
-    "https://finnhub.io/api/v1/news?category=general&token=";
-  std::string API_TOKEN = "buk0iff48v6r2017bpg0";
+  static const std::string
+  API_ENDPOINT,
+  API_NEWSCOMPANY,
+  API_NEWSMARKET,
+  API_TOKEN;
+
   std::string callUrl(std::string url);
   std::string getStockData(std::string stockSymbol, std::string resolution,
-                           long startTimestamp, long endTimestamp);
-  std::string getNewsCompany(std::string stockSymbol, std::string startTimestamp,
+                           qint64 startTimestamp, qint64 endTimestamp);
+  std::string getNewsCompany(std::string stockSymbol,
+                             std::string startTimestamp,
                              std::string endTimestamp);
-
   std::string getNewsMarket();
 
  private:
+  Q_GADGET
+
   // CURL object here
   CURL *curl;
   CURLcode result;
   struct curl_slist *headers = NULL;
+
 };
 
 #endif // API_H
