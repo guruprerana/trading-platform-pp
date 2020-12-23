@@ -7,15 +7,15 @@ MainWindow::MainWindow(QWidget *parent)
   , ui(new Ui::MainWindow) {
   ui->setupUi(this);
 
+  session = new Session();
+
   // initialize the different pages and add them to the layout
   // we add all the pages to the layout and then just hide them
   // when they are not displayed
   signUpPage = new SignUp(this);
-  connect(signUpPage, &SignUp::signUpWithDetails, [this]() {
-    // initially toolbar is hidden and shown when submit button pressed
-    this->ui->toolBar->show();
-    this->on_actionHome_triggered();
-  });
+  // connect the sign up signal
+  connect(signUpPage, &SignUp::signUpWithDetails, this,
+          &MainWindow::onCreatePortfolio);
 
   choosePortfolioPage = new ChoosePortfolio(this);
   homepage = new HomePage(this);
@@ -40,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow() {
   delete ui;
+  delete session;
   delete signUpPage;
   delete choosePortfolioPage;
   delete homepage;
@@ -95,4 +96,13 @@ void MainWindow::on_actionMarkets_triggered() {
   hideAllPages();
   uncheckAllTabs();
   ui->actionMarkets->setChecked(true);
+}
+
+void MainWindow::onCreatePortfolio(QString id, qreal initialAmount,
+                                   QStringList watchlist) {
+  session->addPortfolio(new Portfolio(id, initialAmount, watchlist));
+
+  // initially toolbar is hidden and shown when submit button pressed
+  this->ui->toolBar->show();
+  this->on_actionHome_triggered();
 }

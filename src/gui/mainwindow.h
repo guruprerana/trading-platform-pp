@@ -8,7 +8,12 @@
 #include "neworder.h"
 
 #include <QMainWindow>
-#include <qboxlayout.h>
+#include <QBoxLayout>
+#include <QString>
+#include <QStringList>
+#include "../components/session.h"
+#include "../components/portfolio.h"
+#include "../components/stock.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -39,6 +44,7 @@ class MainWindow : public QMainWindow {
 
  private:
   Ui::MainWindow *ui;
+  Session *session;
 
   SignUp *signUpPage;
   ChoosePortfolio *choosePortfolioPage;
@@ -46,5 +52,8 @@ class MainWindow : public QMainWindow {
   NewsPage *newsPage;
   NewOrder *new_order;
   QHBoxLayout *layout;
+
+ private slots:
+  void onCreatePortfolio(QString id, qreal initialAmount, QStringList watchlist);
 };
 #endif // MAINWINDOW_H
