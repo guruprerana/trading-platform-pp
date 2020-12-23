@@ -24,13 +24,10 @@ class NewOrder : public QWidget {
   explicit NewOrder(QWidget *parent = nullptr);
   ~NewOrder();
 
-  void setupConnect();
-
   void write(TradingOrder &trading_order) const;
-  void write(QJsonObject &json) const;
 
  signals:
-  void newOrderDetails();
+  void newOrderCreated(TradingOrder *newOrder);
 
  private slots:
   void on_orderPushButton_released();

@@ -55,5 +55,6 @@ class MainWindow : public QMainWindow {
 
  private slots:
   void onCreatePortfolio(QString id, qreal initialAmount, QStringList watchlist);
+  void onCreateOrder(TradingOrder *order);
 };
 #endif // MAINWINDOW_H

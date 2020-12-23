@@ -48,6 +48,11 @@ void Session::loadFromFile(const QString &filename) {
       portfolio->load(portfoliosJson.at(i).toObject());
       portfolios.push_back(portfolio);
 
+      // right now we just set current portfolio to last saved
+      // portfolio. will change with implementation of
+      // choose portfolio screen
+      currentPortfolio = portfolio;
+
       // initialize all stock in the watchlist of each portfolio
       addStocks(portfolio->getWatchList());
     }
@@ -114,4 +119,20 @@ Stock *Session::getStock(QString &symbol) {
   }
 
   return stocks[symbol];
+}
+
+QVector<Stock *> Session::getCurrentWatchlistStocks() {
+  QVector<Stock *> stocks;
+
+  if (currentPortfolio == nullptr) {
+    return stocks;
+  }
+
+  QStringList symbols = currentPortfolio->getWatchList();
+
+  for (int i = 0; i < symbols.size(); i++) {
+    stocks.push_back(addStock(symbols.at(i)));
+  }
+
+  return stocks;
 }

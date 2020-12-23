@@ -14,6 +14,16 @@ class Session {
 
   const QString SAVE_FILE_NAME = "save.json";
 
+  Portfolio *getCurrentPortfolio() const {
+    if (currentPortfolio == nullptr) {
+      qWarning("Current portfolio not set.");
+    }
+
+    return currentPortfolio;
+  }
+
+  QVector<Stock *> getCurrentWatchlistStocks();
+
   Portfolio *getPortfolio(QString &id) const;
   void addPortfolio(Portfolio *newPortfolio);
 
@@ -27,7 +37,7 @@ class Session {
 
  private:
   QVector<Portfolio *> portfolios;
-  Portfolio *currentPortfolio;
+  Portfolio *currentPortfolio = nullptr;
 
   // store the instances of the stocks in a hash-table indexed by symbol string
   QHash<QString, Stock *> stocks;
