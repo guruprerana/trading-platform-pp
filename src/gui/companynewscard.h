@@ -11,8 +11,8 @@ class CompanyNewsCard : public QWidget {
   Q_OBJECT
 
  public:
-  explicit CompanyNewsCard(QString headline, QString url, QString timestamp,
-                           QString summary,
+  explicit CompanyNewsCard(QString id, QString headline, QString url,
+                           QString timestamp,
                            QWidget *parent = nullptr);
   ~CompanyNewsCard();
   void debug();

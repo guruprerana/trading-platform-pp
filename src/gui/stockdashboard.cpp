@@ -22,16 +22,18 @@ StockDashboard::StockDashboard(QWidget *parent) :
   stocks[0]->updateNews();
   QJsonArray companyNews = stocks[0]->getNews();
 
+  int count = 0;
+
   for (auto v : companyNews) {
     QJsonObject json = v.toObject();
     long unixTimestamp = json["datetime"].toVariant().toInt();
     std::string readableTime = helper::convertToFullTimeReadable(unixTimestamp);
 
     CompanyNewsCard *companyNewsCard = new CompanyNewsCard(
+      QString::number(++count),
       json["headline"].toString(),
       json["url"].toString(),
       QString(readableTime.c_str()),
-      json["summary"].toString(),
       ui->stackedWidget);
     ui->stackedWidget->addWidget(companyNewsCard);
   }
