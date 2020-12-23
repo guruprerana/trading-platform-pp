@@ -22,6 +22,7 @@ win32 {
 SOURCES += \
     api/api.cpp \
     components/news.cpp \
+    components/session.cpp \
     components/stock.cpp \
     components/portfolio.cpp \
     components/trading_order.cpp \
@@ -47,6 +48,7 @@ SOURCES += \
 HEADERS += \
     api/api.h \
     components/news.h \
+    components/session.h \
     components/stock.h \
     components/portfolio.h \
     components/trading_order.h \

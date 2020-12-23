@@ -13,18 +13,9 @@ NewOrder::~NewOrder() {
 }
 
 void NewOrder::on_orderPushButton_released() {
-  QJsonObject data;
-  write(data);
-  QString s = "trading-order-" + QString::number(
-                QDateTime::currentDateTime().toSecsSinceEpoch()) + ".json";
-  QFile save_file(s);
-
-  if (!save_file.open(QIODevice::WriteOnly)) {
-    qWarning("Couldn't open save file.");
-    return;
-  } else {
-    save_file.write(QJsonDocument(data).toJson());
-  }
+  TradingOrder *order = new TradingOrder();
+  write(*order);
+  emit newOrderCreated(order);
 
   setDefault();
 }
@@ -70,10 +61,4 @@ void NewOrder::write(TradingOrder &trading_order) const {
 
   trading_order.setTradingTime(QDateTime::currentDateTime().toTime_t());
   trading_order.setValuePerQuantity(0);
-}
-
-void NewOrder::write(QJsonObject &json) const {
-  TradingOrder order;
-  write(order);
-  order.write(json);
 }

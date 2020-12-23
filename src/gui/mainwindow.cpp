@@ -7,16 +7,12 @@ MainWindow::MainWindow(QWidget *parent)
   , ui(new Ui::MainWindow) {
   ui->setupUi(this);
 
+  session = new Session();
+
   // initialize the different pages and add them to the layout
   // we add all the pages to the layout and then just hide them
   // when they are not displayed
   signUpPage = new SignUp(this);
-  connect(signUpPage, &SignUp::signUpWithDetails, [this]() {
-    // initially toolbar is hidden and shown when submit button pressed
-    this->ui->toolBar->show();
-    this->on_actionHome_triggered();
-  });
-
   choosePortfolioPage = new ChoosePortfolio(this);
   homepage = new HomePage(this);
   newsPage = new NewsPage(this);
@@ -36,10 +32,17 @@ MainWindow::MainWindow(QWidget *parent)
   ui->toolBar->hide();
 
   ui->centralwidget->setLayout(layout);
+
+  // connect the sign up signals
+  connect(signUpPage, &SignUp::signUpWithDetails, this,
+          &MainWindow::onCreatePortfolio);
+  connect(new_order, &NewOrder::newOrderCreated, this,
+          &MainWindow::onCreateOrder);
 }
 
 MainWindow::~MainWindow() {
   delete ui;
+  delete session;
   delete signUpPage;
   delete choosePortfolioPage;
   delete homepage;
@@ -88,6 +91,7 @@ void MainWindow::on_actionNews_triggered() {
   hideAllPages();
   uncheckAllTabs();
   ui->actionNews->setChecked(true);
+  newsPage->update();
   newsPage->show();
 }
 
@@ -95,4 +99,23 @@ void MainWindow::on_actionMarkets_triggered() {
   hideAllPages();
   uncheckAllTabs();
   ui->actionMarkets->setChecked(true);
+}
+
+void MainWindow::onCreatePortfolio(QString id, qreal initialAmount,
+                                   QStringList watchlist) {
+  session->addPortfolio(new Portfolio(id, initialAmount, watchlist));
+
+  // initially toolbar is hidden and shown when submit button pressed
+  this->ui->toolBar->show();
+  this->on_actionHome_triggered();
+}
+
+void MainWindow::onCreateOrder(TradingOrder *order) {
+  Portfolio *current = session->getCurrentPortfolio();
+
+  if (current == nullptr) {
+    return;
+  }
+
+  current->addTradingOrder(order);
 }
