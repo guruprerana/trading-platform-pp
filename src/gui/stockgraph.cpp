@@ -23,6 +23,7 @@ StockGraph::StockGraph(Stock *stock, QWidget *parent) :
 
 StockGraph::~StockGraph() {
   delete ui;
+  delete stock;
   delete lineChart;
   delete candleStick;
   clearData();
@@ -64,10 +65,14 @@ void StockGraph::plot() {
   candleStick->setData(timestamp, open, high, low, close);
   ui->plot->xAxis->setRange(timestamp[0],
                             timestamp[timestamp.length() - 1]);
+  double ymin = *std::min_element(low.begin(), low.end());
+  double ymax = *std::max_element(high.begin(), high.end());
+  double yrange = ymax - ymin;
+
   ui->plot->yAxis->setRange(
-    std::max(0.0, *std::min_element(low.begin(),
-                                    low.end()) * 0.95),
-    *std::max_element(high.begin(), high.end()) * 1.05);
+    std::max(0.0, ymin - yrange * 0.1),
+    ymax + yrange * 0.1
+  );
   ui->plot->replot();
   ui->plot->update(); // updates data
   ui->plot->yAxis->setTickLabels(true);
