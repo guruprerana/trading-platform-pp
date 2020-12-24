@@ -19,6 +19,7 @@ win32 {
   INCLUDEPATH += C:/curl-7.74.0-win64-mingw/include
 }
 
+LIBS += -lcurl
 SOURCES += \
     api/api.cpp \
     components/news.cpp \

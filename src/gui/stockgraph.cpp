@@ -8,7 +8,8 @@ StockGraph::StockGraph(Stock *stock, QWidget *parent) :
   ui(new Ui::StockGraph) {
   ui->setupUi(this);
 
-  ui->plot->setInteractions(QCP::iSelectLegend);
+  ui->plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectAxes |
+                            QCP::iSelectLegend | QCP::iSelectPlottables);
   ui->plot->legend->setVisible(true);
   ui->plot->legend->setSelectableParts(QCPLegend::spItems);
 
