@@ -2,105 +2,92 @@
 #include "ui_stockgraph.h"
 #include "library/qcustomplot.h"
 
-#include <iostream>
-StockGraph::StockGraph(QWidget *parent) :
+StockGraph::StockGraph(Stock *stock, QWidget *parent) :
+  stock(stock),
   QWidget(parent),
   ui(new Ui::StockGraph) {
   ui->setupUi(this);
 
-  stock = new Stock("AAPL");
+  ui->plot->setInteractions(QCP::iSelectLegend);
+  ui->plot->legend->setVisible(true);
+  ui->plot->legend->setSelectableParts(QCPLegend::spItems);
 
-  ui->plot->addGraph();
-  ui->plot->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssTriangle, QPen(Qt::red, 1.5), QBrush(Qt::darkRed), 3));
-  ui->plot->graph(0)->setLineStyle(QCPGraph::lsLine);
-  ui->plot->graph(0)->setPen(QPen(Qt::red));
-  ui->plot->xAxis->setUpperEnding(QCPLineEnding::esSpikeArrow);
-  ui->plot->yAxis->setUpperEnding(QCPLineEnding::esSpikeArrow);
+  initCandleStick();
+  initLineChart();
 
-  QSharedPointer<QCPAxisTickerDateTime> dateTimeTicker(new QCPAxisTickerDateTime);
-  dateTimeTicker->setDateTimeSpec(Qt::UTC);
-  dateTimeTicker->setDateTimeFormat("dd/MM/yyyy");
-  double now = QDateTime::currentDateTime().toTime_t();
-  ui->plot->xAxis->setRange(now-2628288*6, now+2628288*6); //2628288 is the number of seconds per month: Here we show a 6-month interval
-  ui->plot->yAxis->setTickLabels(false);
-  ui->plot->xAxis->ticker()->setTickCount(10);
-  ui->plot->xAxis->setTicker(dateTimeTicker);
-  ui->plot->xAxis->setTickLabelRotation(15);
-  ui->plot->rescaleAxes();
-  ui->plot->xAxis->scaleRange(1.025, ui->plot->xAxis->range().center());
-  ui->plot->yAxis->scaleRange(1.1, ui->plot->yAxis->range().center());
-  stock->updateDataByDay();
-  QJsonObject dataByDay=stock->getDataByDay();
-  //Converts Json data to Vector
-  timestamp=convert_to_vector(dataByDay,"t"); //Get timestamp values
-  high=convert_to_vector(dataByDay,"h"); //Get high values corresponding to timestamp
-  // setup a timer that repeatedly calls MainWindow::realtimeDataSlot:
+  // setup a timer that repeatedly calls StockGraph::realtimeDataSlot:
   connect(&dataTimer, SIGNAL(timeout()), this, SLOT(realtimeDataSlot()));
   dataTimer.start(1000); // Interval 0 means to refresh as fast as possible
-  qDebug()<<"rayen"<<high;
-  //ui->plot->graph(0)->addData(timestamp,high);
   ui->plot->replot();
 }
+
 StockGraph::~StockGraph() {
   delete ui;
   delete stock;
+  delete lineChart;
+  delete candleStick;
   clearData();
 }
-void StockGraph::clearData(){
-    timestamp.clear();
-    high.clear();
+
+void StockGraph::clearData() {
+  timestamp.clear();
+  open.clear();
+  high.clear();
+  low.clear();
+  close.clear();
 }
-void  StockGraph::plot(){
-        ui->plot->graph(0)->setData(timestamp,high);
-        //ui->plot->xAxis->setRangeUpper(*std::max_element(timestamp.begin(),timestamp.end())*1.25);
-        //ui->plot->xAxis->setRange(timestamp[0], timestamp[timestamp.length()-1]);
-        //ui->plot->yAxis->setRangeUpper(*std::max_element(high.begin(),high.end())*1.25);
-        //ui->plot->yAxis->setRange(*std::min_element(high.begin(), high.end()),*std::max_element(high.begin(),high.end()));
-        ui->plot->graph(0)->rescaleAxes();
-        ui->plot->replot();
-        ui->plot->update(); //updates data
-        ui->plot->yAxis->setTickLabels(true);
 
-    }
+void StockGraph::initLineChart() {
+  lineChart = new QCPGraph(ui->plot->xAxis, ui->plot->yAxis);
+  lineChart->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle,
+                             QPen(Qt::black, 1.5), QBrush(Qt::white), 3));
+  lineChart->setLineStyle(QCPGraph::lsLine);
+  lineChart->setPen(QPen(QColor(120, 120, 120), 2));
+  lineChart->keyAxis()->setUpperEnding(QCPLineEnding::esSpikeArrow);
+  lineChart->valueAxis()->setUpperEnding(QCPLineEnding::esSpikeArrow);
 
+  QBrush shadowBrush(QColor(0, 0, 0), Qt::Dense7Pattern);
+  lineChart->setBrush(shadowBrush);
+  lineChart->setName("Line chart");
+}
 
+void StockGraph::initCandleStick() {
+  candleStick = new QCPFinancial(ui->plot->xAxis,
+                                 ui->plot->yAxis);
+  candleStick->setChartStyle(QCPFinancial::csCandlestick);
+  candleStick->setData(timestamp, open, high, low, close);
+  candleStick->setTwoColored(true);
+  candleStick->setName("Candlestick");
+}
 
+void StockGraph::plot() {
+  lineChart->setData(timestamp, close);
+  candleStick->setData(timestamp, open, high, low, close);
+  ui->plot->xAxis->setRange(timestamp[0],
+                            timestamp[timestamp.length() - 1]);
+  double ymin = *std::min_element(low.begin(), low.end());
+  double ymax = *std::max_element(high.begin(), high.end());
+  double yrange = ymax - ymin;
 
-void StockGraph::realtimeDataSlot()
-{
-  static QTime time(QTime::currentTime());
-   //calculate two new data points:
- double key = time.elapsed()/1000.0; // time elapsed since start of demo, in seconds
-  static double lastPointKey = 0;
- if (key-lastPointKey > 2) // at most add point every 6 s
-  {     stock->updateDataByDay();
-        QJsonObject dataByDay=stock->getDataByDay();
-        QVector<double> time,h;
-        time=convert_to_vector(dataByDay,"t");
-        h=convert_to_vector(dataByDay,"h");
-        if(not time.isEmpty() && not h.isEmpty()){
-        for (int i=0;i<std::min(time.count(),h.count());i++){
+  ui->plot->yAxis->setRange(
+    std::max(0.0, ymin - yrange * 0.1),
+    ymax + yrange * 0.1
+  );
+  ui->plot->replot();
+  ui->plot->update(); // updates data
+  ui->plot->yAxis->setTickLabels(true);
+}
 
-            if (  not std::count(timestamp.begin(), timestamp.end(), time[i])){
-                timestamp.append(time[i]);
-                high.append(h[i]);
+QVector<double> convert_to_vector(QJsonObject j, std::string k) {
+  QVariantMap j_map = j.toVariantMap();
+  QVariantList j_list = j_map[k.c_str()].toList();
+  QVector<double> q;
 
+  for (int i = 0; i < j_list.count(); i++) {
+    q.append(j_list[i].toDouble());
+  }
 
-            }
-        }
-        plot();}
-  }}
-
-QVector<double> convert_to_vector(QJsonObject j, std::string k)
-{   QVariantMap j_map=j.toVariantMap();
-    QVariantList j_list =j_map[k.c_str()].toList();
-    QVector<double> q;
-    for (int i=0;i<j_list.count();i++)
-    {
-        q.append(j_list[i].toDouble());
-    }
-    return q;
-
+  return q;
 }
 
 

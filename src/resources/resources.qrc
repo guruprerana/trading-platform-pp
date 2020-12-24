@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/">
+        <file>home.png</file>
+        <file>markets.png</file>
+        <file>news.png</file>
+        <file>performance.png</file>
+        <file>trade.png</file>
+        <file>home_on.png</file>
+        <file>markets_on.png</file>
+        <file>news_on.png</file>
+        <file>performance_on.png</file>
+        <file>trade_on.png</file>
+        
+        <file>data/symbols.json</file>
+    </qresource>
+</RCC>

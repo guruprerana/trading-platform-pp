@@ -3,9 +3,9 @@
 
 #include "chooseportfolio.h"
 #include "homepage.h"
-#include "leftnavigationbar.h"
 #include "signup.h"
-#include "stockdashboard.h"
+#include "newspage.h"
+#include "neworder.h"
 
 #include <QMainWindow>
 #include <qboxlayout.h>
@@ -23,17 +23,28 @@ class MainWindow : public QMainWindow {
   MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
 
-  QWidget *getTabComponent(QString tabName);
+  void hideAllPages();
+  void uncheckAllTabs();
+
+ private slots:
+  void on_actionTrade_triggered();
+
+  void on_actionHome_triggered();
+
+  void on_actionPerformance_triggered();
+
+  void on_actionNews_triggered();
+
+  void on_actionMarkets_triggered();
 
  private:
-  QString currentTabName;
   Ui::MainWindow *ui;
 
-  LeftNavigationBar *leftNav;
   SignUp *signUpPage;
   ChoosePortfolio *choosePortfolioPage;
   HomePage *homepage;
-  StockDashboard *stockDashboardPage;
+  NewsPage *newsPage;
+  NewOrder *new_order;
   QHBoxLayout *layout;
 };
 #endif // MAINWINDOW_H

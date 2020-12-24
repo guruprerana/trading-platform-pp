@@ -14,20 +14,30 @@ class StockGraph : public QWidget {
   Q_OBJECT
 
  public:
-  explicit StockGraph(QWidget *parent = nullptr);
+  explicit StockGraph(Stock *stock, QWidget *parent = nullptr);
   ~StockGraph();
   void clearData();
   void plot();
+  void initLineChart();
+  void initCandleStick();
+  virtual void initTimeRange() = 0;
+  virtual void setCandlestickBinSize() = 0;
 
- private slots:
-  void realtimeDataSlot();
+ protected slots:
+  virtual void realtimeDataSlot() = 0;
 
- private:
-  Ui::StockGraph *ui;
-  QVector<double> timestamp, high;
-  QTimer dataTimer;
+ protected:
   Stock *stock;
+  Ui::StockGraph *ui;
+  QCPGraph *lineChart;
+  QCPFinancial *candleStick;
+  QVector<double> timestamp, open, high, low, close;
+  QTimer dataTimer;
 };
 QVector<double> convert_to_vector(QJsonObject, std::string);
+
+#define StockGraph_iid "com.acme.StockGraph"
+
+Q_DECLARE_INTERFACE(StockGraph, StockGraph_iid)
 
 #endif // STOCKGRAPH_H

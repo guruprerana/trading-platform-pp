@@ -29,7 +29,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>AAPL - Apple</string>
+      <string>AAPL</string>
      </property>
     </widget>
    </item>
@@ -38,6 +38,37 @@
      <property name="sizeConstraint">
       <enum>QLayout::SetNoConstraint</enum>
      </property>
+     <item>
+      <widget class="QTabWidget" name="tabWidget">
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <widget class="QWidget" name="oneDay">
+        <attribute name="title">
+         <string>1 day</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_3"/>
+       </widget>
+       <widget class="QWidget" name="threeDays">
+        <attribute name="title">
+         <string>3 days</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_4"/>
+       </widget>
+       <widget class="QWidget" name="oneMonth">
+        <attribute name="title">
+         <string>1 month</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_5"/>
+       </widget>
+       <widget class="QWidget" name="sixMonths">
+        <attribute name="title">
+         <string>6 months</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_6"/>
+       </widget>
+      </widget>
+     </item>
     </layout>
    </item>
   </layout>
