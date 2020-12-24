@@ -1,4 +1,4 @@
-#include "../src/api/api.h"
+#include "api/api.h"
 #include <QtTest>
 #include <iostream>
 
