@@ -32,12 +32,12 @@ SOURCES += \
     gui/newscard.cpp \
     gui/newspage.cpp \
     gui/signup.cpp \
-    gui/stockdashboard.cpp \
     gui/stockgraph.cpp \
     gui/stockgraphoneday.cpp \
     gui/stockgraphonemonth.cpp \
     gui/stockgraphsixmonths.cpp \
     gui/stockgraphthreedays.cpp \
+    gui/watchlistcard.cpp \
     main.cpp \
     gui/mainwindow.cpp \
     library/qcustomplot.cpp \
@@ -58,12 +58,12 @@ HEADERS += \
     gui/newscard.h \
     gui/newspage.h \
     gui/signup.h \
-    gui/stockdashboard.h \
     gui/stockgraph.h \
     gui/stockgraphoneday.h \
     gui/stockgraphonemonth.h \
     gui/stockgraphsixmonths.h \
     gui/stockgraphthreedays.h \
+    gui/watchlistcard.h \
     library/qcustomplot.h \
     gui/neworder.h \
     gui/mainwindow.h \
@@ -76,11 +76,11 @@ FORMS += \
     gui/homepage.ui \
     gui/mainwindow.ui \
     gui/signup.ui \
-    gui/stockdashboard.ui \
     gui/stockgraph.ui \
     gui/newscard.ui \
     gui/newspage.ui \
     gui/neworder.ui \
+    gui/watchlistcard.ui \
     gui/widgets/selectwatchlistwidget.ui
 
 DISTFILES += \

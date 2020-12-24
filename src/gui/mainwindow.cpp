@@ -106,6 +106,7 @@ void MainWindow::onCreatePortfolio(QString id, qreal initialAmount,
   session->addPortfolio(new Portfolio(id, initialAmount, watchlist));
 
   // initially toolbar is hidden and shown when submit button pressed
+  homepage->updateWatchlistStocks(session->getCurrentWatchlistStocks());
   this->ui->toolBar->show();
   this->on_actionHome_triggered();
 }
