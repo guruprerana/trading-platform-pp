@@ -5,7 +5,6 @@ StockDashboard::StockDashboard(QWidget *parent) :
   QWidget(parent),
   ui(new Ui::StockDashboard) {
   ui->setupUi(this);
-
   stocks.append(new Stock("AAPL")); // Apple
   stocks.append(new Stock("MSFT")); // Microsoft
   stocks.append(new Stock("AMZN")); // Amazon

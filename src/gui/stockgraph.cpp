@@ -8,24 +8,31 @@ StockGraph::StockGraph(Stock *stock, QWidget *parent) :
   ui(new Ui::StockGraph) {
   ui->setupUi(this);
 
-  ui->plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectAxes |
-                            QCP::iSelectLegend | QCP::iSelectPlottables);
+  ui->plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom |
+                            QCP::iSelectLegend );
   ui->plot->legend->setVisible(true);
   ui->plot->legend->setSelectableParts(QCPLegend::spItems);
-
+  last_price=0;
   initCandleStick();
-  initLineChart();
+  initLineChart();  
   ui->verticalLayout->addWidget(bar);
-  double last_price=0;
-  if (not close.isEmpty()){
-      last_price=close[close.size()-1];
-  }
   bar->showMessage("Current Price "+QString::number(last_price));
   // Initialize the router
-      tracer = new QCPItemTracer(ui->plot);
-      tracer->setGraph(lineChart);
+     tracer = new QCPItemTracer(ui->plot);
+     tracer->setGraph(lineChart);
   //hide the tracer first
       tracer->setVisible(false);
+      //NEW
+      ui->plot->axisRect()->setRangeDrag(Qt::Horizontal);
+      textLabel = new QCPItemText(ui->plot);
+      textLabel->setText("----");
+      textLabel->position->setParentAnchorX(tracer->anchor("position"));
+      textLabel->position->setType(QCPItemPosition::ptViewportRatio);
+      textLabel->setPositionAlignment(Qt::AlignTop|Qt::AlignHCenter);
+      textLabel->position->setCoords(0, 0);
+      textLabel->setPadding(QMargins(210, 4, 210, 10));
+      textLabel->setClipToAxisRect(false);
+      //END_NEW
   // setup a timer that repeatedly calls StockGraph::realtimeDataSlot:
   connect(&dataTimer, SIGNAL(timeout()), this, SLOT(realtimeDataSlot()));
   connect(ui->plot, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(mouse_press(QMouseEvent*)));
@@ -81,6 +88,9 @@ void StockGraph::mouse_press(QMouseEvent *event)
     tracer->setStyle(QCPItemTracer::tsCircle);
     tracer->setPen(QPen(Qt::red));
     tracer->setSize(10);
+    //NEW CODE
+    textLabel->setText(QString::number(tracer->position->value()));
+    //END CODE
     QString ray1="Date "+QDateTime::fromTime_t(int(tracer->position->key())).toString("dd/MM/yyyy hh:mm:ss") + " price: " + QString::number(tracer->position->value())+" $";
     bar->showMessage( ray1);
     ui->plot->replot();
