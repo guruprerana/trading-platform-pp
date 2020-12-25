@@ -25,7 +25,7 @@ class StockGraph : public QWidget {
 
  protected slots:
   virtual void realtimeDataSlot() = 0;
-
+  void mouse_press(QMouseEvent *event);
  protected:
   Stock *stock;
   Ui::StockGraph *ui;
@@ -33,6 +33,8 @@ class StockGraph : public QWidget {
   QCPFinancial *candleStick;
   QVector<double> timestamp, open, high, low, close;
   QTimer dataTimer;
+  QStatusBar *bar = new QStatusBar(this);
+  QCPItemTracer *tracer;
 };
 QVector<double> convert_to_vector(QJsonObject, std::string);
 

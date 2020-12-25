@@ -1,7 +1,7 @@
 #include "stockgraph.h"
 #include "ui_stockgraph.h"
 #include "library/qcustomplot.h"
-
+#include <QDateTime>
 StockGraph::StockGraph(Stock *stock, QWidget *parent) :
   stock(stock),
   QWidget(parent),
@@ -15,9 +15,20 @@ StockGraph::StockGraph(Stock *stock, QWidget *parent) :
 
   initCandleStick();
   initLineChart();
-
+  ui->verticalLayout->addWidget(bar);
+  double last_price=0;
+  if (not close.isEmpty()){
+      last_price=close[close.size()-1];
+  }
+  bar->showMessage("Current Price "+QString::number(last_price));
+  // Initialize the router
+      tracer = new QCPItemTracer(ui->plot);
+      tracer->setGraph(lineChart);
+  //hide the tracer first
+      tracer->setVisible(false);
   // setup a timer that repeatedly calls StockGraph::realtimeDataSlot:
   connect(&dataTimer, SIGNAL(timeout()), this, SLOT(realtimeDataSlot()));
+  connect(ui->plot, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(mouse_press(QMouseEvent*)));
   dataTimer.start(1000); // Interval 0 means to refresh as fast as possible
   ui->plot->replot();
 }
@@ -59,6 +70,20 @@ void StockGraph::initCandleStick() {
   candleStick->setData(timestamp, open, high, low, close);
   candleStick->setTwoColored(true);
   candleStick->setName("Candlestick");
+}
+
+void StockGraph::mouse_press(QMouseEvent *event)
+{
+    double coordX = ui->plot->xAxis->pixelToCoord(event->pos().x());
+    tracer->setVisible(true);
+    tracer->setGraphKey(coordX);
+    tracer->setInterpolating(true);
+    tracer->setStyle(QCPItemTracer::tsCircle);
+    tracer->setPen(QPen(Qt::red));
+    tracer->setSize(10);
+    QString ray1="Date "+QDateTime::fromTime_t(int(tracer->position->key())).toString("dd/MM/yyyy hh:mm:ss") + " price: " + QString::number(tracer->position->value())+" $";
+    bar->showMessage( ray1);
+    ui->plot->replot();
 }
 
 void StockGraph::plot() {
