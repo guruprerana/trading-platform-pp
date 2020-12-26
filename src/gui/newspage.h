@@ -15,8 +15,10 @@ class NewsPage : public QWidget {
  public:
   explicit NewsPage(QWidget *parent = nullptr);
   ~NewsPage();
+  void update();
 
  private:
+  long latestTimestamp;
   Ui::NewsPage *ui;
   News *news;
   QVBoxLayout *layout;
