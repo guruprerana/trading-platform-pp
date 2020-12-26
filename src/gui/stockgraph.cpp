@@ -9,33 +9,33 @@ StockGraph::StockGraph(Stock *stock, QWidget *parent) :
   ui->setupUi(this);
 
   ui->plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom |
-                            QCP::iSelectLegend );
+                            QCP::iSelectLegend);
   ui->plot->legend->setVisible(true);
   ui->plot->legend->setSelectableParts(QCPLegend::spItems);
-  last_price=0;
   initCandleStick();
-  initLineChart();  
-  ui->verticalLayout->addWidget(bar);
-  bar->showMessage("Current Price "+QString::number(last_price));
-  // Initialize the router
-     tracer = new QCPItemTracer(ui->plot);
-     tracer->setGraph(lineChart);
-  //hide the tracer first
-      tracer->setVisible(false);
-      //NEW
-      ui->plot->axisRect()->setRangeDrag(Qt::Horizontal);
-      textLabel = new QCPItemText(ui->plot);
-      textLabel->setText("----");
-      textLabel->position->setParentAnchorX(tracer->anchor("position"));
-      textLabel->position->setType(QCPItemPosition::ptViewportRatio);
-      textLabel->setPositionAlignment(Qt::AlignTop|Qt::AlignHCenter);
-      textLabel->position->setCoords(0, 0);
-      textLabel->setPadding(QMargins(210, 4, 210, 10));
-      textLabel->setClipToAxisRect(false);
-      //END_NEW
+  initLineChart();
+
+  // Initialize the tracer
+  tracer = new QCPItemTracer(ui->plot);
+  tracer->setGraph(lineChart);
+  tracer->setVisible(false);
+  tracer->setInterpolating(false);
+
+  // Initialize tracer text
+  ui->plot->axisRect()->setRangeDrag(Qt::Horizontal | Qt::Vertical);
+  textLabel = new QCPItemText(ui->plot);
+  textLabel->position->setParentAnchorX(tracer->anchor("position"));
+  textLabel->position->setType(QCPItemPosition::ptViewportRatio);
+  textLabel->setPositionAlignment(Qt::AlignTop | Qt::AlignHCenter);
+  textLabel->position->setCoords(0, 0);
+  textLabel->setTextAlignment(Qt::AlignLeft);
+  textLabel->setFont(QFont(font().family(), 9));
+  textLabel->setClipToAxisRect(false);
+
   // setup a timer that repeatedly calls StockGraph::realtimeDataSlot:
   connect(&dataTimer, SIGNAL(timeout()), this, SLOT(realtimeDataSlot()));
-  connect(ui->plot, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(mouse_press(QMouseEvent*)));
+  connect(ui->plot, SIGNAL(mouseMove(QMouseEvent *)), this,
+          SLOT(mouse_press(QMouseEvent *)));
   dataTimer.start(1000); // Interval 0 means to refresh as fast as possible
   ui->plot->replot();
 }
@@ -79,21 +79,21 @@ void StockGraph::initCandleStick() {
   candleStick->setName("Candlestick");
 }
 
-void StockGraph::mouse_press(QMouseEvent *event)
-{
-    double coordX = ui->plot->xAxis->pixelToCoord(event->pos().x());
-    tracer->setVisible(true);
-    tracer->setGraphKey(coordX);
-    tracer->setInterpolating(true);
-    tracer->setStyle(QCPItemTracer::tsCircle);
-    tracer->setPen(QPen(Qt::red));
-    tracer->setSize(10);
-    //NEW CODE
-    textLabel->setText(QString::number(tracer->position->value()));
-    //END CODE
-    QString ray1="Date "+QDateTime::fromTime_t(int(tracer->position->key())).toString("dd/MM/yyyy hh:mm:ss") + " price: " + QString::number(tracer->position->value())+" $";
-    bar->showMessage( ray1);
-    ui->plot->replot();
+void StockGraph::mouse_press(QMouseEvent *event) {
+  double coordX = ui->plot->xAxis->pixelToCoord(event->pos().x());
+  tracer->setVisible(true);
+  tracer->setGraphKey(coordX);
+  tracer->setStyle(QCPItemTracer::tsCircle);
+  tracer->setPen(QPen(Qt::red));
+  tracer->setSize(10);
+  //NEW CODE
+  textLabel->setText(
+    "Date: " + QDateTime::fromTime_t(int(
+                                       tracer->position->key())).toString("dd/MM/yyyy hh:mm:ss") +
+    "\nPrice: " + QString::number(tracer->position->value()) + "$"
+  );
+  //END CODE
+  ui->plot->replot();
 }
 
 void StockGraph::plot() {

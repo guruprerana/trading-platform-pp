@@ -33,10 +33,8 @@ class StockGraph : public QWidget {
   QCPFinancial *candleStick;
   QVector<double> timestamp, open, high, low, close;
   QTimer dataTimer;
-  QStatusBar *bar = new QStatusBar(this);
   QCPItemTracer *tracer;
   QCPItemText *textLabel;
-  double last_price;
 };
 QVector<double> convert_to_vector(QJsonObject, std::string);
 
