@@ -51,6 +51,7 @@ void StockGraphOneDay::realtimeDataSlot() {
 
     clearData();
     double now = QDateTime::currentDateTime().toTime_t();
+
     // 86400 is the number of seconds per day: Here we show a 1-day interval
     ui->plot->xAxis->setRange(now - 86400, now);
 

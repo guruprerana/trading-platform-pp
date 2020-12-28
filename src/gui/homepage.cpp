@@ -28,7 +28,8 @@ void HomePage::updateWatchlistStocks(QVector<Stock *> other_watchlistStocks) {
   newsId = 0;
 
   for (auto stock : watchlistStocks) {
-    ui->watchlist->layout()->addWidget(new WatchlistCard(stock));
+    WatchlistCard *card = new WatchlistCard(stock);
+    ui->watchlist->layout()->addWidget(card);
   }
 
   ui->watchlist->layout()->addItem(new QSpacerItem(40, 20, QSizePolicy::Preferred,

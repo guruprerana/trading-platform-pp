@@ -19,6 +19,7 @@ win32 {
   INCLUDEPATH += C:/curl-7.74.0-win64-mingw/include
 }
 
+LIBS += -lcurl
 SOURCES += \
     api/api.cpp \
     components/news.cpp \
@@ -31,6 +32,7 @@ SOURCES += \
     gui/homepage.cpp \
     gui/newscard.cpp \
     gui/newspage.cpp \
+    gui/nodatapage.cpp \
     gui/signup.cpp \
     gui/stockgraph.cpp \
     gui/stockgraphoneday.cpp \
@@ -57,6 +59,7 @@ HEADERS += \
     gui/homepage.h \
     gui/newscard.h \
     gui/newspage.h \
+    gui/nodatapage.h \
     gui/signup.h \
     gui/stockgraph.h \
     gui/stockgraphoneday.h \
@@ -75,6 +78,7 @@ FORMS += \
     gui/companynewscard.ui \
     gui/homepage.ui \
     gui/mainwindow.ui \
+    gui/nodatapage.ui \
     gui/signup.ui \
     gui/stockgraph.ui \
     gui/newscard.ui \
