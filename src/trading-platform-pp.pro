@@ -30,6 +30,7 @@ SOURCES += \
     gui/homepage.cpp \
     gui/newscard.cpp \
     gui/newspage.cpp \
+    gui/nodatapage.cpp \
     gui/signup.cpp \
     gui/stockdashboard.cpp \
     gui/stockgraph.cpp \
@@ -54,6 +55,7 @@ HEADERS += \
     gui/homepage.h \
     gui/newscard.h \
     gui/newspage.h \
+    gui/nodatapage.h \
     gui/signup.h \
     gui/stockdashboard.h \
     gui/stockgraph.h \
@@ -71,6 +73,7 @@ FORMS += \
     gui/chooseportfolio.ui \
     gui/homepage.ui \
     gui/mainwindow.ui \
+    gui/nodatapage.ui \
     gui/signup.ui \
     gui/stockdashboard.ui \
     gui/stockgraph.ui \

@@ -51,6 +51,8 @@ void StockGraphOneMonth::realtimeDataSlot() {
 
     clearData();
     double now = QDateTime::currentDateTime().toTime_t();
+    //2628288 is the number of seconds per month: Here we show a 1-month interval
+    ui->plot->xAxis->setRange(now - 2628288, now);
 
     for (int i = 0; i < time.size(); i++) {
       if (time[i] >= now - 2628288 && time[i] <= now) {

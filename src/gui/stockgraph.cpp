@@ -2,6 +2,7 @@
 #include "ui_stockgraph.h"
 #include "library/qcustomplot.h"
 #include <QDateTime>
+
 StockGraph::StockGraph(Stock *stock, QWidget *parent) :
   stock(stock),
   QWidget(parent),
@@ -18,6 +19,10 @@ StockGraph::StockGraph(Stock *stock, QWidget *parent) :
   // Initialize the tracer
   tracer = new QCPItemTracer(ui->plot);
   tracer->setGraph(lineChart);
+  tracer->setStyle(QCPItemTracer::tsCircle);
+  tracer->setPen(QPen(Qt::black, 1.5));
+  tracer->setBrush(QBrush(Qt::white));
+  tracer->setSize(10);
   tracer->setVisible(false);
   tracer->setInterpolating(false);
 
@@ -58,10 +63,10 @@ void StockGraph::clearData() {
 
 void StockGraph::initLineChart() {
   lineChart = new QCPGraph(ui->plot->xAxis, ui->plot->yAxis);
-  lineChart->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle,
-                             QPen(Qt::black, 1.5), QBrush(Qt::white), 3));
+//  lineChart->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle,
+//                             QPen(Qt::black, 1.5), QBrush(Qt::white), 3));
   lineChart->setLineStyle(QCPGraph::lsLine);
-  lineChart->setPen(QPen(QColor(120, 120, 120), 2));
+  lineChart->setPen(QPen(QColor(120, 120, 120), 3));
   lineChart->keyAxis()->setUpperEnding(QCPLineEnding::esSpikeArrow);
   lineChart->valueAxis()->setUpperEnding(QCPLineEnding::esSpikeArrow);
 
@@ -80,12 +85,14 @@ void StockGraph::initCandleStick() {
 }
 
 void StockGraph::mouse_press(QMouseEvent *event) {
+  if (timestamp.isEmpty() || close.isEmpty()) {
+    return;
+  }
+
   double coordX = ui->plot->xAxis->pixelToCoord(event->pos().x());
   tracer->setVisible(true);
   tracer->setGraphKey(coordX);
-  tracer->setStyle(QCPItemTracer::tsCircle);
-  tracer->setPen(QPen(Qt::red));
-  tracer->setSize(10);
+
   //NEW CODE
   textLabel->setText(
     "Date: " + QDateTime::fromTime_t(int(
@@ -97,6 +104,10 @@ void StockGraph::mouse_press(QMouseEvent *event) {
 }
 
 void StockGraph::plot() {
+  if (timestamp.isEmpty() || close.isEmpty()) {
+    return;
+  }
+
   lineChart->setData(timestamp, close);
   candleStick->setData(timestamp, open, high, low, close);
   ui->plot->xAxis->setRange(timestamp[0],

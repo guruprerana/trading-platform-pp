@@ -1,5 +1,6 @@
 #include "stockdashboard.h"
 #include "ui_stockdashboard.h"
+#include "nodatapage.h"
 
 StockDashboard::StockDashboard(QWidget *parent) :
   QWidget(parent),
@@ -19,11 +20,13 @@ StockDashboard::StockDashboard(QWidget *parent) :
   ui->threeDays->layout()->addWidget(stockGraphThreeDays);
   ui->oneMonth->layout()->addWidget(stockGraphOneMonth);
   ui->sixMonths->layout()->addWidget(stockGraphSixMonths);
+
   ui->symbol->setText(QString((stocks[1]->getSymbol()).c_str()));
 }
 
 StockDashboard::~StockDashboard() {
   delete ui;
+  delete stockGraphOneDay;
   delete stockGraphThreeDays;
   delete stockGraphOneMonth;
   delete stockGraphSixMonths;

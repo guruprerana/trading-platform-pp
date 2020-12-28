@@ -51,6 +51,10 @@ void StockGraphThreeDays::realtimeDataSlot() {
 
     clearData();
 
+    double now = QDateTime::currentDateTime().toTime_t();
+    // 86400 is the number of seconds per day: Here we show a 3-day interval
+    ui->plot->xAxis->setRange(now - 3 * 86400, now);
+
     for (int i = 0; i < time.size(); i += 5) {
       timestamp.append(time[i]);
       open.append(o[i]);

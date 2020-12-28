@@ -49,6 +49,10 @@ void StockGraphSixMonths::realtimeDataSlot() {
     l = convert_to_vector(dataByDay, "l");
     c = convert_to_vector(dataByDay, "c");
 
+    double now = QDateTime::currentDateTime().toTime_t();
+    //2628288 is the number of seconds per month: Here we show a 6-month interval
+    ui->plot->xAxis->setRange(now - 2628288 * 6, now);
+
     for (int i = timestamp.size(); i < time.size(); i++) {
       timestamp.append(time[i]);
       open.append(o[i]);
