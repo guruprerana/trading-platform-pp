@@ -1,5 +1,6 @@
 #include "strategy.h"
 #include "../components/stock.h"
+#include "../helper/helper.cpp"
 #include "../helper/QJsonObjectManipulation.h"
 #include <string>
 #include <tuple>
