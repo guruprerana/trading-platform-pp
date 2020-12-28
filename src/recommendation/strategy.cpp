@@ -1,7 +1,7 @@
 #include "strategy.h"
 #include "../components/stock.h"
 #include "../helper/helper.cpp"
-#include "../helper/QJsonObjectManipulation.h"
+#include "../helper/helper.h"
 #include <string>
 #include <tuple>
 #include <map>
@@ -47,7 +47,7 @@ std::map<long, double> Strategy::get_data(int N, int k){
         this->stock->updateDataByDay();
         jsonData = this->stock->getDataByDay();
     }
-    std::map<std::string, std::map<long, double>> mapData = convertToMap(jsonData); //converts the QJsonObject with the data of the last 6 months into a std::map<std::string, std::ap<long, double>> {price_type : {time:price}}
+    std::map<std::string, std::map<long, double>> mapData = helper::convertToMap(jsonData); //converts the QJsonObject with the data of the last 6 months into a std::map<std::string, std::ap<long, double>> {price_type : {time:price}}
     std::map<long, double> price_map;
     for (auto it = mapData.begin(); it != mapData.end(); ++it){
         if (it->first == this->get_price_type()){ //take the map <long, double> associated to the price_type chosen at the beginning
