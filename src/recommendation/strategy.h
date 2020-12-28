@@ -13,12 +13,12 @@ class Strategy
 {
 public:
     Strategy();
-    Strategy(char& strategy_name, Stock *stock, bool data_by_minute, std::string price_type);
+    Strategy(std::string strategy_name, Stock *stock, bool data_by_minute, std::string price_type);
     ~Strategy();
     void set_stock(Stock* stock);
     Stock* get_stock();
     std::string get_name();
-    std::string get_price_type();    
+    std::string get_price_type();
     std::map<long, double> get_data(int N, int k = 0);
     double calculate_sma(std::map<long, double> &bars);
     double calculate_ema(std::map<long, double> &bars);
@@ -37,10 +37,6 @@ protected:
     // The heart of each strategy, which we have already implemented within subteams
 
     /* virtual */ void simulate();
-
-    // Plot the graphs associated with the strategy
-    // Add BUY/SELL signal points
-
 
 
     // more advanced member functions - to be implemented if time permits

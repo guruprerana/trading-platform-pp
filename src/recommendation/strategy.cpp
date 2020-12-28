@@ -18,11 +18,11 @@ Strategy::Strategy(){
     data_by_minute = true;
     this->strategy_name = "None";
     this->stock = nullptr;
-    this->data_by_minute = false; //by default it is by day 
-    this->price_type = 'c'; // by default consider closing price 
+    this->data_by_minute = false; //by default it is by day
+    this->price_type = 'c'; // by default consider closing price
 }
 
-Strategy::Strategy(char& strategy_name, Stock *stock, bool data_by_minute, std::string price_type){
+Strategy::Strategy(std::string strategy_name, Stock *stock, bool data_by_minute, std::string price_type){
     this->strategy_name = strategy_name; //possible names {'MOM', 'EMA', 'LR'}
     this->stock = stock;
     this->data_by_minute = data_by_minute; //if false, the data is provided by day
@@ -57,7 +57,7 @@ std::map<long, double> Strategy::get_data(int N, int k){
     std::map<long, double> res;
     int count = 0;
     for (auto it = price_map.begin(); it != price_map.end(); ++it){
-        if (count >=k && count <N+k){ 
+        if (count >=k && count <N+k){
             res[it->first] = it->second;
         }
         if (count==N+k){
@@ -83,7 +83,7 @@ bool Strategy::exponential_moving_average(){
 }
 
 
-// Calculate Simple Moving Average 
+// Calculate Simple Moving Average
 double Strategy::calculate_sma(std::map<long, double> &bars) {
          assert(!bars.empty());
          double sum = 0;
@@ -136,7 +136,7 @@ std::tuple<bool, double> Strategy::momentum(){
      }
      else if (action == -1) {
          return std::make_tuple(true, 0.8);
-     }      
+     }
      if (action == 1){
          return std::make_tuple(true, 1.0);
 
@@ -178,12 +178,12 @@ bool Strategy::linear_regression(){
     std::map<long, double> bars = this->get_data(20);
     auto res = this->auxiliary_linear_regression(bars);
     double slope = std::get<0>(res);
-    if (slope <= 0){ 
+    if (slope <= 0){
         return false;
     }
     else{
-        return true; 
-    } 
+        return true;
+    }
 }
 
 
@@ -203,7 +203,7 @@ std::tuple<bool, double> Strategy::calculate_signals(){
     }
     if (this->str3.compare(name) == 0){//linear regression
         bought= this->linear_regression();
-    } 
+    }
     return std::make_tuple(bought, percentage);
 }
 
@@ -250,7 +250,7 @@ void Strategy::simulate(){
         double image = slope*(-k)+yintercept;
         data_plot_short.insert(std::pair<int, double>(k, image));
         }
-    } 
+    }
     
 }
 
