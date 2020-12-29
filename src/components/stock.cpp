@@ -49,7 +49,7 @@ QMap<std::string, QVector<double>> Stock::updateDataByMinute() {
   API *api = new API();
   std::time_t t = std::time(0);
   std::string apiResponse = api->getStockData(getSymbol(), "1",
-                            std::max(t - 259200, getLatestTimestampByMinute()), t);
+                            std::max(t - 459200, getLatestTimestampByMinute()), t);
   // 259200 represents 3 days in seconds. Basically we want the api to call 3 days worth of data with 1-minute intervals
   // if we have never called the data before otherwise we update.
   latestTimeStampByMinute = t;
@@ -65,6 +65,7 @@ QMap<std::string, QVector<double>> Stock::updateDataByMinute() {
       QVector<double> initialVector = dataByMinute[k];
       QVector<double> vectorToAppend = helper::convert_to_vector(dataUpdate, k);
       initialVector += vectorToAppend;
+      dataByMinute[k] = initialVector;
       updateMap[k] = vectorToAppend;
     }
   }
