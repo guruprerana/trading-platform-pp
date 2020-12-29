@@ -1,14 +1,49 @@
 #include "stockgraphoneday.h"
 #include "ui_stockgraph.h"
 
-StockGraphOneDay::StockGraphOneDay(Stock *stock, QWidget *parent) :
-  StockGraph(stock, parent) {
+StockGraphOneDay::StockGraphOneDay(QWidget *parent) :
+  StockGraph(parent) {
   initTimeRange();
   setCandlestickBinSize();
 }
 
 StockGraphOneDay::~StockGraphOneDay() {
 
+}
+
+void StockGraphOneDay::setStock(Stock *other_stock) {
+  stock = other_stock;
+  updateData();
+}
+
+void StockGraphOneDay::updateData() {
+  stock->updateDataByMinute();
+  QJsonObject dataByMinute = stock->getDataByMinute();
+
+  QVector<double> time, o, h, l, c;
+  time = convert_to_vector(dataByMinute, "t");
+  o = convert_to_vector(dataByMinute, "o");
+  h = convert_to_vector(dataByMinute, "h");
+  l = convert_to_vector(dataByMinute, "l");
+  c = convert_to_vector(dataByMinute, "c");
+
+  clearData();
+  double now = QDateTime::currentDateTime().toTime_t();
+
+  // 86400 is the number of seconds per day: Here we show a 1-day interval
+  ui->plot->xAxis->setRange(now - 86400, now);
+
+  for (int i = 0; i < time.size(); i++) {
+    if (time[i] >= now - 86400 && time[i] <= now) {
+      timestamp.append(time[i]);
+      open.append(o[i]);
+      high.append(h[i]);
+      low.append(l[i]);
+      close.append(c[i]);
+    }
+  }
+
+  plot();
 }
 
 void StockGraphOneDay::initTimeRange() {
@@ -32,6 +67,10 @@ void StockGraphOneDay::setCandlestickBinSize() {
 }
 
 void StockGraphOneDay::realtimeDataSlot() {
+  if (stock == nullptr) {
+    return;
+  }
+
   static QTime time(QTime::currentTime());
   //calculate two new data points:
   double key = time.elapsed() /
@@ -39,33 +78,7 @@ void StockGraphOneDay::realtimeDataSlot() {
   static double lastPointKey = -1e9;
 
   if (key - lastPointKey >= 60) { // 1 minute
-    stock->updateDataByMinute();
-    QJsonObject dataByMinute = stock->getDataByMinute();
-
-    QVector<double> time, o, h, l, c;
-    time = convert_to_vector(dataByMinute, "t");
-    o = convert_to_vector(dataByMinute, "o");
-    h = convert_to_vector(dataByMinute, "h");
-    l = convert_to_vector(dataByMinute, "l");
-    c = convert_to_vector(dataByMinute, "c");
-
-    clearData();
-    double now = QDateTime::currentDateTime().toTime_t();
-
-    // 86400 is the number of seconds per day: Here we show a 1-day interval
-    ui->plot->xAxis->setRange(now - 86400, now);
-
-    for (int i = 0; i < time.size(); i++) {
-      if (time[i] >= now - 86400 && time[i] <= now) {
-        timestamp.append(time[i]);
-        open.append(o[i]);
-        high.append(h[i]);
-        low.append(l[i]);
-        close.append(c[i]);
-      }
-    }
-
-    plot();
+    updateData();
     lastPointKey = key;
   }
 }

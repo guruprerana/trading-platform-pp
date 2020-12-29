@@ -8,8 +8,10 @@ class StockGraphThreeDays : public StockGraph {
   Q_INTERFACES(StockGraph)
 
  public:
-  explicit StockGraphThreeDays(Stock *stock, QWidget *parent = nullptr);
+  explicit StockGraphThreeDays(QWidget *parent = nullptr);
   ~StockGraphThreeDays();
+  void setStock(Stock *other_stock);
+  void updateData();
   void initTimeRange();
   void setCandlestickBinSize();
 

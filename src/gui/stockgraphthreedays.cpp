@@ -1,14 +1,45 @@
 #include "stockgraphthreedays.h"
 #include "ui_stockgraph.h"
 
-StockGraphThreeDays::StockGraphThreeDays(Stock *stock, QWidget *parent) :
-  StockGraph(stock, parent) {
+StockGraphThreeDays::StockGraphThreeDays(QWidget *parent) :
+  StockGraph(parent) {
   initTimeRange();
   setCandlestickBinSize();
 }
 
 StockGraphThreeDays::~StockGraphThreeDays() {
 
+}
+
+void StockGraphThreeDays::setStock(Stock *other_stock) {
+  stock = other_stock;
+  updateData();
+}
+
+void StockGraphThreeDays::updateData() {
+  stock->updateDataByDay();
+  QJsonObject dataByDay = stock->getDataByDay();
+
+  QVector<double> time, o, h, l, c;
+  time = convert_to_vector(dataByDay, "t");
+  o = convert_to_vector(dataByDay, "o");
+  h = convert_to_vector(dataByDay, "h");
+  l = convert_to_vector(dataByDay, "l");
+  c = convert_to_vector(dataByDay, "c");
+
+  double now = QDateTime::currentDateTime().toTime_t();
+  //2628288 is the number of seconds per month: Here we show a 6-month interval
+  ui->plot->xAxis->setRange(now - 2628288 * 6, now);
+
+  for (int i = timestamp.size(); i < time.size(); i++) {
+    timestamp.append(time[i]);
+    open.append(o[i]);
+    high.append(h[i]);
+    low.append(l[i]);
+    close.append(c[i]);
+  }
+
+  plot();
 }
 
 void StockGraphThreeDays::initTimeRange() {
@@ -32,6 +63,10 @@ void StockGraphThreeDays::setCandlestickBinSize() {
 }
 
 void StockGraphThreeDays::realtimeDataSlot() {
+  if (stock == nullptr) {
+    return;
+  }
+
   static QTime time(QTime::currentTime());
   //calculate two new data points:
   double key = time.elapsed() /
@@ -39,31 +74,7 @@ void StockGraphThreeDays::realtimeDataSlot() {
   static double lastPointKey = -1e9;
 
   if (key - lastPointKey >= 60) { // 1 minute
-    stock->updateDataByMinute();
-    QJsonObject dataByMinute = stock->getDataByMinute();
-
-    QVector<double> time, o, h, l, c;
-    time = convert_to_vector(dataByMinute, "t");
-    o = convert_to_vector(dataByMinute, "o");
-    h = convert_to_vector(dataByMinute, "h");
-    l = convert_to_vector(dataByMinute, "l");
-    c = convert_to_vector(dataByMinute, "c");
-
-    clearData();
-
-    double now = QDateTime::currentDateTime().toTime_t();
-    // 86400 is the number of seconds per day: Here we show a 3-day interval
-    ui->plot->xAxis->setRange(now - 3 * 86400, now);
-
-    for (int i = 0; i < time.size(); i += 5) {
-      timestamp.append(time[i]);
-      open.append(o[i]);
-      high.append(h[i]);
-      low.append(l[i]);
-      close.append(c[i]);
-    }
-
-    plot();
+    updateData();
     lastPointKey = key;
   }
 }

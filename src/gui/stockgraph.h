@@ -6,6 +6,8 @@
 #include "components/stock.h"
 #include <QVariant>
 #include "library/qcustomplot.h"
+#include "components/stock.h"
+
 namespace Ui {
 class StockGraph;
 }
@@ -14,18 +16,21 @@ class StockGraph : public QWidget {
   Q_OBJECT
 
  public:
-  explicit StockGraph(Stock *stock, QWidget *parent = nullptr);
+  explicit StockGraph(QWidget *parent = nullptr);
   ~StockGraph();
   void clearData();
   void plot();
   void initLineChart();
   void initCandleStick();
+  virtual void setStock(Stock *other_stock) = 0;
+  virtual void updateData() = 0;
   virtual void initTimeRange() = 0;
   virtual void setCandlestickBinSize() = 0;
 
  protected slots:
   virtual void realtimeDataSlot() = 0;
   void mouse_press(QMouseEvent *event);
+
  protected:
   Stock *stock;
   Ui::StockGraph *ui;

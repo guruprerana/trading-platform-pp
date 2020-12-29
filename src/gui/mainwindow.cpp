@@ -13,8 +13,11 @@ MainWindow::MainWindow(QWidget *parent)
   // we add all the pages to the layout and then just hide them
   // when they are not displayed
   signUpPage = new SignUp(this);
+  std::cout << "sign up" << endl;
   choosePortfolioPage = new ChoosePortfolio(this);
+  std::cout << "choose portfolio page" << endl;
   homepage = new HomePage(this);
+  std::cout << "home page" << endl;
   newsPage = new NewsPage(this);
   new_order = new NewOrder(this);
 

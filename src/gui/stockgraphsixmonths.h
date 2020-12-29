@@ -8,8 +8,10 @@ class StockGraphSixMonths : public StockGraph {
   Q_INTERFACES(StockGraph)
 
  public:
-  explicit StockGraphSixMonths(Stock *stock, QWidget *parent = nullptr);
+  explicit StockGraphSixMonths(QWidget *parent = nullptr);
   ~StockGraphSixMonths();
+  void setStock(Stock *other_stock);
+  void updateData();
   void initTimeRange();
   void setCandlestickBinSize();
 

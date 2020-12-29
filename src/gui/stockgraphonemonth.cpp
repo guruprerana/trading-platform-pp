@@ -1,14 +1,48 @@
 #include "stockgraphonemonth.h"
 #include "ui_stockgraph.h"
 
-StockGraphOneMonth::StockGraphOneMonth(Stock *stock, QWidget *parent) :
-  StockGraph(stock, parent) {
+StockGraphOneMonth::StockGraphOneMonth(QWidget *parent) :
+  StockGraph(parent) {
   initTimeRange();
   setCandlestickBinSize();
 }
 
 StockGraphOneMonth::~StockGraphOneMonth() {
 
+}
+
+void StockGraphOneMonth::setStock(Stock *other_stock) {
+  stock = other_stock;
+  realtimeDataSlot();
+}
+
+void StockGraphOneMonth::updateData() {
+  stock->updateDataByDay();
+  QJsonObject dataByDay = stock->getDataByDay();
+
+  QVector<double> time, o, h, l, c;
+  time = convert_to_vector(dataByDay, "t");
+  o = convert_to_vector(dataByDay, "o");
+  h = convert_to_vector(dataByDay, "h");
+  l = convert_to_vector(dataByDay, "l");
+  c = convert_to_vector(dataByDay, "c");
+
+  clearData();
+  double now = QDateTime::currentDateTime().toTime_t();
+  //2628288 is the number of seconds per month: Here we show a 1-month interval
+  ui->plot->xAxis->setRange(now - 2628288, now);
+
+  for (int i = 0; i < time.size(); i++) {
+    if (time[i] >= now - 2628288 && time[i] <= now) {
+      timestamp.append(time[i]);
+      open.append(o[i]);
+      high.append(h[i]);
+      low.append(l[i]);
+      close.append(c[i]);
+    }
+  }
+
+  plot();
 }
 
 void StockGraphOneMonth::initTimeRange() {
@@ -32,6 +66,10 @@ void StockGraphOneMonth::setCandlestickBinSize() {
 }
 
 void StockGraphOneMonth::realtimeDataSlot() {
+  if (stock == nullptr) {
+    return;
+  }
+
   static QTime time(QTime::currentTime());
   //calculate two new data points:
   double key = time.elapsed() /
@@ -39,32 +77,7 @@ void StockGraphOneMonth::realtimeDataSlot() {
   static double lastPointKey = -1e9;
 
   if (key - lastPointKey >= 200) { // 200 seconds
-    stock->updateDataByDay();
-    QJsonObject dataByDay = stock->getDataByDay();
-
-    QVector<double> time, o, h, l, c;
-    time = convert_to_vector(dataByDay, "t");
-    o = convert_to_vector(dataByDay, "o");
-    h = convert_to_vector(dataByDay, "h");
-    l = convert_to_vector(dataByDay, "l");
-    c = convert_to_vector(dataByDay, "c");
-
-    clearData();
-    double now = QDateTime::currentDateTime().toTime_t();
-    //2628288 is the number of seconds per month: Here we show a 1-month interval
-    ui->plot->xAxis->setRange(now - 2628288, now);
-
-    for (int i = 0; i < time.size(); i++) {
-      if (time[i] >= now - 2628288 && time[i] <= now) {
-        timestamp.append(time[i]);
-        open.append(o[i]);
-        high.append(h[i]);
-        low.append(l[i]);
-        close.append(c[i]);
-      }
-    }
-
-    plot();
+    updateData();
     lastPointKey = key;
   }
 }

@@ -15,6 +15,11 @@ class WatchlistCard : public QWidget {
   explicit WatchlistCard(Stock *stock, QWidget *parent = nullptr);
   ~WatchlistCard();
 
+  void setChecked(bool isChecked);
+
+ signals:
+  void clicked();
+
  private:
   Ui::WatchlistCard *ui;
   Stock *stock;

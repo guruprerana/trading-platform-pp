@@ -3,8 +3,7 @@
 #include "library/qcustomplot.h"
 #include <QDateTime>
 
-StockGraph::StockGraph(Stock *stock, QWidget *parent) :
-  stock(stock),
+StockGraph::StockGraph(QWidget *parent) :
   QWidget(parent),
   ui(new Ui::StockGraph) {
   ui->setupUi(this);
