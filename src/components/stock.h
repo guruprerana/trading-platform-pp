@@ -3,12 +3,14 @@
 
 #include <string>
 #include <QJsonObject>
+#include <QMap>
+#include <QVector>
 
 class Stock {
  private:
   std::string symbol;
   QJsonObject dataByDay;
-  QJsonObject dataByMinute;
+  QMap<std::string, QVector<double>> dataByMinute;
   long latestTimeStampByDay;
   long latestTimeStampByMinute;
   std::string stockNews;
@@ -21,10 +23,10 @@ class Stock {
   long getLatestTimestampByDay();
   long getLatestTimestampByMinute();
   QJsonObject getDataByDay();
-  QJsonObject getDataByMinute();
+  QMap<std::string, QVector<double>> getDataByMinute();
   std::string getNews();
   void updateDataByDay();
-  void updateDataByMinute();
+  QMap<std::string, QVector<double>> updateDataByMinute();
   void updateNews();
 };
 

@@ -29,10 +29,15 @@ class TestStock : public QObject {
   void TestStock::testUpdateData(){
       Stock *apple = new Stock("AAPL");
       apple->updateDataByMinute();
-      QJsonObject jsonDataMinute = apple->getDataByMinute();
-      std::string textDataMinute = helper::convertToString(jsonDataMinute);
-      std::cout << textDataMinute << std::endl;
-      QVERIFY(textDataMinute.size() != 0 && textDataMinute != "{}");
+      QMap<std::string, QVector<double>> jsonDataMinute = apple->getDataByMinute();
+      for (auto it : jsonDataMinute.toStdMap()) {
+          std::cout << it.first << " : ";
+          std::vector<double> internal_map = it.second.toStdVector();
+          for (auto it2: internal_map) {
+                  std::cout << ",";
+               std::cout << it2 << ":" << it2;
+          }
+      }
 
       apple->updateDataByDay();
       QJsonObject jsonDataDay = apple->getDataByDay();

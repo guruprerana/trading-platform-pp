@@ -5,6 +5,7 @@
 #include <QString>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <string>
 
 Stock::Stock(std::string symbol) {
   this->symbol = symbol;
@@ -35,7 +36,7 @@ QJsonObject Stock::getDataByDay() {
   return dataByDay;
 }
 
-QJsonObject Stock::getDataByMinute() {
+QMap<std::string, QVector<double>> Stock::getDataByMinute() {
   return dataByMinute;
 }
 
@@ -44,26 +45,40 @@ std::string Stock::getNews() {
 }
 
 
-void Stock::updateDataByMinute() {
+QMap<std::string, QVector<double>> Stock::updateDataByMinute() {
   API *api = new API();
   std::time_t t = std::time(0);
   std::string apiResponse = api->getStockData(getSymbol(), "1",
-                            t - 259200, t);
+                            std::max(t - 259200, getLatestTimestampByMinute()), t);
   // 259200 represents 3 days in seconds. Basically we want the api to call 3 days worth of data with 1-minute intervals
+  // if we have never called the data before otherwise we update.
   latestTimeStampByMinute = t;
+  QMap<std::string, QVector<double>> updateMap;
 
   //update latestTimeStampByMinute
   if (apiResponse != "{\"s\":\"no_data\"}") {
-    dataByMinute = helper::parseJson(apiResponse);
+    QJsonObject dataUpdate = helper::parseJson(apiResponse);
+    std::string s = "chlot";
+
+    for (char &c : s) {
+      std::string k(1, c);
+      QVector<double> initialVector = dataByMinute[k];
+      QVector<double> vectorToAppend = helper::convert_to_vector(dataUpdate, k);
+      initialVector += vectorToAppend;
+      updateMap[k] = vectorToAppend;
+    }
   }
+
+  return updateMap;
 }
 
 void Stock::updateDataByDay() {
   API *api = new API();
   std::time_t t = std::time(0);
   std::string apiResponse = api->getStockData(getSymbol(), "D",
-                            t - 15768000, t);
+                            std::max(t - 15768000, getLatestTimestampByDay()), t);
   // 15768000 represents 6 months in seconds. Basically we want the api to call 6 months worth of data with 1-day intervals
+  // if we have never called the data before, otherwise we only update what we are missing
   latestTimeStampByDay = t;
 
   //update latestTimeStampByDay
