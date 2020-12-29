@@ -31,7 +31,9 @@ void StockGraphSixMonths::updateData() {
   //2628288 is the number of seconds per month: Here we show a 6-month interval
   ui->plot->xAxis->setRange(now - 2628288 * 6, now);
 
-  for (int i = timestamp.size(); i < time.size(); i++) {
+  clearData();
+
+  for (int i = 0; i < time.size(); i++) {
     timestamp.append(time[i]);
     open.append(o[i]);
     high.append(h[i]);

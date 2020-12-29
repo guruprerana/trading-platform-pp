@@ -28,10 +28,12 @@ void StockGraphThreeDays::updateData() {
   c = convert_to_vector(dataByDay, "c");
 
   double now = QDateTime::currentDateTime().toTime_t();
-  //2628288 is the number of seconds per month: Here we show a 6-month interval
-  ui->plot->xAxis->setRange(now - 2628288 * 6, now);
+  // 86400 is the number of seconds per day: Here we show a 3-day interval
+  ui->plot->xAxis->setRange(now - 3 * 86400, now);
 
-  for (int i = timestamp.size(); i < time.size(); i++) {
+  clearData();
+
+  for (int i = 0; i < time.size(); i++) {
     timestamp.append(time[i]);
     open.append(o[i]);
     high.append(h[i]);
