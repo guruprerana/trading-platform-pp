@@ -8,16 +8,10 @@ CONFIG += c++11
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-linux-g++* {
-  LIBS += -lcurl
-}
+LIBS += -lcurl
 
-win32 {
-  # remember to put libcurl-x64 to mingw folder
-  LIBS += C:/curl-7.74.0-win64-mingw/lib/libcurl.a \
-          C:/curl-7.74.0-win64-mingw/lib/libcurl.dll.a
-  INCLUDEPATH += C:/curl-7.74.0-win64-mingw/include
-}
+
+
 
 SOURCES += \
     api/api.cpp \
@@ -34,7 +28,9 @@ SOURCES += \
     gui/widgets/selectwatchlistwidget.cpp \
     main.cpp \
     gui/mainwindow.cpp \
-    gui/neworder.cpp
+    gui/neworder.cpp \
+    recommendation/strategy.cpp
+
 
 HEADERS += \
     api/api.h \
@@ -47,13 +43,11 @@ HEADERS += \
     gui/newscard.h \
     gui/newspage.h \
     gui/signup.h \
-    components/portfolio/portfolio.h \
-    components/trading_order/trading_order.h \
-    helper/helper.h \
     gui/neworder.h \
     gui/mainwindow.h \
     gui/widgets/selectwatchlistwidget.h \
-    helper/helper.h
+    helper/helper.h \
+    recommendation/strategy.h
     
 FORMS += \
     gui/chooseportfolio.ui \
