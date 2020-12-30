@@ -4,6 +4,8 @@
 #include "../../components/stock.h"
 #include "../../gui/strategydashboard.h"
 #include <map>
+#include <QList>
+#include <Qvector>
 
 class Strategy
 {
