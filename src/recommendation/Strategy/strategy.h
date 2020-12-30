@@ -5,7 +5,7 @@
 #include "../../gui/strategydashboard.h"
 #include <map>
 #include <QList>
-#include <Qvector>
+#include <QVector>
 
 class Strategy
 {
