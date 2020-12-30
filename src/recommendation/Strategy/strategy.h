@@ -2,7 +2,6 @@
 #define STRATEGY_H
 
 #include "../../components/stock.h"
-#include "../../gui/strategydashboard.h"
 #include <map>
 #include <QList>
 #include <QVector>
