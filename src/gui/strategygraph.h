@@ -18,7 +18,6 @@ class StrategyGraph;
 class StrategyGraph : public QWidget
 {
     Q_OBJECT
-    Q_INTERFACES(StrategyGraph)
 public:
     StrategyGraph();
     StrategyGraph(QWidget *parent, QList<EMAStrategy*>& strategies, long& timePeriod);
@@ -42,9 +41,4 @@ public:
 };
 
 QVector<double> convert_to_vector(QJsonObject, std::string);
-
-#define StrategyGraph_iid "com.acme.StrategyGraph"
-
-Q_DECLARE_INTERFACE(StrategyGraph, StrategyGraph_iid)
-
 #endif // STRATEGYGRAPH_H
