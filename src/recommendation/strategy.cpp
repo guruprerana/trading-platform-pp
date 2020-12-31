@@ -51,9 +51,11 @@ std::map<long, double> Strategy::get_data(int N, int k){
 
     std::map<long, double> res;
     int count = 0;
+    int map_index = 0;
     for (auto it : price_map){
         if (count >=k && count <N+k){
-            res[it.first] = it.second;
+            res[map_index] = it.second;
+            map_index +=1;
         }
         if (count==N+k){
            return res;
@@ -142,7 +144,7 @@ std::tuple<bool, double> Strategy::momentum(){
 double Strategy::compute_average_key(std::map<long, double> &bars){
     double key_average = 0;
     for (auto item : bars) {
-            key_average += item.first;
+        key_average += item.first;
         }
     return (key_average/bars.size());
 }
@@ -161,9 +163,10 @@ std::tuple<double, double> Strategy::auxiliary_linear_regression(std::map<long, 
     double key_average= this->compute_average_key(bars); //key = time = x
     double sum_prod = 0;
     double sum_square = 0;
+
     for (auto item : bars) {
             sum_prod += item.first * item.second;
-            sum_square += item.first*item.first;
+            sum_square += item.first *item.first;
         }
     double ss_xx = sum_square - (key_average*key_average*bars.size());
     double ss_xy = sum_prod - (key_average*value_average*bars.size());
@@ -217,8 +220,8 @@ void Strategy::simulate(){
 
     if (this->str1.compare(name) == 0){ //exponential moving average
         for (int k=0; k<nb_points; k++){
-        std::map<long, double> bars_11 = this->get_data(11);
-        std::map<long, double> bars_6 = this->get_data(6);
+        std::map<long, double> bars_11 = this->get_data(11,k);
+        std::map<long, double> bars_6 = this->get_data(6,k);
         double ema_11 = this->calculate_ema(bars_11); // Longer Moving Average
         double ema_06 = this->calculate_ema(bars_6);
         data_plot_short.insert(std::pair<int, double>(k, ema_06));
@@ -244,12 +247,25 @@ void Strategy::simulate(){
         std::map<long, double> bars = this->get_data(20);
         auto res = this->auxiliary_linear_regression(bars);
         double slope = std::get<0>(res);
+        std:: cout << "slope ==  " << slope;
         double yintercept = std::get<1>(res);
+        std:: cout << "intercept ==  " << yintercept;
+
         for (int k=0; k<nb_points; k++){
-        double image = slope*(-k)+yintercept;
-        data_plot_short.insert(std::pair<int, double>(k, image));
+            double image = slope*k +yintercept;
+        data_plot_short.insert(std::pair<int, double>(-k, image)); // in the plot
         }
+
     }
+    std::cout << "short     ";
+    for (auto it : data_plot_short) {
+        std::cout << it.first << " : "<< it.second << ";  ";
+    }
+    std::cout << "long     ";
+    for (auto it : data_plot_long) {
+        std::cout << it.first << " : "<< it.second << ";  ";
+    }
+
 
 }
 

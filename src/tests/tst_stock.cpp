@@ -23,6 +23,7 @@ class TestStock : public QObject {
     void testStrategyLinearRegression();
     void testStrategyMomentum();
     void testStrategyMovingAverage();
+    void testSimulate();
   };
 
   TestStock::TestStock() {}
@@ -90,16 +91,16 @@ class TestStock : public QObject {
   void TestStock::testStrategyLinearRegression() {
       Stock *apple = new Stock("AAPL");
       std::string linear = "LR";
-      std::string c = "c";
-      Strategy *strat = new Strategy(linear, apple, false, c);
+      std::string o = "o";
+      Strategy *strat = new Strategy(linear, apple, false, o);
       //Testing slope and y intercept of auxiliary_linear_regression
       //The output is correct: I've tested the function in python with the same input data using polyfit and the output is the same
       std::map<long, double> map = strat->get_data(20);
       auto res = strat->auxiliary_linear_regression(map);
       double slope = std::get<0>(res);
       double yintercept = std::get<1>(res);
-      std::cout <<"slope"<< slope << " ; ";
-      std::cout << yintercept;
+      std::cout <<"slope = "<< slope << " ; ";
+      std::cout <<"yintercept = " <<yintercept;
 
       //Tells to buy or not and the percentage
       std::cout<< "Output";
@@ -109,30 +110,59 @@ class TestStock : public QObject {
   }
 
   void TestStock::testStrategyMomentum(){
-      Stock *apple = new Stock("AAPL");
-      std::string linear = "MOM";
+      Stock *nvda = new Stock("NVDA");
+      std::string mom = "MOM";
       std::string c = "c";
-      Strategy *strat = new Strategy(linear, apple, false, c);
+      Strategy *strat = new Strategy(mom, nvda, false, c);
+      std::map<int, double> cache;
+      for (int k=0; k<4; k++){
+          std::map<long, double> bars_10 = strat->get_data(9,k);
+          std::map<long, double> bars_5 = strat->get_data(4,k);
+          double sma_10 = strat->calculate_sma(bars_10);
+          double sma_5 = strat->calculate_sma(bars_5);
+          std::cout << "k = " << k << " ;  ";
+          std::cout << "sma10 = " << sma_10 << " ;  ";
+          std::cout << "sma5 = " << sma_5 << " ;  ";
+          std::cout << "res = " << sma_5/sma_10;
+          double moment = sma_5/sma_10;
+          cache.insert(std::pair<int, double>(k, moment));
+
+      }
+      std::cout << "aux =   " << strat->auxiliary_momentum(cache);
+      //if the momentum for the k=0 is strictly less than 1, it should return (0, 1);
+
 
       //Tells to buy or not and the percentage
       std::cout<< "Output";
       auto res2 = strat->calculate_signals();
       std::cout<< std::get<0>(res2);
       std::cout<< std::get<1>(res2);
-  }
+
+ }
 
   void TestStock::testStrategyMovingAverage(){
       Stock *apple = new Stock("AAPL");
-      std::string linear = "EMA";
+      std::string ema = "EMA";
       std::string c = "c";
-      Strategy *strat = new Strategy(linear, apple, false, c);
+      Strategy *strat = new Strategy(ema, apple, false, c);
 
       //Tells to buy or not and the percentage
       std::cout<< "Output";
       auto res2 = strat->calculate_signals();
-      std::cout<< std::get<0>(res2);
-      std::cout<< std::get<1>(res2);
+      std::cout<< std::get<0>(res2)<< " ; ";
+      std::cout<< std::get<1>(res2) << " ; ";
   }
+  void TestStock::testSimulate(){
+      //It should return a map of points for the graphs {abcisse: ordonnee}
+      Stock *apple = new Stock("AAPL");
+      std::string linear = "LR";
+      std::string c = "c";
+      Strategy *strat = new Strategy(linear, apple, false, c);
+      //for linear regression: it plots the fitted line of the stock market trend of the last days (with x = 0 the today price , x = -1 yesterday ... )
+      strat->simulate();
+
+  }
+
 
 QTEST_APPLESS_MAIN(TestStock)
 
