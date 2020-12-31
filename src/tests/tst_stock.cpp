@@ -28,11 +28,29 @@ class TestStock : public QObject {
 
   void TestStock::testUpdateData(){
       Stock *apple = new Stock("AAPL");
-      apple->updateDataByMinute();
-      QJsonObject jsonDataMinute = apple->getDataByMinute();
-      std::string textDataMinute = helper::convertToString(jsonDataMinute);
-      std::cout << textDataMinute << std::endl;
-      QVERIFY(textDataMinute.size() != 0 && textDataMinute != "{}");
+      QMap<std::string, QVector<double>> jsonDataMinute_initial = apple->updateDataByMinute();
+      for (auto it : jsonDataMinute_initial.toStdMap()) {
+          std::cout << it.first << " : " << std::endl ;
+          std::vector<double> vect = it.second.toStdVector();
+          for (std::vector<double>::const_iterator i = vect.begin(); i != vect.end(); ++i)
+              std::cout << *i << ", ";
+          }
+      std::cout << std::endl << "Now when we update immediately we should have an empty array or at most one data point" << std::endl ;
+      QMap<std::string, QVector<double>> jsonDataMinute = apple->updateDataByMinute();
+      for (auto it : jsonDataMinute.toStdMap()) {
+        std::cout << it.first << " : " << std::endl ;
+        std::vector<double> vect = it.second.toStdVector();
+        for (std::vector<double>::const_iterator i = vect.begin(); i != vect.end(); ++i) {
+          std::cout << *i << ", ";
+        }
+      }
+
+      std::string s = "chlot";
+      for (auto &c : s) {
+        std::string k(1, c);
+        QVERIFY(jsonDataMinute[k].size() <= 1);
+      }
+      std::cout << "Finished update data by minute" << std::endl;
 
       apple->updateDataByDay();
       QJsonObject jsonDataDay = apple->getDataByDay();
@@ -56,6 +74,8 @@ class TestStock : public QObject {
       std::cout << apple->getNews() << std::endl;
 
       std::cout << helper::convertToFullTimeReadable(apple->getLatestTimestampByDay()) << std::endl;
+
+      delete apple;
   }
 
   void TestStock::testNewsClass(){
