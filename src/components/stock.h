@@ -5,6 +5,7 @@
 #include <QJsonObject>
 #include <QMap>
 #include <QVector>
+#include "api/api.h"
 
 class Stock {
  private:
@@ -14,6 +15,7 @@ class Stock {
   long latestTimeStampByDay;
   long latestTimeStampByMinute;
   std::string stockNews;
+  API *api;
 
  public:
   Stock(std::string);
