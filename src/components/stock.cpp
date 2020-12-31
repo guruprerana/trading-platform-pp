@@ -44,6 +44,10 @@ QJsonArray Stock::getNews() {
   return stockNews;
 }
 
+QJsonObject Stock::getSentimentData() {
+  return sentimentData;
+}
+
 
 QMap<std::string, QVector<double>> Stock::updateDataByMinute() {
   std::time_t t = std::time(0);
@@ -84,7 +88,6 @@ void Stock::updateDataByDay() {
   std::time_t t = std::time(0);
   std::string apiResponse = api->getStockData(getSymbol(), "D", t - 15768000, t);
   // 15768000 represents 6 months in seconds. Basically we want the api to call 6 months worth of data with 1-day intervals
-  // if we have never called the data before, otherwise we only update what we are missing
   latestTimeStampByDay = t;
 
   //update latestTimeStampByDay
@@ -103,6 +106,10 @@ void Stock::updateNews() {
   stockNews = helper::convertStringToQJsonArray(apiResponse);
 }
 
+void Stock::updateSentimentData() {
+  std::string apiResponse = api->getSentimentData(getSymbol());
+  sentimentData = helper::parseJson(apiResponse);
+}
 
 
 

@@ -16,6 +16,7 @@ class TestStock : public QObject {
     void cleanupTestCase();
     void testUpdateData();
     void testNewsClass();
+    void testSentiment();
   };
 
   TestStock::TestStock() {}
@@ -71,7 +72,7 @@ class TestStock : public QObject {
           }
       }
       apple->updateNews();
-      std::cout << apple->getNews() << std::endl;
+      qDebug() << apple->getNews() << endl;
 
       std::cout << helper::convertToFullTimeReadable(apple->getLatestTimestampByDay()) << std::endl;
 
@@ -82,6 +83,12 @@ class TestStock : public QObject {
       News *markets = new News();
       markets->updateMarketNews();
       qDebug() << markets->getMarketNews() << endl;
+  }
+
+  void TestStock::testSentiment(){
+      Stock *apple = new Stock("AAPL");
+      apple->updateSentimentData();
+      qDebug() << apple->getSentimentData() << endl;
   }
 
 

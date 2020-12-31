@@ -16,6 +16,7 @@ class Stock {
   long latestTimeStampByDay;
   long latestTimeStampByMinute;
   QJsonArray stockNews;
+  QJsonObject sentimentData;
   API *api;
 
  public:
@@ -28,9 +29,14 @@ class Stock {
   QJsonObject getDataByDay();
   QJsonArray getNews();
   QMap<std::string, QVector<double>> getDataByMinute();
+  QJsonObject getSentimentData();
   void updateDataByDay();
+  //We do not return the update data by day because it only updates once a day so we do not have a problem with graphing.
+  //And it is mainly used by Strategy class to give their predictions.
   QMap<std::string, QVector<double>> updateDataByMinute();
+  //We return here the updated data so that the GUI team could add only the new data points and not all the data we have.
   void updateNews();
+  void updateSentimentData();
 };
 
 #endif // STOCK_H
