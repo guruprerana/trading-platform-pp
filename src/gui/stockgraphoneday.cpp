@@ -17,17 +17,19 @@ void StockGraphOneDay::setStock(Stock *other_stock) {
 }
 
 void StockGraphOneDay::updateData() {
-  stock->updateDataByMinute();
-  QJsonObject dataByMinute = stock->getDataByMinute();
+  QMap<std::string, QVector<double>> dataByMinute = stock->updateDataByMinute();
+
+  if (dataByMinute.isEmpty() and timestamp.isEmpty()) {
+    dataByMinute = stock->getDataByMinute();
+  }
 
   QVector<double> time, o, h, l, c;
-  time = convert_to_vector(dataByMinute, "t");
-  o = convert_to_vector(dataByMinute, "o");
-  h = convert_to_vector(dataByMinute, "h");
-  l = convert_to_vector(dataByMinute, "l");
-  c = convert_to_vector(dataByMinute, "c");
+  time = dataByMinute["t"];
+  o = dataByMinute["o"];
+  h = dataByMinute["h"];
+  l = dataByMinute["l"];
+  c = dataByMinute["c"];
 
-  clearData();
   double now = QDateTime::currentDateTime().toTime_t();
 
   // 86400 is the number of seconds per day: Here we show a 1-day interval

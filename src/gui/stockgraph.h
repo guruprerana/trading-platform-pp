@@ -41,7 +41,6 @@ class StockGraph : public QWidget {
   QCPItemTracer *tracer;
   QCPItemText *textLabel;
 };
-QVector<double> convert_to_vector(QJsonObject, std::string);
 
 #define StockGraph_iid "com.acme.StockGraph"
 

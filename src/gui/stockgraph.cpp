@@ -119,22 +119,7 @@ void StockGraph::plot() {
     std::max(0.0, ymin - yrange * 0.1),
     ymax + yrange * 0.1
   );
-  ui->plot->replot();
-  ui->plot->update(); // updates data
+  //ui->plot->replot();
+  //ui->plot->update(); // updates data
   ui->plot->yAxis->setTickLabels(true);
 }
-
-QVector<double> convert_to_vector(QJsonObject j, std::string k) {
-//  qDebug() << j << endl;
-  QVariantMap j_map = j.toVariantMap();
-  QVariantList j_list = j_map[k.c_str()].toList();
-  QVector<double> q;
-
-  for (int i = 0; i < j_list.count(); i++) {
-    q.append(j_list[i].toDouble());
-  }
-
-  return q;
-}
-
-

@@ -17,21 +17,23 @@ void StockGraphThreeDays::setStock(Stock *other_stock) {
 }
 
 void StockGraphThreeDays::updateData() {
-  stock->updateDataByDay();
-  QJsonObject dataByDay = stock->getDataByDay();
+  QMap<std::string, QVector<double>> dataByMinute = stock->updateDataByMinute();
+
+  if (dataByMinute.isEmpty() and timestamp.isEmpty()) {
+    dataByMinute = stock->getDataByMinute();
+  }
 
   QVector<double> time, o, h, l, c;
-  time = convert_to_vector(dataByDay, "t");
-  o = convert_to_vector(dataByDay, "o");
-  h = convert_to_vector(dataByDay, "h");
-  l = convert_to_vector(dataByDay, "l");
-  c = convert_to_vector(dataByDay, "c");
+  time = dataByMinute["t"];
+  o = dataByMinute["o"];
+  h = dataByMinute["h"];
+  l = dataByMinute["l"];
+  c = dataByMinute["c"];
 
   double now = QDateTime::currentDateTime().toTime_t();
   // 86400 is the number of seconds per day: Here we show a 3-day interval
   ui->plot->xAxis->setRange(now - 3 * 86400, now);
 
-  clearData();
 
   for (int i = 0; i < time.size(); i++) {
     timestamp.append(time[i]);

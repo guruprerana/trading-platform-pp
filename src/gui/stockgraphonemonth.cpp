@@ -1,5 +1,6 @@
 #include "stockgraphonemonth.h"
 #include "ui_stockgraph.h"
+#include "helper/helper.h"
 
 StockGraphOneMonth::StockGraphOneMonth(QWidget *parent) :
   StockGraph(parent) {
@@ -21,11 +22,11 @@ void StockGraphOneMonth::updateData() {
   QJsonObject dataByDay = stock->getDataByDay();
 
   QVector<double> time, o, h, l, c;
-  time = convert_to_vector(dataByDay, "t");
-  o = convert_to_vector(dataByDay, "o");
-  h = convert_to_vector(dataByDay, "h");
-  l = convert_to_vector(dataByDay, "l");
-  c = convert_to_vector(dataByDay, "c");
+  time = helper::convert_to_vector(dataByDay, "t");
+  o = helper::convert_to_vector(dataByDay, "o");
+  h = helper::convert_to_vector(dataByDay, "h");
+  l = helper::convert_to_vector(dataByDay, "l");
+  c = helper::convert_to_vector(dataByDay, "c");
 
   clearData();
   double now = QDateTime::currentDateTime().toTime_t();
