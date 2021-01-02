@@ -2,6 +2,9 @@
 #define SIGNUP_H
 
 #include <QWidget>
+#include <QString>
+#include <QStringList>
+
 
 namespace Ui {
 class SignUp;
@@ -14,12 +17,15 @@ class SignUp : public QWidget {
   explicit SignUp(QWidget *parent = nullptr);
   ~SignUp();
 
+
+
  private:
   Ui::SignUp *ui;
+  void showError(const QString &errorMessage);
 
  signals:
   // need to add the necessary details as arguments to this signal
-  void signUpWithDetails();
+  void signUpWithDetails(QString id, qreal initialAmount, QStringList watchlist);
 
  private slots:
   void on_submitButton_released();

@@ -9,11 +9,20 @@
 #include "trading_order.h"
 
 #include <QVector>
+#include <QJsonObject>
+#include <QStringList>
 
 class LoadUp {
  public:
-  LoadUp();
-  ~LoadUp();
+  LoadUp() {};
+  ~LoadUp() {};
+
+  void load(const QJsonObject &json);
+  void save(QJsonObject &json) const;
+
+  qreal getQuantity() const {
+    return quantity;
+  }
 
  private:
   qint64 time_stamp;
@@ -22,23 +31,38 @@ class LoadUp {
 
 class Portfolio {
  public:
-  Portfolio();
+  Portfolio() {};
+  Portfolio(QString id_n, qreal amount, QStringList watchlist) : id(id_n),
+    current_money(amount), stock_watch_list(watchlist) {};
+  ~Portfolio();
 
   qreal valuation();
 
-  void addStockToWatchList(Stock st);
-  void removeStockFromWatchList(Stock st);
+  QString getId() const {
+    return id;
+  }
+  QStringList &getWatchList() {
+    return stock_watch_list;
+  }
 
-  void addTradingOrder(TradingOrder trading_order);
+  void addStockToWatchList(QString &symbol);
+  void removeStockFromWatchList(QString &symbol);
 
-  void addLoadUp(LoadUp load_up);
+  void addTradingOrder(TradingOrder *trading_order);
+
+  void addLoadUp(LoadUp *load_up);
+
+  void load(const QJsonObject &json);
+  void save(QJsonObject &json) const;
 
  private:
+  QString id;
+
   qreal current_money;
 
-  QVector<Stock> stock_watch_list;
-  QVector<TradingOrder> trading_order_history;
-  QVector<LoadUp> load_up_history;
+  QStringList stock_watch_list;
+  QVector<TradingOrder *> trading_order_history;
+  QVector<LoadUp *> load_up_history;
 };
 
 #endif // PORTFOLIO_H
