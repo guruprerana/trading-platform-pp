@@ -40,6 +40,22 @@ QMap<std::string, QVector<double>> Stock::getDataByMinute() {
   return dataByMinute;
 }
 
+int Stock::getDataByMinuteSize() {
+  return dataByMinute["h"].size();
+}
+
+QMap<std::string, double> Stock::getDataByMinute(int idx) {
+  QMap<std::string, double> ret;
+  std::string s = "chlot";
+
+  for (char &c : s) {
+    std::string k(1, c);
+    ret[k] = dataByMinute[k][idx];
+  }
+
+  return ret;
+}
+
 QJsonArray Stock::getNews() {
   return stockNews;
 }
@@ -49,11 +65,11 @@ QJsonObject Stock::getSentimentData() {
 }
 
 
-QMap<std::string, QVector<double>> Stock::updateDataByMinute() {
+void Stock::updateDataByMinute() {
   std::time_t t = std::time(0);
 
   if (t - getLatestTimestampByMinute() < 60) {
-    return QMap<std::string, QVector<double>>();
+    return;
   }
 
   std::string apiResponse = api->getStockData(getSymbol(), "1",
@@ -62,7 +78,6 @@ QMap<std::string, QVector<double>> Stock::updateDataByMinute() {
   // 259200 represents 3 days in seconds. Basically we want the api to call 3 days worth of data with 1-minute intervals
   // if we have never called the data before otherwise we update.
   latestTimeStampByMinute = t;
-  QMap<std::string, QVector<double>> updateMap;
 
   //update latestTimeStampByMinute
   if (apiResponse != "{\"s\":\"no_data\"}") {
@@ -73,11 +88,8 @@ QMap<std::string, QVector<double>> Stock::updateDataByMinute() {
       std::string k(1, c);
       QVector<double> vectorToAppend = helper::convert_to_vector(dataUpdate, k);
       dataByMinute[k] += vectorToAppend;
-      updateMap[k] = vectorToAppend;
     }
   }
-
-  return updateMap;
 }
 
 void Stock::updateDataByDay() {

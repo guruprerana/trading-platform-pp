@@ -14,7 +14,10 @@ StockGraphOneMonth::~StockGraphOneMonth() {
 
 void StockGraphOneMonth::setStock(Stock *other_stock) {
   stock = other_stock;
-  realtimeDataSlot();
+  clearData();
+  lineChart->setData({}, {});
+  candleStick->setData({}, {}, {}, {}, {});
+  updateData();
 }
 
 void StockGraphOneMonth::updateData() {
@@ -28,7 +31,6 @@ void StockGraphOneMonth::updateData() {
   l = helper::convert_to_vector(dataByDay, "l");
   c = helper::convert_to_vector(dataByDay, "c");
 
-  clearData();
   double now = QDateTime::currentDateTime().toTime_t();
   //2628288 is the number of seconds per month: Here we show a 1-month interval
   ui->plot->xAxis->setRange(now - 2628288, now);
@@ -40,6 +42,8 @@ void StockGraphOneMonth::updateData() {
       high.append(h[i]);
       low.append(l[i]);
       close.append(c[i]);
+      lineChart->addData(time[i], c[i]);
+      candleStick->addData(time[i], o[i], h[i], l[i], c[i]);
     }
   }
 
@@ -67,18 +71,18 @@ void StockGraphOneMonth::setCandlestickBinSize() {
 }
 
 void StockGraphOneMonth::realtimeDataSlot() {
-  if (stock == nullptr) {
-    return;
-  }
+//  if (stock == nullptr) {
+//    return;
+//  }
 
-  static QTime time(QTime::currentTime());
-  //calculate two new data points:
-  double key = time.elapsed() /
-               1000.0; // time elapsed since start of demo, in seconds
-  static double lastPointKey = -1e9;
+//  static QTime time(QTime::currentTime());
+//  //calculate two new data points:
+//  double key = time.elapsed() /
+//               1000.0; // time elapsed since start of demo, in seconds
+//  static double lastPointKey = -1e9;
 
-  if (key - lastPointKey >= 200) { // 200 seconds
-    updateData();
-    lastPointKey = key;
-  }
+//  if (key - lastPointKey >= 200) { // 200 seconds
+//    updateData();
+//    lastPointKey = key;
+//  }
 }

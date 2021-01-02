@@ -107,8 +107,8 @@ void StockGraph::plot() {
     return;
   }
 
-  lineChart->setData(timestamp, close);
-  candleStick->setData(timestamp, open, high, low, close);
+//  lineChart->setData(timestamp, close);
+//  candleStick->setData(timestamp, open, high, low, close);
   ui->plot->xAxis->setRange(timestamp[0],
                             timestamp[timestamp.length() - 1]);
   double ymin = *std::min_element(low.begin(), low.end());

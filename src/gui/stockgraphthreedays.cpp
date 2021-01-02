@@ -13,34 +13,27 @@ StockGraphThreeDays::~StockGraphThreeDays() {
 
 void StockGraphThreeDays::setStock(Stock *other_stock) {
   stock = other_stock;
+  clearData();
+  lineChart->setData({}, {});
+  candleStick->setData({}, {}, {}, {}, {});
   updateData();
 }
 
 void StockGraphThreeDays::updateData() {
-  QMap<std::string, QVector<double>> dataByMinute = stock->updateDataByMinute();
+  stock->updateDataByMinute();
+  int sz = stock->getDataByMinuteSize();
+  int oldSz = timestamp.size();
 
-  if (dataByMinute.isEmpty() and timestamp.isEmpty()) {
-    dataByMinute = stock->getDataByMinute();
-  }
-
-  QVector<double> time, o, h, l, c;
-  time = dataByMinute["t"];
-  o = dataByMinute["o"];
-  h = dataByMinute["h"];
-  l = dataByMinute["l"];
-  c = dataByMinute["c"];
-
-  double now = QDateTime::currentDateTime().toTime_t();
-  // 86400 is the number of seconds per day: Here we show a 3-day interval
-  ui->plot->xAxis->setRange(now - 3 * 86400, now);
-
-
-  for (int i = 0; i < time.size(); i++) {
-    timestamp.append(time[i]);
-    open.append(o[i]);
-    high.append(h[i]);
-    low.append(l[i]);
-    close.append(c[i]);
+  for (int i = 5 * oldSz; i < sz; i += 5) {
+    auto curData = stock->getDataByMinute(i);
+    timestamp.append(curData["t"]);
+    open.append(curData["o"]);
+    high.append(curData["h"]);
+    low.append(curData["l"]);
+    close.append(curData["c"]);
+    lineChart->addData(curData["t"], curData["c"]);
+    candleStick->addData(curData["t"], curData["o"], curData["h"], curData["l"],
+                         curData["c"]);
   }
 
   plot();

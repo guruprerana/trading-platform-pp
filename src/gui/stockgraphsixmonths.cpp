@@ -14,6 +14,9 @@ StockGraphSixMonths::~StockGraphSixMonths() {
 
 void StockGraphSixMonths::setStock(Stock *other_stock) {
   stock = other_stock;
+  clearData();
+  lineChart->setData({}, {});
+  candleStick->setData({}, {}, {}, {}, {});
   updateData();
 }
 
@@ -32,14 +35,14 @@ void StockGraphSixMonths::updateData() {
   //2628288 is the number of seconds per month: Here we show a 6-month interval
   ui->plot->xAxis->setRange(now - 2628288 * 6, now);
 
-  clearData();
-
   for (int i = 0; i < time.size(); i++) {
     timestamp.append(time[i]);
     open.append(o[i]);
     high.append(h[i]);
     low.append(l[i]);
     close.append(c[i]);
+    lineChart->addData(time[i], c[i]);
+    candleStick->addData(time[i], o[i], h[i], l[i], c[i]);
   }
 
   plot();
@@ -66,18 +69,18 @@ void StockGraphSixMonths::setCandlestickBinSize() {
 }
 
 void StockGraphSixMonths::realtimeDataSlot() {
-  if (stock == nullptr) {
-    return;
-  }
+//  if (stock == nullptr) {
+//    return;
+//  }
 
-  static QTime time(QTime::currentTime());
-  //calculate two new data points:
-  double key = time.elapsed() /
-               1000.0; // time elapsed since start of demo, in seconds
-  static double lastPointKey = -1e9;
+//  static QTime time(QTime::currentTime());
+//  //calculate two new data points:
+//  double key = time.elapsed() /
+//               1000.0; // time elapsed since start of demo, in seconds
+//  static double lastPointKey = -1e9;
 
-  if (key - lastPointKey >= 250) { // 250 seconds
-    updateData();
-    lastPointKey = key;
-  }
+//  if (key - lastPointKey >= 250) { // 250 seconds
+//    updateData();
+//    lastPointKey = key;
+//  }
 }
