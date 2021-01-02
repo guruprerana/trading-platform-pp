@@ -3,15 +3,21 @@
 
 #include <string>
 #include <QJsonObject>
+#include <QJsonArray>
+#include <QMap>
+#include <QVector>
+#include "api/api.h"
 
 class Stock {
  private:
   std::string symbol;
   QJsonObject dataByDay;
-  QJsonObject dataByMinute;
+  QMap<std::string, QVector<double>> dataByMinute;
   long latestTimeStampByDay;
   long latestTimeStampByMinute;
-  std::string stockNews;
+  QJsonArray stockNews;
+  QJsonObject sentimentData;
+  API *api;
 
  public:
   Stock(std::string);
@@ -21,11 +27,18 @@ class Stock {
   long getLatestTimestampByDay();
   long getLatestTimestampByMinute();
   QJsonObject getDataByDay();
-  QJsonObject getDataByMinute();
-  std::string getNews();
+  QJsonArray getNews();
+  QMap<std::string, QVector<double>> getDataByMinute();
+  QMap<std::string, double> getDataByMinute(int idx);
+  int getDataByMinuteSize();
+  QJsonObject getSentimentData();
   void updateDataByDay();
+  //We do not return the update data by day because it only updates once a day so we do not have a problem with graphing.
+  //And it is mainly used by Strategy class to give their predictions.
   void updateDataByMinute();
+  //We return here the updated data so that the GUI team could add only the new data points and not all the data we have.
   void updateNews();
+  void updateSentimentData();
 };
 
 #endif // STOCK_H
