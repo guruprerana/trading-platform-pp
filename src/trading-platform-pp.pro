@@ -43,7 +43,10 @@ SOURCES += \
     library/qcustomplot.cpp \
     helper/helper.cpp \
     gui/widgets/selectwatchlistwidget.cpp \
-    gui/neworder.cpp
+    gui/neworder.cpp\
+    recommendation/Strategy/mom_strategy.cpp \
+    recommendation/Strategy/strategy.cpp\
+    recommendation/Strategy/ema_strategy.cpp\
 
 HEADERS += \
     api/api.h \
@@ -67,7 +70,11 @@ HEADERS += \
     gui/neworder.h \
     gui/mainwindow.h \
     gui/widgets/selectwatchlistwidget.h \
-    helper/helper.h
+    helper/helper.h \
+    recommendation/Strategy/mom_strategy.h \
+    recommendation/Strategy/strategy.h\
+    recommendation/Strategy/ema_strategy.h\
+
     
 FORMS += \
     gui/chooseportfolio.ui \
@@ -92,3 +99,4 @@ RESOURCES += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
