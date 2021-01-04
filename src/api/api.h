@@ -13,7 +13,9 @@ class API {
   std::string API_ENDPOINT = "https://finnhub.io/api/v1/stock/candle?symbol=";
   std::string API_NEWSCOMPANY = "https://finnhub.io/api/v1/company-news?symbol=";
   std::string API_NEWSMARKET =
-    "https://finnhub.io/api/v1/news?category=general&token=";
+    "https://finnhub.io/api/v1/news?category=general";
+  std::string API_SENTIMENT =
+    "https://finnhub.io/api/v1/news-sentiment?symbol=";
   std::string API_TOKEN = "buk0iff48v6r2017bpg0";
   std::string callUrl(std::string url);
   std::string getStockData(std::string stockSymbol, std::string resolution,
@@ -22,6 +24,7 @@ class API {
                              std::string endTimestamp);
 
   std::string getNewsMarket();
+  std::string getSentimentData(std::string stockSymbol);
 
  private:
   // CURL object here

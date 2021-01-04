@@ -24,6 +24,7 @@ class TestStock : public QObject {
     void testStrategyMomentum();
     void testStrategyMovingAverage();
     void testSimulate();
+    void testSentiment();
   };
 
   TestStock::TestStock() {}
@@ -37,11 +38,21 @@ class TestStock : public QObject {
   void TestStock::testUpdateData(){
       Stock *apple = new Stock("AAPL");
       apple->updateDataByMinute();
-      QJsonObject jsonDataMinute = apple->getDataByMinute();
-      std::string textDataMinute = helper::convertToString(jsonDataMinute);
-      std::cout << textDataMinute << std::endl;
-      QVERIFY(textDataMinute.size() != 0 && textDataMinute != "{}");
-      std::cout << "ba";
+
+      QMap<std::string, QVector<double>> jsonDataMinute = apple->getDataByMinute();
+      for (auto it : jsonDataMinute.toStdMap()) {
+          std::cout << it.first << " : " << std::endl ;
+          std::vector<double> vect = it.second.toStdVector();
+          for (std::vector<double>::const_iterator i = vect.begin(); i != vect.end(); ++i)
+              std::cout << *i << ", ";
+          }
+
+      std::string s = "chlot";
+      for (auto &c : s) {
+        std::string k(1, c);
+        QVERIFY(jsonDataMinute[k].size() >= 1);
+      }
+      std::cout << "Finished update data by minute" << std::endl;
 
       apple->updateDataByDay();
       QJsonObject jsonDataDay = apple->getDataByDay();
@@ -62,9 +73,11 @@ class TestStock : public QObject {
           }
       }
       apple->updateNews();
-      std::cout << apple->getNews() << std::endl;
+      qDebug() << apple->getNews() << endl;
 
       std::cout << helper::convertToFullTimeReadable(apple->getLatestTimestampByDay()) << std::endl;
+
+      delete apple;
   }
 
   void TestStock::testNewsClass(){
@@ -160,7 +173,12 @@ class TestStock : public QObject {
       Strategy *strat = new Strategy(linear, apple, false, c);
       //for linear regression: it plots the fitted line of the stock market trend of the last days (with x = 0 the today price , x = -1 yesterday ... )
       strat->simulate();
+  }
 
+  void TestStock::testSentiment(){
+      Stock *apple = new Stock("AAPL");
+      apple->updateSentimentData();
+      qDebug() << apple->getSentimentData() << endl;
   }
 
 

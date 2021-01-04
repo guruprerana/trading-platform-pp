@@ -3,6 +3,9 @@
 
 #include <QWidget>
 #include <QListWidgetItem>
+#include <QStringList>
+
+const int LIST_ITEM_WIDGET_DATA_ROLE = 300;
 
 namespace Ui {
 class SelectWatchlistWidget;
@@ -14,6 +17,8 @@ class SelectWatchlistWidget : public QWidget {
  public:
   explicit SelectWatchlistWidget(QWidget *parent = nullptr);
   ~SelectWatchlistWidget();
+
+  QStringList getSelectedWatchList() const;
 
  private:
   Ui::SelectWatchlistWidget *ui;
