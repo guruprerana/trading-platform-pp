@@ -1,5 +1,5 @@
 #ifndef HELPER_H
-#define HELPER_h
+#define HELPER_H
 
 #include <QString>
 #include <QJsonObject>

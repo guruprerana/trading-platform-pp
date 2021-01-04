@@ -34,7 +34,7 @@ void MOMStrategy::update_numericSignals(long& depth){
     QVector<double> signalVector;
     int longTime = 9;
     int shortTime = 4;
-    for (int startPeriod=0; k<depth; k++){
+    for (int startPeriod=0; startPeriod<depth; startPeriod++){
              std::map<long, double> bars_10 = this->get_data(longTime,startPeriod);
              std::map<long, double> bars_5 = this->get_data(shortTime,startPeriod);
              double sma_10 = this->calculate_sma(bars_10);
@@ -57,9 +57,11 @@ double MOMStrategy::calculate_sma(std::map<long, double> &bars) {
 
 std::tuple<bool, double> MOMStrategy::calculate_signal(){
      std::map<int, double> cache;
+     int longTime = 9;
+     int shortTime = 4;
      for (int k=0; k<4; k++){
-         std::map<long, double> bars_10 = this->get_data(9,k);
-         std::map<long, double> bars_5 = this->get_data(4,k);
+         std::map<long, double> bars_10 = this->get_data(longTime,k);
+         std::map<long, double> bars_5 = this->get_data(shortTime,k);
          double sma_10 = this->calculate_sma(bars_10);
          double sma_5 = this->calculate_sma(bars_5);
          double moment = sma_5/sma_10;

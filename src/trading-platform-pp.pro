@@ -34,6 +34,8 @@ SOURCES += \
     gui/signup.cpp \
     gui/stockdashboard.cpp \
     gui/stockgraph.cpp \
+    gui/strategydashboard.cpp \
+    gui/strategygraph.cpp \
     gui/stockgraphoneday.cpp \
     gui/stockgraphonemonth.cpp \
     gui/stockgraphsixmonths.cpp \
@@ -46,7 +48,7 @@ SOURCES += \
     gui/neworder.cpp\
     recommendation/Strategy/mom_strategy.cpp \
     recommendation/Strategy/strategy.cpp\
-    recommendation/Strategy/ema_strategy.cpp\
+    recommendation/Strategy/ema_strategy.cpp
 
 HEADERS += \
     api/api.h \
@@ -62,6 +64,8 @@ HEADERS += \
     gui/signup.h \
     gui/stockdashboard.h \
     gui/stockgraph.h \
+    gui/strategydashboard.h \
+    gui/strategygraph.h \
     gui/stockgraphoneday.h \
     gui/stockgraphonemonth.h \
     gui/stockgraphsixmonths.h \
@@ -73,7 +77,7 @@ HEADERS += \
     helper/helper.h \
     recommendation/Strategy/mom_strategy.h \
     recommendation/Strategy/strategy.h\
-    recommendation/Strategy/ema_strategy.h\
+    recommendation/Strategy/ema_strategy.h
 
     
 FORMS += \
@@ -84,6 +88,8 @@ FORMS += \
     gui/signup.ui \
     gui/stockdashboard.ui \
     gui/stockgraph.ui \
+    gui/strategydashboard.ui \
+    gui/strategygraph.ui \
     gui/newscard.ui \
     gui/newspage.ui \
     gui/neworder.ui \

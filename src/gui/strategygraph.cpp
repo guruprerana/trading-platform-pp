@@ -1,11 +1,11 @@
 #include "strategygraph.h"
 #include "ui_strategygraph.h"
-#include "../../../src/helper/helper.h"
+#include "../helper/helper.h"
 #include <stdlib.h>
 #include <math.h>
 #include <QString>
-#include "../../../src/components/stock.h"
-#include "../../../src/recommendation/Strategy/ema_strategy.h"
+#include "../components/stock.h"
+#include "../recommendation/Strategy/ema_strategy.h"
 
 StrategyGraph::StrategyGraph(QWidget *parent, QList<EMAStrategy*>& strategies, long& timePeriod) :
     QWidget(parent),

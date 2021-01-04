@@ -4,10 +4,10 @@
 #include <QWidget>
 #include <QTimer>
 #include <QSet>
-#include "../../../src/components/stock.h"
+#include "../components/stock.h"
 #include <QVariant>
-#include "../../../src/library/qcustomplot.h"
-#include "../../../src/recommendation/Strategy/ema_strategy.h"
+#include "../library/qcustomplot.h"
+#include "../recommendation/Strategy/ema_strategy.h"
 
 
 namespace Ui {
