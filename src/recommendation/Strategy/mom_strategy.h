@@ -12,13 +12,12 @@ class MOMStrategy: public Strategy
 public:
     MOMStrategy(Stock*& stock,bool& byMinute, std::string& priceType);
     ~MOMStrategy();
-    std::pair<double,double> get_markups();
-    void set_markups(std::pair<double,double>& markups);
     void update_numericSignals(long& depth);
-    double firstAuxillary(std::map<long, double> &bars);
+    int auxiliary_momentum(std::map<int, double> &cache);
     std::tuple<bool, double> calculate_signal();
-    std::pair<double,double> markups= std::pair<double,double>(0.025,0.05);
+    double calculate_sma(std::map<long, double> &bars);
     std::string strategyName = "MOM";
+
 
 
 
