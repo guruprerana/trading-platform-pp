@@ -53,20 +53,6 @@ void HomePage::updateWatchlistStocks(QVector<Stock *> other_watchlistStocks) {
   stockGraphSixMonths = new StockGraphSixMonths(this);
   stockGraphOneMonth = new StockGraphOneMonth(this);
 
-  for (int i = 0; i < watchlistStocks.size(); ++i) {
-//    graphsOneDay.append(new StockGraphOneDay(watchlistStocks[i], this));
-//    graphsThreeDays.append(new StockGraphThreeDays(watchlistStocks[i], this));
-//    graphsSixMonths.append(new StockGraphSixMonths(watchlistStocks[i], this));
-//    graphsOneMonth.append(new StockGraphOneMonth(watchlistStocks[i], this));
-
-//    if (i > 0) {
-//      graphsOneDay[i]->hide();
-//      graphsThreeDays[i]->hide();
-//      graphsSixMonths[i]->hide();
-//      graphsOneMonth[i]->hide();
-//    }
-  }
-
   ui->oneDay->layout()->addWidget(stockGraphOneDay);
   ui->threeDays->layout()->addWidget(stockGraphThreeDays);
   ui->oneMonth->layout()->addWidget(stockGraphOneMonth);

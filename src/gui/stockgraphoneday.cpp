@@ -21,19 +21,29 @@ void StockGraphOneDay::setStock(Stock *other_stock) {
 
 void StockGraphOneDay::updateData() {
   stock->updateDataByMinute();
-  int sz = stock->getDataByMinuteSize();
-  int oldSz = timestamp.size();
+  auto dataByMinute = stock->getDataByMinute();
+  double last = -1e9;
 
-  for (int i = oldSz; i < sz; i++) {
-    auto curData = stock->getDataByMinute(i);
-    timestamp.append(curData["h"]);
-    open.append(curData["o"]);
-    high.append(curData["h"]);
-    low.append(curData["l"]);
-    close.append(curData["c"]);
-    lineChart->addData(curData["t"], curData["c"]);
-    candleStick->addData(curData["t"], curData["o"], curData["h"], curData["l"],
-                         curData["c"]);
+  if (!timestamp.isEmpty()) {
+    last = timestamp.back();
+  }
+
+  for (int i = 0; i < dataByMinute["t"].size(); ++i) {
+    if (dataByMinute["t"][i] <= last) {
+      continue;
+    }
+
+    timestamp.append(dataByMinute["t"][i]);
+    open.append(dataByMinute["o"][i]);
+    high.append(dataByMinute["h"][i]);
+    low.append(dataByMinute["l"][i]);
+    close.append(dataByMinute["c"][i]);
+    lineChart->addData(dataByMinute["t"][i], dataByMinute["c"][i]);
+    candleStick->addData(dataByMinute["t"][i],
+                         dataByMinute["o"][i],
+                         dataByMinute["h"][i],
+                         dataByMinute["l"][i],
+                         dataByMinute["c"][i]);
   }
 
   plot();
