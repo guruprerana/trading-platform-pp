@@ -3,6 +3,7 @@
 #include "companynewscard.h"
 #include "watchlistcard.h"
 #include "helper/helper.h"
+#include "./widgets/watchlistsummarycard.h"
 
 HomePage::HomePage(QWidget *parent) :
   QWidget(parent),
@@ -82,6 +83,8 @@ void HomePage::updateWatchlistStocks(QVector<Stock *> other_watchlistStocks) {
   stockGraphSixMonths->setStock(watchlistStocks[0]);
   stockGraphOneMonth->setStock(watchlistStocks[0]);
   realtimeUpdateStocks();
+
+  displayWatchlistSummaries();
 }
 
 void HomePage::displayNews() {
@@ -177,4 +180,11 @@ void HomePage::on_rightButton_clicked() {
 
   newsId = (newsId + 1) % ui->stackedWidget->count();
   ui->stackedWidget->setCurrentIndex(newsId);
+}
+
+void HomePage::displayWatchlistSummaries() {
+  for (Stock *stock : watchlistStocks) {
+    ui->watchlistSummaryDisplayLayout->addWidget(new WatchlistSummaryCard(stock,
+        this), 0);
+  }
 }

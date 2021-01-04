@@ -26,6 +26,7 @@ class HomePage : public QWidget {
 
  private slots:
   void realtimeUpdateStocks();
+  void displayWatchlistSummaries();
   void changeCurrentStock(int stockId);
   void on_leftButton_clicked();
   void on_rightButton_clicked();
