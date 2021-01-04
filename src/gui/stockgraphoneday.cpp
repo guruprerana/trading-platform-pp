@@ -16,20 +16,27 @@ void StockGraphOneDay::setStock(Stock *other_stock) {
   clearData();
   lineChart->setData({}, {});
   candleStick->setData({}, {}, {}, {}, {});
-  updateData();
+  updateDataBool(true);
 }
 
 void StockGraphOneDay::updateData() {
+
+}
+
+void StockGraphOneDay::updateDataBool(bool firstTime = false) {
   stock->updateDataByMinute();
   auto dataByMinute = stock->getDataByMinute();
-  double last = -1e9;
+  long last = -1e9;
 
   if (!timestamp.isEmpty()) {
     last = timestamp.back();
   }
 
+  double now = QDateTime::currentDateTime().toTime_t();
+  // 86400 is the number of seconds per day: Here we show a 1-day interval
+
   for (int i = 0; i < dataByMinute["t"].size(); ++i) {
-    if (dataByMinute["t"][i] <= last) {
+    if (dataByMinute["t"][i] <= last || now - 86400 > dataByMinute["t"][i]) {
       continue;
     }
 
@@ -46,7 +53,9 @@ void StockGraphOneDay::updateData() {
                          dataByMinute["c"][i]);
   }
 
-  plot();
+  if (firstTime) {
+    plot();
+  }
 }
 
 void StockGraphOneDay::initTimeRange() {
@@ -81,7 +90,7 @@ void StockGraphOneDay::realtimeDataSlot() {
   static double lastPointKey = -1e9;
 
   if (key - lastPointKey >= 60) { // 1 minute
-    updateData();
+    updateDataBool();
     lastPointKey = key;
   }
 }

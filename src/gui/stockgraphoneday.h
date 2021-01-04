@@ -12,6 +12,7 @@ class StockGraphOneDay : public StockGraph {
   ~StockGraphOneDay();
   void setStock(Stock *other_stock);
   void updateData();
+  void updateDataBool(bool firstTime);
   void initTimeRange();
   void setCandlestickBinSize();
 
