@@ -16,10 +16,10 @@ void StockGraphThreeDays::setStock(Stock *other_stock) {
   clearData();
   lineChart->setData({}, {});
   candleStick->setData({}, {}, {}, {}, {});
-  updateData();
+  updateData(true);
 }
 
-void StockGraphThreeDays::updateData() {
+void StockGraphThreeDays::updateData(bool firstTime = false) {
   stock->updateDataByMinute();
   int sz = stock->getDataByMinuteSize();
   int oldSz = timestamp.size();
@@ -36,7 +36,9 @@ void StockGraphThreeDays::updateData() {
                          curData["c"]);
   }
 
-  plot();
+  if (firstTime) {
+    plot();
+  }
 }
 
 void StockGraphThreeDays::initTimeRange() {

@@ -23,7 +23,7 @@ class StockGraph : public QWidget {
   void initLineChart();
   void initCandleStick();
   virtual void setStock(Stock *other_stock) = 0;
-  virtual void updateData() = 0;
+  virtual void updateData(bool firstTime) = 0;
   virtual void initTimeRange() = 0;
   virtual void setCandlestickBinSize() = 0;
 

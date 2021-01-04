@@ -16,14 +16,10 @@ void StockGraphOneDay::setStock(Stock *other_stock) {
   clearData();
   lineChart->setData({}, {});
   candleStick->setData({}, {}, {}, {}, {});
-  updateDataBool(true);
+  updateData(true);
 }
 
-void StockGraphOneDay::updateData() {
-
-}
-
-void StockGraphOneDay::updateDataBool(bool firstTime = false) {
+void StockGraphOneDay::updateData(bool firstTime = false) {
   stock->updateDataByMinute();
   auto dataByMinute = stock->getDataByMinute();
   long last = -1e9;
@@ -90,7 +86,7 @@ void StockGraphOneDay::realtimeDataSlot() {
   static double lastPointKey = -1e9;
 
   if (key - lastPointKey >= 60) { // 1 minute
-    updateDataBool();
+    updateData();
     lastPointKey = key;
   }
 }
