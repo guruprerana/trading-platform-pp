@@ -1,4 +1,5 @@
 #include "ema_strategy.h"
+#include "cmath"
 
 EMAStrategy::EMAStrategy(Stock*& stock,bool& byMinute, std::string& priceType)
 {
