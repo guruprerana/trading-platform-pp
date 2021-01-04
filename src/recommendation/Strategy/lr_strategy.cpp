@@ -17,7 +17,7 @@ void LRStrategy::update_numericSignals(long& depth){
     QVector<double> signalVector;
     int longTime = 11;
     int shortTime = 6;
-    std::map<long, double> bars = this->get_data(20);
+    std::map<long, double> bars = this->get_data(20,0);
     auto res = this->auxiliary_linear_regression(bars);
     double slope = std::get<0>(res);
     double yintercept = std::get<1>(res);
@@ -45,7 +45,7 @@ double LRStrategy::compute_average_value(std::map<long, double> &bars){
 }
 
 std::tuple<bool, double> LRStrategy::calculate_signal(){
-    std::map<long, double> bars = this->get_data(20);
+    std::map<long, double> bars = this->get_data(20,0);
     auto res = this->auxiliary_linear_regression(bars);
     double slope = std::get<0>(res);
     if (slope <= 0){
