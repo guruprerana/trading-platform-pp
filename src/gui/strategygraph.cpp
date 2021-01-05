@@ -7,10 +7,10 @@
 #include "../components/stock.h"
 #include "../recommendation/Strategy/ema_strategy.h"
 
-StrategyGraph::StrategyGraph(QWidget *parent, QList<EMAStrategy*>& strategies, long& timePeriod) :
+StrategyGraph::StrategyGraph(QWidget *parent, Strategy *strat, long& timePeriod) :
     QWidget(parent),
     ui(new Ui::StrategyGraph),
-    strategies(strategies),
+    strategy(strat),
     timePeriod(timePeriod)
 {
   ui->setupUi(this);
@@ -33,57 +33,57 @@ StrategyGraph::StrategyGraph(QWidget *parent, QList<EMAStrategy*>& strategies, l
 
 StrategyGraph::~StrategyGraph() {
   delete ui;
-  strategies.clear();
 }
 
 void StrategyGraph::initLineCharts(){
     QList<Stock*> stockBlackList;
     QList<double> referenceBlackList;
-    for (auto& it: this->strategies){
-        if (not stockBlackList.contains(it->get_stock())){
-            QColor stockChartColor(rand()% 256,rand()% 256,rand()% 256);
-            QCPGraph* stockChart = new QCPGraph(ui->plot->xAxis, ui->plot->yAxis);
-            stockChart->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle,
-                                       QPen(stockChartColor, 1.5), QBrush(Qt::white), 3));
-            stockChart->setLineStyle(QCPGraph::lsLine);
-            stockChart->setPen(QPen(stockChartColor, 2));
-            QBrush shadowBrush(stockChartColor, Qt::Dense7Pattern);
-            stockChart->setBrush(shadowBrush);
-            std::string* temp = new std::string(it->get_stock()->getSymbol()+" : "+it->priceType);
-            QString stockChartName(temp->c_str());
-            stockChart->setName(stockChartName);
-            stockChart->setVisible(true);
-            this->stockCharts[it->get_stock()] = stockChart;
-            stockBlackList.push_back(it->get_stock());
-        }
+    if (not stockBlackList.contains(this->strategy->get_stock())){
+        QColor stockChartColor(rand()% 256,rand()% 256,rand()% 256);
+        QCPGraph* stockChart = new QCPGraph(ui->plot->xAxis, ui->plot->yAxis);
+        stockChart->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle,
+                                   QPen(stockChartColor, 1.5), QBrush(Qt::white), 3));
+        stockChart->setLineStyle(QCPGraph::lsLine);
+        stockChart->setPen(QPen(stockChartColor, 2));
+        QBrush shadowBrush(stockChartColor, Qt::Dense7Pattern);
+        stockChart->setBrush(shadowBrush);
+        std::string* temp = new std::string(this->strategy->get_stock()->getSymbol()+" : "+this->strategy->get_price_type());
+        QString stockChartName(temp->c_str());
+        stockChart->setName(stockChartName);
+        stockChart->setVisible(true);
+        this->stockCharts[this->strategy->get_stock()] = stockChart;
+        stockBlackList.push_back(this->strategy->get_stock());
 
-        QColor strategyChartColor(rand()% 256,rand()% 256,rand()% 256);
-        QCPGraph* strategyChart = new QCPGraph(ui->plot->xAxis, ui->plot->yAxis2);
-        strategyChart->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle,
-                                   QPen(strategyChartColor, 1.5), QBrush(Qt::white), 3));
-        strategyChart->setLineStyle(QCPGraph::lsLine);
-        strategyChart->setPen(QPen(strategyChartColor, 2));
-
-        std::string* temp = new std::string(it->strategyName + " : " + it->get_stock()->getSymbol()+" ; "+it->priceType);
-        QString strategyChartName(temp->c_str());
-        strategyChart->setName(strategyChartName);
-        strategyChart->setVisible(true);
-        this->strategyCharts[it] = strategyChart;
-        for(auto& reference: it->signalReferences){
-            if(not referenceBlackList.contains(reference)){
-            QCPItemLine* referenceLine = new QCPItemLine(ui->plot);
-            referenceLine->setVisible(true);
-            referenceLine->setPen(QPen(strategyChartColor, 2));
-            referenceLine->setHead(QCPLineEnding::esSpikeArrow);
-            referenceLine->setObjectName(it->strategyName.c_str());
-            referenceLine->setVisible(true);
-            referenceLine->start->setAxes(ui->plot->xAxis,ui->plot->yAxis2);
-            referenceLine->end->setAxes(ui->plot->xAxis,ui->plot->yAxis2);
-            this->referenceLines[reference] = referenceLine;
-            referenceBlackList.push_back(reference);
-            }
-        }
     }
+    QColor strategyChartColor(rand()% 256,rand()% 256,rand()% 256);
+    QCPGraph* strategyChart = new QCPGraph(ui->plot->xAxis, ui->plot->yAxis2);
+    strategyChart->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle,
+                               QPen(strategyChartColor, 1.5), QBrush(Qt::white), 3));
+    strategyChart->setLineStyle(QCPGraph::lsLine);
+    strategyChart->setPen(QPen(strategyChartColor, 2));
+
+    std::string* temp = new std::string(this->strategy->get_name() + " : " +this->strategy->get_stock()->getSymbol() +" ; "+this->strategy->get_price_type());
+    QString strategyChartName(temp->c_str());
+    strategyChart->setName(strategyChartName);
+    strategyChart->setVisible(true);
+    this->strategyCharts[this->strategy] = strategyChart;
+
+    //We will plot the reference lines after: try first to plot the strategies!
+//    for(auto& reference: it->signalReferences){
+//            if(not referenceBlackList.contains(reference)){
+//            QCPItemLine* referenceLine = new QCPItemLine(ui->plot);
+//            referenceLine->setVisible(true);
+//            referenceLine->setPen(QPen(strategyChartColor, 2));
+//            referenceLine->setHead(QCPLineEnding::esSpikeArrow);
+//            referenceLine->setObjectName(it->strategyName.c_str());
+//            referenceLine->setVisible(true);
+//            referenceLine->start->setAxes(ui->plot->xAxis,ui->plot->yAxis2);
+//            referenceLine->end->setAxes(ui->plot->xAxis,ui->plot->yAxis2);
+//            this->referenceLines[reference] = referenceLine;
+//            referenceBlackList.push_back(reference);
+//            }
+//        }
+//    }
 }
 
 void StrategyGraph::initTimeRange(){
@@ -115,7 +115,7 @@ void StrategyGraph::realtimeDataSlot(){
        this->timestamp = convert_to_vector(stockCharts.keys()[0]->getDataByMinute(),"t");
        long s = this->timestamp.size();
        for (auto& it:this->strategyCharts.keys()){
-           it->update_numericSignals(s);
+           it->update_numericSignals(); //update_numericSignals needs to be implemented in the Strategy.cpp file
 
        }
 

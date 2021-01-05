@@ -7,7 +7,7 @@
 #include "../components/stock.h"
 #include <QVariant>
 #include "../library/qcustomplot.h"
-#include "../recommendation/Strategy/ema_strategy.h"
+#include "../recommendation/Strategy/strategy.h"
 
 
 namespace Ui {
@@ -20,7 +20,7 @@ class StrategyGraph : public QWidget
     Q_OBJECT
 public:
     StrategyGraph();
-    StrategyGraph(QWidget *parent, QList<EMAStrategy*>& strategies, long& timePeriod);
+    StrategyGraph(QWidget *parent, Strategy *strat, long& timePeriod);
     ~StrategyGraph();
     void plot();
     void initLineCharts();
@@ -31,13 +31,13 @@ private slots:
 
 public:
  Ui::StrategyGraph *ui;
- QList<EMAStrategy*> strategies;
+ Strategy* strategy;
  QMap<Stock*, QCPGraph*> stockCharts;
- QMap<EMAStrategy*, QCPGraph*> strategyCharts;
- QMap<double, QCPItemLine*> referenceLines;
+ QMap<Strategy*, QCPGraph*> strategyCharts;
+ QMap<double, QCPItemLine*> referenceLines; //for the moment don't try to plot the reference lines this will come after
  QVector<double> timestamp;
  QTimer dataTimer;
- long timePeriod;
+ long timePeriod; //to be deleted?
 };
 
 QVector<double> convert_to_vector(QJsonObject, std::string);

@@ -4,6 +4,9 @@
 #include <QWidget>
 #include <QVector>
 #include "strategygraph.h"
+#include "../recommendation/Strategy/strategy.h"
+#include "../components/stock.h"
+
 
 namespace Ui {
 class StrategyDashBoard;
@@ -20,9 +23,9 @@ public:
 private:
 
     Ui::StrategyDashBoard *ui;
-    QList<Stock*> stocks;
-    QList<EMAStrategy*> strategies;
-    QList<StrategyGraph*> graphs;
+    Stock *stock;
+    Strategy *strategy;
+    StrategyGraph *graph;
 };
 
 #endif // STRATEGYDASHBOARD_H

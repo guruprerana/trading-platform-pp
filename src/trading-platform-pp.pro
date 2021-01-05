@@ -46,9 +46,7 @@ SOURCES += \
     helper/helper.cpp \
     gui/widgets/selectwatchlistwidget.cpp \
     gui/neworder.cpp\
-    recommendation/Strategy/mom_strategy.cpp \
-    recommendation/Strategy/strategy.cpp\
-    recommendation/Strategy/ema_strategy.cpp
+    recommendation/Strategy/strategy.cpp
 
 HEADERS += \
     api/api.h \
@@ -75,9 +73,7 @@ HEADERS += \
     gui/mainwindow.h \
     gui/widgets/selectwatchlistwidget.h \
     helper/helper.h \
-    recommendation/Strategy/mom_strategy.h \
-    recommendation/Strategy/strategy.h\
-    recommendation/Strategy/ema_strategy.h
+    recommendation/Strategy/strategy.h
 
     
 FORMS += \
