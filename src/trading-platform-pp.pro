@@ -30,6 +30,8 @@ SOURCES += \
     gui/stockgraphonemonth.cpp \
     gui/stockgraphsixmonths.cpp \
     gui/stockgraphthreedays.cpp \
+    gui/strategygraph.cpp \
+    gui/strategypage.cpp \
     gui/watchlistcard.cpp \
     main.cpp \
     gui/mainwindow.cpp \
@@ -58,6 +60,8 @@ HEADERS += \
     gui/stockgraphonemonth.h \
     gui/stockgraphsixmonths.h \
     gui/stockgraphthreedays.h \
+    gui/strategygraph.h \
+    gui/strategypage.h \
     gui/watchlistcard.h \
     library/qcustomplot.h \
     gui/neworder.h \
@@ -77,6 +81,7 @@ FORMS += \
     gui/newscard.ui \
     gui/newspage.ui \
     gui/neworder.ui \
+    gui/strategypage.ui \
     gui/watchlistcard.ui \
     gui/widgets/selectwatchlistwidget.ui
 

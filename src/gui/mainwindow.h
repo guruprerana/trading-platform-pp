@@ -6,6 +6,7 @@
 #include "signup.h"
 #include "newspage.h"
 #include "neworder.h"
+#include "strategypage.h"
 
 #include <QMainWindow>
 #include <QBoxLayout>
@@ -51,6 +52,7 @@ class MainWindow : public QMainWindow {
   HomePage *homepage;
   NewsPage *newsPage;
   NewOrder *new_order;
+  StrategyPage *strategyPage;
   QHBoxLayout *layout;
 
  private slots:

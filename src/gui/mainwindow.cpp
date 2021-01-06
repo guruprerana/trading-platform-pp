@@ -13,13 +13,11 @@ MainWindow::MainWindow(QWidget *parent)
   // we add all the pages to the layout and then just hide them
   // when they are not displayed
   signUpPage = new SignUp(this);
-  std::cout << "sign up" << endl;
   choosePortfolioPage = new ChoosePortfolio(this);
-  std::cout << "choose portfolio page" << endl;
   homepage = new HomePage(this);
-  std::cout << "home page" << endl;
   newsPage = new NewsPage(this);
   new_order = new NewOrder(this);
+  strategyPage = new StrategyPage(this);
 
   QHBoxLayout *layout = new QHBoxLayout;
   layout->addWidget(signUpPage);
@@ -27,11 +25,13 @@ MainWindow::MainWindow(QWidget *parent)
   layout->addWidget(homepage);
   layout->addWidget(newsPage);
   layout->addWidget(new_order);
+  layout->addWidget(strategyPage);
 
   homepage->hide();
   choosePortfolioPage->hide();
   newsPage->hide();
   new_order->hide();
+  strategyPage->hide();
   ui->toolBar->hide();
 
   ui->centralwidget->setLayout(layout);
@@ -52,6 +52,7 @@ MainWindow::~MainWindow() {
   delete newsPage;
   delete layout;
   delete new_order;
+  delete strategyPage;
 }
 
 void MainWindow::hideAllPages() {
@@ -60,6 +61,7 @@ void MainWindow::hideAllPages() {
   choosePortfolioPage->hide();
   newsPage->hide();
   new_order->hide();
+  strategyPage->hide();
 }
 
 void MainWindow::uncheckAllTabs() {
@@ -102,6 +104,7 @@ void MainWindow::on_actionMarkets_triggered() {
   hideAllPages();
   uncheckAllTabs();
   ui->actionMarkets->setChecked(true);
+  strategyPage->show();
 }
 
 void MainWindow::onCreatePortfolio(QString id, qreal initialAmount,
@@ -109,7 +112,9 @@ void MainWindow::onCreatePortfolio(QString id, qreal initialAmount,
   session->addPortfolio(new Portfolio(id, initialAmount, watchlist));
 
   // initially toolbar is hidden and shown when submit button pressed
-  homepage->updateWatchlistStocks(session->getCurrentWatchlistStocks());
+  auto watchlistStocks = session->getCurrentWatchlistStocks();
+  homepage->updateWatchlistStocks(watchlistStocks);
+  strategyPage->updateWatchlistStocks(watchlistStocks);
   this->ui->toolBar->show();
   this->on_actionHome_triggered();
 }
