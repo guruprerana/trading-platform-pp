@@ -5,6 +5,7 @@
 #include <string>
 #include <map>
 #include <cstdlib>
+#include <QVector>
 using std::string;
 using std::map;
 
@@ -18,26 +19,32 @@ public:
     Stock* get_stock();
     std::string get_name();
     std::string get_price_type();
-    std::map<long, double> get_data(int N, int k = 0);
-    double calculate_sma(std::map<long, double> &bars);
-    double calculate_ema(std::map<long, double> &bars);
+
+    //Handling maps of data
+    void set_map_six_months();
+    std::map<long, double> get_map_six_months();
+    std::map<int, double> get_desired_map(int N, int k = 0); //Returns a map with only the elements we need from the data member map_data
+
+    //Auxiliary functions use to make recommandation
+    double calculate_sma(std::map<int, double> &bars);
+    double calculate_ema(std::map<int, double> &bars);
     int auxiliary_momentum(std::map<int, double> &cache);
     bool exponential_moving_average();
-    double compute_average_value(std::map<long, double> &bars);
-    double compute_average_key(std::map<long, double> &bars);
-    std::tuple<double, double> auxiliary_linear_regression(std::map<long, double> &bars);
+    double compute_average_value(std::map<int, double> &bars);
+    double compute_average_key(std::map<int, double> &bars);
+    std::tuple<double, double> auxiliary_linear_regression(std::map<int, double> &bars);
     bool linear_regression();
     std::tuple<bool, double> momentum();
+
+    //Makes the recommandation : buy or sell or nothing and the percentage
     std::tuple<bool, double> calculate_signals();
-    void simulate();
+
+    //Returns the vectors used for the plots
+    std::tuple<QVector<long>, QVector<double>> simulate();
 
 
 
 protected:
-    // more advanced member functions - to be implemented if time permits
-    void evaluate(); // Report technical assessment on strategy's performance
-    void compare(Strategy* other_strategy); // compare strategies with criteria list
-
     // Data members
     std::string strategy_name;
     Stock* stock; // stock under consideration
@@ -46,6 +53,7 @@ protected:
     std::string str1 = "EMA";
     std::string str2 = "MOM";
     std::string str3 = "LR";
+    std::map<long, double> map_six_months; //map containing the data over the last 6 months
 
 };
 

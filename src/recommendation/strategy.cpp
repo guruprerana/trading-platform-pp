@@ -10,6 +10,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QJsonDocument>
+#include <QVector>
 
 using std::string;
 using std::map;
@@ -35,24 +36,48 @@ Strategy::~Strategy() {
   delete stock;
 }
 
-//Return only a map {time:price} for the last n days of starting from k days ago (k=0 for today, k=1 for yesterday...)
-std::map<long, double> Strategy::get_data(int N, int k) {
-  this->stock->updateDataByDay();
-  QJsonObject jsonData = this->stock->getDataByDay();
+void Strategy::set_stock(Stock *stock) {
+  this->stock = stock;
+}
+Stock *Strategy::get_stock() {
+  return this->stock;
 
-  std::map<std::string, std::map<long, double>> mapData = helper::convertToMap(
-        jsonData); //converts the QJsonObject with the data of the last 6 months into a std::map<std::string, std::ap<long, double>> {price_type : {time:price}}
+}
+std::string Strategy::get_name() {
+  return  this->strategy_name;
+}
+std::string Strategy::get_price_type() {
+  return  this->price_type;
+}
 
-  std::map<long, double> price_map =
-    mapData[this->get_price_type()]; //take the map <long, double> associated to the price_type chosen at the beginning
+//Set map  {time:price} of the stock over the last 6 months: the first element is for today and the last is for six months ago
+void Strategy::set_map_six_months(){
+    this->stock->updateDataByDay();
+    QJsonObject jsonData = this->stock->getDataByDay();
 
-  std::map<long, double> res;
+    std::map<std::string, std::map<long, double>> mapData = helper::convertToMap(jsonData);
+    //converts the QJsonObject with the data of the last 6 months into a std::map<std::string, std::map<long, double>> {price_type : {time:price}}
+
+    this->map_six_months = mapData[this->get_price_type()]; //take the map <long, double> associated to the price_type chosen at the beginning
+}
+
+//Returns the data member "map_data"
+std::map<long, double> Strategy::get_map_six_months(){
+    return this->map_six_months;
+}
+
+//Return a map for the last n days of starting from k days ago (k=0 for today, k=1 for yesterday...)
+//You must call at least once set_map_six_months() before calling the function
+std::map<int, double> Strategy::get_desired_map(int N, int k) {
+  std::map<long, double> price_map = this->get_map_six_months();
+  std::map<int, double> res;
   int count = 0;
   int map_index = 0;
 
   for (auto it : price_map) {
     if (count >= k && count < N + k) {
-      res[map_index] = it.second;
+      res[map_index] = it.second; //here the key of the map is set to be 0,1,... because it is easier to compute the slope
+      //for the linear regression and other strategies don't use the key only the value of the map
       map_index += 1;
     }
 
@@ -62,15 +87,13 @@ std::map<long, double> Strategy::get_data(int N, int k) {
 
     count += 1;
   }
-
-  std::cout << res.size() << std::endl;
   return res;
 }
 
 bool Strategy::exponential_moving_average() {
 
-  std::map<long, double> bars_11 = this->get_data(11);
-  std::map<long, double> bars_6 = this->get_data(6);
+  std::map<int, double> bars_11 = this->get_desired_map(11);
+  std::map<int, double> bars_6 = this->get_desired_map(6);
   double ema_11 = this->calculate_ema(bars_11); // Longer Moving Average
   double ema_06 = this->calculate_ema(bars_6);  // Shorter Moving Average
   double markup = 0.05;// markup introduces anticipation into our strategy:
@@ -86,8 +109,7 @@ bool Strategy::exponential_moving_average() {
 
 
 // Calculate Simple Moving Average
-double Strategy::calculate_sma(std::map<long, double> &bars) {
-  assert(!bars.empty());
+double Strategy::calculate_sma(std::map<int, double> &bars) {
   double sum = 0;
 
   for (auto &it : bars) {
@@ -99,7 +121,7 @@ double Strategy::calculate_sma(std::map<long, double> &bars) {
 
 
 // Calculate Exponential Moving Average
-double Strategy::calculate_ema(std::map<long, double> &bars) {
+double Strategy::calculate_ema(std::map<int, double> &bars) {
   assert(!bars.empty());
   double e_MovingAverage = 0;
   double smoothing_parameter = 0.4; //decay factor of terms in Moving Average
@@ -135,8 +157,8 @@ std::tuple<bool, double> Strategy::momentum() {
   std::map<int, double> cache;
 
   for (int k = 0; k < 4; k++) {
-    std::map<long, double> bars_10 = this->get_data(9, k);
-    std::map<long, double> bars_5 = this->get_data(4, k);
+    std::map<int, double> bars_10 = this->get_desired_map(9, k);
+    std::map<int, double> bars_5 = this->get_desired_map(4, k);
     double sma_10 = this->calculate_sma(bars_10);
     double sma_5 = this->calculate_sma(bars_5);
     double moment = sma_5 / sma_10;
@@ -157,7 +179,7 @@ std::tuple<bool, double> Strategy::momentum() {
   }
 }
 
-double Strategy::compute_average_key(std::map<long, double> &bars) {
+double Strategy::compute_average_key(std::map<int, double> &bars) {
   double key_average = 0;
 
   for (auto item : bars) {
@@ -167,7 +189,7 @@ double Strategy::compute_average_key(std::map<long, double> &bars) {
   return (key_average / bars.size());
 }
 
-double Strategy::compute_average_value(std::map<long, double> &bars) {
+double Strategy::compute_average_value(std::map<int, double> &bars) {
   double value_average = 0;
 
   for (auto item : bars) {
@@ -178,7 +200,7 @@ double Strategy::compute_average_value(std::map<long, double> &bars) {
 }
 
 std::tuple<double, double> Strategy::auxiliary_linear_regression(
-  std::map<long, double> &bars) {
+  std::map<int, double> &bars) {
   assert(!bars.empty());
   double value_average = this->compute_average_value(bars); // value = price = y
   double key_average = this->compute_average_key(bars); //key = time = x
@@ -200,7 +222,8 @@ std::tuple<double, double> Strategy::auxiliary_linear_regression(
 }
 
 bool Strategy::linear_regression() {
-  std::map<long, double> bars = this->get_data(20);
+  int nb_points = this->get_map_six_months().size();
+  std::map<int, double> bars = this->get_desired_map(nb_points);
   auto res = this->auxiliary_linear_regression(bars);
   double slope = std::get<0>(res);
 
@@ -236,91 +259,47 @@ std::tuple<bool, double> Strategy::calculate_signals() {
   return std::make_tuple(bought, percentage);
 }
 
-void Strategy::simulate() {
+std::tuple<QVector<long>, QVector<double>> Strategy::simulate() {
+    QVector<long> timeseries;
+    for (auto it : this->get_map_six_months()){
+        timeseries.prepend(it.first); //first element is 6 months ago, last is today
 
-  std::map<int, double>
-  data_plot_short; // map (day --> momentum/ short_ema/ linear regression  ) where day = 1 is yesterday,
-  // day = 2 is the day before, ...
-  std::map<int, double>
-  data_plot_long; // map (day --> long_ema) where day = 1 is yesterday,
-  // day = 2 is the day before, ...
-  int nb_points =
-    7; // number of points in our plot (ex : plot of the momentum of the 7 latest days)
-  std::string name = this->get_name();
+    }
+    QVector<double> strategy_output;
+    int nb_points = this->get_map_six_months().size(); // number of points in our plot for the last six months = size of Qvector = size of map_six_months
+    std::string name = this->get_name();
 
-  if (this->str1.compare(name) == 0) { //exponential moving average
-    for (int k = 0; k < nb_points; k++) {
-      std::map<long, double> bars_11 = this->get_data(11, k);
-      std::map<long, double> bars_6 = this->get_data(6, k);
-      double ema_11 = this->calculate_ema(bars_11); // Longer Moving Average
-      double ema_06 = this->calculate_ema(bars_6);
-      data_plot_short.insert(std::pair<int, double>(k, ema_06));
-      data_plot_long.insert(std::pair<int, double>(k, ema_11));
+    if (this->str1.compare(name) == 0) { //exponential moving average
+        for (int k = 0; k < nb_points; k++) {
+            std::map<int, double> bars_6 = this->get_desired_map(6, k);
+            double ema_06 = this->calculate_ema(bars_6);
+            strategy_output.prepend(ema_06);
+        }
+    }
+    if (this->str2.compare(name) == 0) { //momentum
+        for (int k = 0; k < nb_points; k++) {
+            std::map<int, double> bars_10 = this->get_desired_map(9, k);
+            std::map<int, double> bars_5 = this->get_desired_map(4, k);
+            double sma_10 = this->calculate_sma(bars_10);
+            double sma_5 = this->calculate_sma(bars_5);
+            double moment = sma_5 / sma_10;
+            strategy_output.prepend(moment);
     }
   }
-
-
-  if (this->str2.compare(name) == 0) { //momentum
-    for (int k = 0; k < nb_points; k++) {
-      std::map<long, double> bars_10 = this->get_data(9, k);
-      std::map<long, double> bars_5 = this->get_data(4, k);
-      double sma_10 = this->calculate_sma(bars_10);
-      double sma_5 = this->calculate_sma(bars_5);
-      double moment = sma_5 / sma_10;
-      data_plot_short.insert(std::pair<int, double>(k, moment));
+    if (this->str3.compare(name) == 0) { //linear regression
+        std::map<int, double> bars = this->get_desired_map(20);
+        auto res = this->auxiliary_linear_regression(bars);
+        double slope = std::get<0>(res);
+        //    std:: cout << "slope ==  " << slope;
+        double yintercept = std::get<1>(res);
+        //    std:: cout << "intercept ==  " << yintercept;
+        for (int k = 0; k < nb_points; k++) {
+            double image = slope * k + yintercept;
+            strategy_output.prepend(image);
+        }
     }
-  }
-
-
-
-  if (this->str3.compare(name) == 0) { //linear regression
-    std::map<long, double> bars = this->get_data(20);
-    auto res = this->auxiliary_linear_regression(bars);
-    double slope = std::get<0>(res);
-    std:: cout << "slope ==  " << slope;
-    double yintercept = std::get<1>(res);
-    std:: cout << "intercept ==  " << yintercept;
-
-    for (int k = 0; k < nb_points; k++) {
-      double image = slope * k + yintercept;
-      data_plot_short.insert(std::pair<int, double>(-k, image)); // in the plot
-    }
-
-  }
-
-  std::cout << "short     ";
-
-  for (auto it : data_plot_short) {
-    std::cout << it.first << " : " << it.second << ";  ";
-  }
-
-  std::cout << "long     ";
-
-  for (auto it : data_plot_long) {
-    std::cout << it.first << " : " << it.second << ";  ";
-  }
-
-
-}
-
-void Strategy::evaluate() {
-
-}
-void Strategy::compare(Strategy *other_strategy) {
+    return std::make_tuple(timeseries, strategy_output);
 
 }
 
 
-void Strategy::set_stock(Stock *stock) {
-  this->stock = stock;
-}
-Stock *Strategy::get_stock() {
-  return this->stock;
-
-}
-std::string Strategy::get_name() {
-  return  this->strategy_name;
-}
-std::string Strategy::get_price_type() {
-  return  this->price_type;
-}
