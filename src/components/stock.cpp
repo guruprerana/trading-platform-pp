@@ -68,28 +68,38 @@ QJsonObject Stock::getSentimentData() {
 void Stock::updateDataByMinute() {
   std::time_t t = std::time(0);
 
-  if (t - getLatestTimestampByMinute() < 60) {
+  if (t - latestTimeStampByMinute < 60) {
     return;
   }
 
   std::string apiResponse = api->getStockData(getSymbol(), "1",
-                            std::max(t - 259200, getLatestTimestampByMinute()), t);
+                            std::max(t - 259200, getLatestTimestampByMinute() - 1000), t);
 
   // 259200 represents 3 days in seconds. Basically we want the api to call 3 days worth of data with 1-minute intervals
   // if we have never called the data before otherwise we update.
-  latestTimeStampByMinute = t;
 
   //update latestTimeStampByMinute
   if (apiResponse != "{\"s\":\"no_data\"}") {
     QJsonObject dataUpdate = helper::parseJson(apiResponse);
-    std::string s = "chlot";
 
-    for (char &c : s) {
-      std::string k(1, c);
-      QVector<double> vectorToAppend = helper::convert_to_vector(dataUpdate, k);
-      dataByMinute[k] += vectorToAppend;
+    auto t = helper::convert_to_vector(dataUpdate, "t");
+    auto o = helper::convert_to_vector(dataUpdate, "o");
+    auto h = helper::convert_to_vector(dataUpdate, "h");
+    auto l = helper::convert_to_vector(dataUpdate, "l");
+    auto c = helper::convert_to_vector(dataUpdate, "c");
+
+    for (int i = 0; i < t.size(); ++i) {
+      if (dataByMinute["t"].isEmpty() || t[i] >= dataByMinute["t"].back()) {
+        dataByMinute["t"].append(t[i]);
+        dataByMinute["o"].append(o[i]);
+        dataByMinute["h"].append(h[i]);
+        dataByMinute["l"].append(l[i]);
+        dataByMinute["c"].append(c[i]);
+      }
     }
   }
+
+  latestTimeStampByMinute = t;
 }
 
 void Stock::updateDataByDay() {

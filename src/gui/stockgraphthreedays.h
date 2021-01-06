@@ -11,7 +11,7 @@ class StockGraphThreeDays : public StockGraph {
   explicit StockGraphThreeDays(QWidget *parent = nullptr);
   ~StockGraphThreeDays();
   void setStock(Stock *other_stock);
-  void updateData();
+  void updateData(bool firstTime);
   void initTimeRange();
   void setCandlestickBinSize();
 

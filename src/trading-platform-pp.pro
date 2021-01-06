@@ -10,6 +10,7 @@ CONFIG += c++11
 
 LIBS += -lcurl
 
+LIBS += -lcurl
 SOURCES += \
     api/api.cpp \
     components/news.cpp \
@@ -32,11 +33,11 @@ SOURCES += \
     gui/watchlistcard.cpp \
     main.cpp \
     gui/mainwindow.cpp \
-    gui/neworder.cpp \
     recommendation/strategy.cpp \
     library/qcustomplot.cpp \
     helper/helper.cpp \
-    gui/widgets/selectwatchlistwidget.cpp
+    gui/widgets/selectwatchlistwidget.cpp \
+    gui/neworder.cpp
 
 HEADERS += \
     api/api.h \

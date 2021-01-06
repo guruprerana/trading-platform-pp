@@ -17,10 +17,10 @@ void StockGraphSixMonths::setStock(Stock *other_stock) {
   clearData();
   lineChart->setData({}, {});
   candleStick->setData({}, {}, {}, {}, {});
-  updateData();
+  updateData(true);
 }
 
-void StockGraphSixMonths::updateData() {
+void StockGraphSixMonths::updateData(bool firstTime = false) {
   stock->updateDataByDay();
   QJsonObject dataByDay = stock->getDataByDay();
 
@@ -45,7 +45,9 @@ void StockGraphSixMonths::updateData() {
     candleStick->addData(time[i], o[i], h[i], l[i], c[i]);
   }
 
-  plot();
+  if (firstTime) {
+    plot();
+  }
 }
 
 void StockGraphSixMonths::initTimeRange() {
