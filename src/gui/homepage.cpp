@@ -3,6 +3,7 @@
 #include "companynewscard.h"
 #include "watchlistcard.h"
 #include "helper/helper.h"
+#include "QString"
 
 HomePage::HomePage(QWidget *parent) :
   QWidget(parent),
@@ -105,12 +106,24 @@ void HomePage::displayNews() {
   }
 }
 
+void HomePage::displaySentimentAnalysis() {
+  QJsonObject fullSentimentData =
+    watchlistStocks[currentStockId]->getSentimentData();
+  QJsonObject sentiment = fullSentimentData["sentiment"].toObject();
+  qDebug() << sentiment << endl;
+  ui->bearish->setText("Bearish Percentage:   " + QString::number(
+                         sentiment["bearishPercent"].toDouble()));
+  ui->bullish->setText("Bullish Percentage:   " + QString::number(
+                         sentiment["bullishPercent"].toDouble()));
+}
+
 void HomePage::changeCurrentStock(int stockId) {
   if (currentStockId != stockId) {
     watchlistCards[currentStockId]->setChecked(false);
     watchlistCards[stockId]->setChecked(true);
     currentStockId = stockId;
     displayNews();
+    displaySentimentAnalysis();
     stockGraphOneDay->setStock(watchlistStocks[currentStockId]);
     stockGraphThreeDays->setStock(watchlistStocks[currentStockId]);
     stockGraphSixMonths->setStock(watchlistStocks[currentStockId]);
@@ -149,6 +162,7 @@ void HomePage::realtimeUpdateStocks() {
   }
 
   watchlistStocks[currentUpdateStockId]->updateNews();
+  watchlistStocks[currentUpdateStockId]->updateSentimentData();
   watchlistStocks[currentUpdateStockId]->updateDataByDay();
   watchlistStocks[currentUpdateStockId]->updateDataByMinute();
   ui->watchlist->layout()->itemAt(currentUpdateStockId)->widget()->show();
@@ -157,6 +171,7 @@ void HomePage::realtimeUpdateStocks() {
   if (currentUpdateStockId == 0 && !loadedStocks) {
     loadedStocks = true;
     displayNews();
+    displaySentimentAnalysis();
   }
 }
 

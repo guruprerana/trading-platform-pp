@@ -89,6 +89,8 @@ class TestStock : public QObject {
       Stock *apple = new Stock("AAPL");
       apple->updateSentimentData();
       qDebug() << apple->getSentimentData() << endl;
+      QJsonObject sentiment = apple->getSentimentData()["sentiment"].toObject();
+      qDebug() << sentiment << endl;
   }
 
 
