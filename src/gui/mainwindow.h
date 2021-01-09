@@ -41,7 +41,7 @@ class MainWindow : public QMainWindow {
 
   void on_actionNews_triggered();
 
-  void on_actionMarkets_triggered();
+  void on_actionStrategies_triggered();
 
  private:
   Ui::MainWindow *ui;

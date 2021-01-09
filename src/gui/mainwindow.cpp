@@ -69,7 +69,7 @@ void MainWindow::uncheckAllTabs() {
   ui->actionTrade->setChecked(false);
   ui->actionPerformance->setChecked(false);
   ui->actionNews->setChecked(false);
-  ui->actionMarkets->setChecked(false);
+  ui->actionStrategies->setChecked(false);
 }
 
 void MainWindow::on_actionHome_triggered() {
@@ -100,10 +100,10 @@ void MainWindow::on_actionNews_triggered() {
   newsPage->show();
 }
 
-void MainWindow::on_actionMarkets_triggered() {
+void MainWindow::on_actionStrategies_triggered() {
   hideAllPages();
   uncheckAllTabs();
-  ui->actionMarkets->setChecked(true);
+  ui->actionStrategies->setChecked(true);
   strategyPage->show();
 }
 
