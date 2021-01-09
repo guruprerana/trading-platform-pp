@@ -6,6 +6,21 @@ StrategyGraph::StrategyGraph(QWidget *parent) :
   StockGraph(parent) {
   initTimeRange();
   setCandlestickBinSize();
+  sma20 = new QCPGraph(ui->plot->xAxis, ui->plot->yAxis);
+  sma50 = new QCPGraph(ui->plot->xAxis, ui->plot->yAxis);
+
+  sma20->setName("SMA 20");
+  sma50->setName("SMA 50");
+
+//  sma20->setLineStyle(QCPGraph::lsLine);
+  sma20->setPen(QPen(QColor(93, 173, 226), 3));
+  sma50->setPen(QPen(QColor(229, 152, 102), 3));
+
+  sma20->setVisible(false);
+  sma50->setVisible(false);
+  candleStick->setVisible(false);
+
+  candleStick->removeFromLegend();
 }
 
 StrategyGraph::~StrategyGraph() {
@@ -14,40 +29,21 @@ StrategyGraph::~StrategyGraph() {
 
 void StrategyGraph::setStock(Stock *other_stock) {
   stock = other_stock;
-  clearData();
-  lineChart->setData({}, {});
-  candleStick->setData({}, {}, {}, {}, {});
-  updateData(true);
+  stock->updateDataByDay();
+
+  QJsonObject dataByDay = stock->getDataByDay();
+  timestamp = helper::convert_to_vector(dataByDay, "t");
+  open = helper::convert_to_vector(dataByDay, "o");
+  high = helper::convert_to_vector(dataByDay, "h");
+  low = helper::convert_to_vector(dataByDay, "l");
+  close = helper::convert_to_vector(dataByDay, "c");
+
+  lineChart->setData(timestamp, close);
+  plot();
 }
 
 void StrategyGraph::updateData(bool firstTime = false) {
-  stock->updateDataByDay();
-  QJsonObject dataByDay = stock->getDataByDay();
 
-  QVector<double> time, o, h, l, c;
-  time = helper::convert_to_vector(dataByDay, "t");
-  o = helper::convert_to_vector(dataByDay, "o");
-  h = helper::convert_to_vector(dataByDay, "h");
-  l = helper::convert_to_vector(dataByDay, "l");
-  c = helper::convert_to_vector(dataByDay, "c");
-
-  double now = QDateTime::currentDateTime().toTime_t();
-  //2628288 is the number of seconds per month: Here we show a 6-month interval
-  ui->plot->xAxis->setRange(now - 2628288 * 6, now);
-
-  for (int i = 0; i < time.size(); i++) {
-    timestamp.append(time[i]);
-    open.append(o[i]);
-    high.append(h[i]);
-    low.append(l[i]);
-    close.append(c[i]);
-    lineChart->addData(time[i], c[i]);
-    candleStick->addData(time[i], o[i], h[i], l[i], c[i]);
-  }
-
-  if (firstTime) {
-    plot();
-  }
 }
 
 void StrategyGraph::initTimeRange() {
@@ -85,4 +81,14 @@ void StrategyGraph::realtimeDataSlot() {
   //    updateData();
   //    lastPointKey = key;
   //  }
+}
+
+void StrategyGraph::drawSMA(const QVector<double> &timestamp_sma20,
+                            const QVector<double> &price_sma20,
+                            const QVector<double> &timestamp_sma50,
+                            const QVector<double> &price_sma50) {
+  sma20->setData(timestamp_sma20, price_sma20);
+  sma50->setData(timestamp_sma50, price_sma50);
+  sma20->setVisible(true);
+  sma50->setVisible(true);
 }

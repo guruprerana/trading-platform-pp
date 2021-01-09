@@ -5,6 +5,7 @@
 #include "components/stock.h"
 #include "watchlistcard.h"
 #include "strategygraph.h"
+#include "recommendation/strategy.h"
 
 namespace Ui {
 class StrategyPage;
@@ -19,10 +20,12 @@ class StrategyPage : public QWidget {
 
   void updateWatchlistStocks(QVector<Stock *> other_watchlistStocks);
   void changeCurrentStock(int stockId);
+  void drawStrategyGraph();
 
  private:
   Ui::StrategyPage *ui;
   int currentStockId;
+  Strategy *strategy;
   StrategyGraph *strategyGraph;
   QVector<Stock *> watchlistStocks;
   QVector<WatchlistCard *> watchlistCards;

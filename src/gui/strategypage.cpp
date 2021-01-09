@@ -38,6 +38,22 @@ void StrategyPage::updateWatchlistStocks(QVector<Stock *>
   currentStockId = 0;
   watchlistCards[0]->setChecked(true);
   strategyGraph->setStock(watchlistStocks[0]);
+  strategy = new Strategy("SMA", watchlistStocks[0], false, "c");
+
+  drawStrategyGraph();
+}
+
+void StrategyPage::drawStrategyGraph() {
+  auto stratSignals = strategy->simulate();
+
+  if (strategy->get_name() == "SMA") {
+    strategyGraph->drawSMA(
+      strategy->timestamp_sma20,
+      strategy->price_sma20,
+      strategy->timestamp_sma50,
+      strategy->price_sma50
+    );
+  }
 }
 
 void StrategyPage::changeCurrentStock(int stockId) {
@@ -45,6 +61,8 @@ void StrategyPage::changeCurrentStock(int stockId) {
     watchlistCards[currentStockId]->setChecked(false);
     watchlistCards[stockId]->setChecked(true);
     strategyGraph->setStock(watchlistStocks[stockId]);
+    strategy->set_stock(watchlistStocks[stockId]);
+    drawStrategyGraph();
     currentStockId = stockId;
   } else {
     watchlistCards[currentStockId]->setChecked(true);
@@ -53,4 +71,6 @@ void StrategyPage::changeCurrentStock(int stockId) {
 
 StrategyPage::~StrategyPage() {
   delete ui;
+  delete strategyGraph;
+  delete strategy;
 }
