@@ -66,7 +66,13 @@ void Strategy::update_stock_data() {
   timestamp_sma50.clear();
   price_sma20.clear();
   price_sma50.clear();
+  timestamp_ema11.clear();
+  price_ema11.clear();
+  timestamp_ema6.clear();
+  price_ema6.clear();
   signals_sma.clear();
+  signals_ema.clear();
+
 }
 
 void Strategy::calculate_sma(int interval, QVector<double> &timestamp_sma,
@@ -115,6 +121,49 @@ void Strategy::calculate_signals_sma() {
       signals_sma.append({timestamp_sma50[i], false}); // sell signal
     }
   }
+}
+
+void Strategy::calculate_ema(int interval, QVector<double> &timestamp_ema,
+                             QVector<double> &price_ema) {
+    if (!timestamp_ema.isEmpty() || !price_ema.isEmpty()) {
+      return;
+    }
+    double e_MovingAverage = 0;
+    double smoothing_parameter = 0.4; //decay factor of terms in Moving Average
+    for (int i = interval-1; i < price.size(); ++i) {
+        for (int j = i-interval+1; j <= i; ++j) {
+           double e_MovingAverage = 0;
+           int weight_factor = 0; // degree of the smoothing_parameter for a given summand
+           e_MovingAverage += smoothing_parameter * (std::pow((1 - smoothing_parameter),weight_factor)) * price[j];
+           weight_factor += 1;
+        }
+        timestamp_ema.append(timestamp[i]);
+        price_ema.append(e_MovingAverage);
+    }
+}
+
+void Strategy::calculate_signals_ema() {
+
+    if (!timestamp_ema6.isEmpty() || !timestamp_ema11.isEmpty()) {
+      return;
+    }
+    calculate_ema(6, timestamp_ema6, price_ema6);
+    calculate_ema(11, timestamp_ema11, price_ema11);
+    int sz6 = price_ema6.size();
+    int sz11 = price_ema11.size();
+    double markup = 0.05;// markup introduces anticipation into our strategy:
+
+    for (int i = 1; i < sz11; ++i) {
+        if (price_ema6[i- sz11 + sz6] > (1-markup )*price_ema11[i] ){
+            signals_ema.append({timestamp_ema11[i], true}); // buy signal
+
+        }
+        if (price_ema11[i] > (1+markup )*price_ema6[i - sz11 + sz6] ){
+            signals_ema.append({timestamp_ema11[i], false}); // sell signal
+
+        }
+    }
+
 }
 
 ////Set map  {time:price} of the stock over the last 6 months: the first element is for today and the last is for six months ago
@@ -334,13 +383,14 @@ void Strategy::simulate() {
 //    this->get_map_six_months().size(); // number of points in our plot for the last six months = size of Qvector = size of map_six_months
   std::string name = this->get_name();
 
-//  if (this->str1.compare(name) == 0) { //exponential moving average
+  if (this->str1.compare(name) == 0) { //exponential moving average
+      return this->calculate_signals_ema();
 //    for (int k = 0; k < nb_points; k++) {
 //      std::map<int, double> bars_6 = this->get_desired_map(6, k);
 //      double ema_06 = this->calculate_ema(bars_6);
 //      strategy_output.prepend(ema_06);
 //    }
-//  }
+  }
 
 //  if (this->str2.compare(name) == 0) { //momentum
 //    for (int k = 0; k < nb_points; k++) {

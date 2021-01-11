@@ -23,7 +23,11 @@ class Strategy {
   void update_stock_data();
   void calculate_sma(int interval, QVector<double> &timestamp_sma,
                      QVector<double> &price_sma);
+  void calculate_ema(int interval, QVector<double> &timestamp_ema,
+                     QVector<double> &price_ema);
   void calculate_signals_sma();
+  void calculate_signals_ema();
+  void simulate();
 
 //  //Handling maps of data
 //  void set_map_six_months();
@@ -47,7 +51,7 @@ class Strategy {
 //  std::tuple<bool, double> calculate_signals();
 
   //Returns the vectors used for the plots
-  void simulate();
+
 
  public:
   // Data members
@@ -66,8 +70,15 @@ class Strategy {
   QVector<double> timestamp_sma20;
   QVector<double> price_sma50;
   QVector<double> price_sma20;
+  QVector<double> timestamp_ema11;
+  QVector<double> price_ema11;
+  QVector<double> timestamp_ema6;
+  QVector<double> price_ema6;
   QVector<QPair<double, bool>> signals_sma;
+  QVector<QPair<double, bool>> signals_ema;
+
 };
 
 
 #endif // STRATEGY_H
+
