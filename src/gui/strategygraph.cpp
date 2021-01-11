@@ -8,15 +8,23 @@ StrategyGraph::StrategyGraph(QWidget *parent) :
   setCandlestickBinSize();
   sma20 = new QCPGraph(ui->plot->xAxis, ui->plot->yAxis);
   sma50 = new QCPGraph(ui->plot->xAxis, ui->plot->yAxis);
+  ema6 = new QCPGraph(ui->plot->xAxis, ui->plot->yAxis);
+  ema11 = new QCPGraph(ui->plot->xAxis, ui->plot->yAxis);
 
   sma20->setName("SMA 20");
   sma50->setName("SMA 50");
+  ema6->setName("EMA 6");
+  ema11->setName("EMA 11");
 
   sma20->setPen(QPen(QColor(93, 173, 226), 3));
   sma50->setPen(QPen(QColor(229, 152, 102), 3));
+  ema6->setPen(QPen(QColor(93, 63, 106), 3));
+  ema11->setPen(QPen(QColor(244, 208, 63), 3));
 
   sma20->setVisible(false);
   sma50->setVisible(false);
+  ema6->setVisible(false);
+  ema11->setVisible(false);
   candleStick->setVisible(false);
 
   candleStick->removeFromLegend();
@@ -82,12 +90,40 @@ void StrategyGraph::realtimeDataSlot() {
   //  }
 }
 
+void StrategyGraph::removeAllGraphs() {
+  sma20->setVisible(false);
+  sma50->setVisible(false);
+  ema6->setVisible(false);
+  ema11->setVisible(false);
+  sma20->removeFromLegend();
+  sma50->removeFromLegend();
+  ema6->removeFromLegend();
+  ema11->removeFromLegend();
+}
+
+void StrategyGraph::addGraph(QCPGraph *graph) {
+  graph->setVisible(true);
+  graph->addToLegend();
+}
+
 void StrategyGraph::drawSMA(const QVector<double> &timestamp_sma20,
                             const QVector<double> &price_sma20,
                             const QVector<double> &timestamp_sma50,
                             const QVector<double> &price_sma50) {
   sma20->setData(timestamp_sma20, price_sma20, true);
   sma50->setData(timestamp_sma50, price_sma50, true);
-  sma20->setVisible(true);
-  sma50->setVisible(true);
+  removeAllGraphs();
+  addGraph(sma20);
+  addGraph(sma50);
+}
+
+void StrategyGraph::drawEMA(const QVector<double> &timestamp_ema6,
+                            const QVector<double> &price_ema6,
+                            const QVector<double> &timestamp_ema11,
+                            const QVector<double> &price_ema11) {
+  ema6->setData(timestamp_ema6, price_ema6, true);
+  ema11->setData(timestamp_ema11, price_ema11, true);
+  removeAllGraphs();
+  addGraph(ema6);
+  addGraph(ema11);
 }

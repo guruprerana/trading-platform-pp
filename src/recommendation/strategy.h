@@ -16,6 +16,7 @@ class Strategy {
            std::string price_type);
   ~Strategy();
   void set_stock(Stock *stock);
+  void set_name(std::string strategy_name);
   Stock *get_stock();
   std::string get_name();
   std::string get_price_type();

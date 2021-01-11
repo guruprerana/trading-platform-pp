@@ -18,6 +18,12 @@ class StrategyGraph : public StockGraph {
                const QVector<double> &price_sma20,
                const QVector<double> &timestamp_sma50,
                const QVector<double> &price_sma50);
+  void drawEMA(const QVector<double> &timestamp_ema6,
+               const QVector<double> &price_ema6,
+               const QVector<double> &timestamp_ema11,
+               const QVector<double> &price_ema11);
+  void addGraph(QCPGraph *graph);
+  void removeAllGraphs();
 
  private slots:
   void realtimeDataSlot();
@@ -25,6 +31,8 @@ class StrategyGraph : public StockGraph {
  private:
   QCPGraph *sma20;
   QCPGraph *sma50;
+  QCPGraph *ema6;
+  QCPGraph *ema11;
 };
 
 #endif // STRATEGYGRAPH_H

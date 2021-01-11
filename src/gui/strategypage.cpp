@@ -45,6 +45,18 @@ void StrategyPage::updateWatchlistStocks(QVector<Stock *>
 }
 
 void StrategyPage::simulateStrategy() {
+  qDeleteAll(ui->scrollAreaWidgetContents->findChildren<SignalCard *>());
+
+  while (ui->scrollAreaWidgetContents->layout()->count()) {
+    QLayoutItem *layoutItem = ui->scrollAreaWidgetContents->layout()->itemAt(0);
+
+    if (layoutItem->spacerItem()) {
+      ui->scrollAreaWidgetContents->layout()->removeItem(layoutItem);
+      // You could also use: layout->takeAt(i);
+      delete layoutItem;
+    }
+  }
+
   strategy->simulate();
 
   if (strategy->get_name() == "SMA") {
@@ -55,28 +67,30 @@ void StrategyPage::simulateStrategy() {
       strategy->price_sma50
     );
 
-    qDeleteAll(ui->scrollAreaWidgetContents->findChildren<SignalCard *>());
-
-    while (ui->scrollAreaWidgetContents->layout()->count()) {
-      QLayoutItem *layoutItem = ui->scrollAreaWidgetContents->layout()->itemAt(0);
-
-      if (layoutItem->spacerItem()) {
-        ui->scrollAreaWidgetContents->layout()->removeItem(layoutItem);
-        // You could also use: layout->takeAt(i);
-        delete layoutItem;
-      }
-    }
-
     for (auto &p : strategy->signals_sma) {
       ui->scrollAreaWidgetContents->layout()->addWidget(
         new SignalCard(p.first, p.second));
     }
-
-    ui->scrollAreaWidgetContents->layout()->addItem(
-      new QSpacerItem(40, 20,
-                      QSizePolicy::Preferred,
-                      QSizePolicy::Expanding));
   }
+
+  else if (strategy->get_name() == "EMA") {
+    strategyGraph->drawEMA(
+      strategy->timestamp_ema6,
+      strategy->price_ema6,
+      strategy->timestamp_ema11,
+      strategy->price_ema11
+    );
+
+    for (auto &p : strategy->signals_ema) {
+      ui->scrollAreaWidgetContents->layout()->addWidget(
+        new SignalCard(p.first, p.second));
+    }
+  }
+
+  ui->scrollAreaWidgetContents->layout()->addItem(
+    new QSpacerItem(40, 20,
+                    QSizePolicy::Preferred,
+                    QSizePolicy::Expanding));
 }
 
 void StrategyPage::changeCurrentStock(int stockId) {
@@ -96,4 +110,16 @@ StrategyPage::~StrategyPage() {
   delete ui;
   delete strategyGraph;
   delete strategy;
+}
+
+void StrategyPage::on_comboBox_currentIndexChanged(int index) {
+  if (index == 0) {
+    strategy->set_name("SMA");
+  } else if (index == 1) {
+    strategy->set_name("EMA");
+  } else if (index == 2) {
+    strategy->set_name("LR");
+  }
+
+  simulateStrategy();
 }

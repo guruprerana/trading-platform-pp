@@ -44,6 +44,11 @@ void Strategy::set_stock(Stock *stock) {
   this->stock = stock;
   update_stock_data();
 }
+
+void Strategy::set_name(std::string strategy_name) {
+  this->strategy_name = strategy_name;
+}
+
 Stock *Strategy::get_stock() {
   return this->stock;
 
@@ -125,44 +130,67 @@ void Strategy::calculate_signals_sma() {
 
 void Strategy::calculate_ema(int interval, QVector<double> &timestamp_ema,
                              QVector<double> &price_ema) {
-    if (!timestamp_ema.isEmpty() || !price_ema.isEmpty()) {
-      return;
-    }
+  if (!timestamp_ema.isEmpty() || !price_ema.isEmpty()) {
+    return;
+  }
+
+  double smoothing_parameter = 0.4; //decay factor of terms in Moving Average
+
+  for (int i = interval - 1; i < price.size(); ++i) {
     double e_MovingAverage = 0;
-    double smoothing_parameter = 0.4; //decay factor of terms in Moving Average
-    for (int i = interval-1; i < price.size(); ++i) {
-        for (int j = i-interval+1; j <= i; ++j) {
-           double e_MovingAverage = 0;
-           int weight_factor = 0; // degree of the smoothing_parameter for a given summand
-           e_MovingAverage += smoothing_parameter * (std::pow((1 - smoothing_parameter),weight_factor)) * price[j];
-           weight_factor += 1;
-        }
-        timestamp_ema.append(timestamp[i]);
-        price_ema.append(e_MovingAverage);
+    int weight_factor = 0; // degree of the smoothing_parameter for a given summand
+
+    for (int j = i - interval + 1; j <= i; ++j) {
+      e_MovingAverage += smoothing_parameter * (std::pow((1 - smoothing_parameter),
+                         weight_factor)) * price[j];
+      weight_factor += 1;
     }
+
+    timestamp_ema.append(timestamp[i]);
+    price_ema.append(e_MovingAverage);
+  }
+}
+
+bool compare_interval_smaller(const QVector<double> &a,
+                              const QVector<double> &b, int ia, int ib, int interval) {
+  // check if a[ia-interval+1] < b[ib-interval+1], ..., a[ia] < b[ib]
+  while (interval > 0 && ia >= 0 && ib >= 0) {
+    if (a[ia] >= b[ib]) {
+      return false;
+    }
+
+    --ia;
+    --ib;
+    --interval;
+  }
+
+  return true;
 }
 
 void Strategy::calculate_signals_ema() {
 
-    if (!timestamp_ema6.isEmpty() || !timestamp_ema11.isEmpty()) {
-      return;
+  if (!timestamp_ema6.isEmpty() || !timestamp_ema11.isEmpty()) {
+    return;
+  }
+
+  calculate_ema(6, timestamp_ema6, price_ema6);
+  calculate_ema(11, timestamp_ema11, price_ema11);
+  int sz6 = price_ema6.size();
+  int sz11 = price_ema11.size();
+
+  for (int i = 1; i < sz11; ++i) {
+    if (compare_interval_smaller(
+          price_ema6, price_ema11, i - sz11 + sz6 - 1, i - 1, 3) &&
+        price_ema6[i - sz11 + sz6] > price_ema11[i]) {
+      signals_ema.append({timestamp_ema11[i], true}); // buy signal
     }
-    calculate_ema(6, timestamp_ema6, price_ema6);
-    calculate_ema(11, timestamp_ema11, price_ema11);
-    int sz6 = price_ema6.size();
-    int sz11 = price_ema11.size();
-    double markup = 0.05;// markup introduces anticipation into our strategy:
 
-    for (int i = 1; i < sz11; ++i) {
-        if (price_ema6[i- sz11 + sz6] > (1-markup )*price_ema11[i] ){
-            signals_ema.append({timestamp_ema11[i], true}); // buy signal
-
-        }
-        if (price_ema11[i] > (1+markup )*price_ema6[i - sz11 + sz6] ){
-            signals_ema.append({timestamp_ema11[i], false}); // sell signal
-
-        }
+    if (compare_interval_smaller(
+          price_ema11, price_ema6, i - 1, i - sz11 + sz6 - 1, 3) &&
+        price_ema11[i] > price_ema6[i - sz11 + sz6]) {
+      signals_ema.append({timestamp_ema11[i], false}); // sell signal
     }
+  }
 
 }
 
@@ -384,7 +412,7 @@ void Strategy::simulate() {
   std::string name = this->get_name();
 
   if (this->str1.compare(name) == 0) { //exponential moving average
-      return this->calculate_signals_ema();
+    return this->calculate_signals_ema();
 //    for (int k = 0; k < nb_points; k++) {
 //      std::map<int, double> bars_6 = this->get_desired_map(6, k);
 //      double ema_06 = this->calculate_ema(bars_6);

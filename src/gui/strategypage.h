@@ -22,6 +22,9 @@ class StrategyPage : public QWidget {
   void changeCurrentStock(int stockId);
   void simulateStrategy();
 
+ private slots:
+  void on_comboBox_currentIndexChanged(int index);
+
  private:
   Ui::StrategyPage *ui;
   int currentStockId;
