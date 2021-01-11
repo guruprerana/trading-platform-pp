@@ -20,7 +20,7 @@ class StrategyPage : public QWidget {
 
   void updateWatchlistStocks(QVector<Stock *> other_watchlistStocks);
   void changeCurrentStock(int stockId);
-  void drawStrategyGraph();
+  void simulateStrategy();
 
  private:
   Ui::StrategyPage *ui;

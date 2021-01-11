@@ -24,6 +24,7 @@ SOURCES += \
     gui/newscard.cpp \
     gui/newspage.cpp \
     gui/nodatapage.cpp \
+    gui/signalcard.cpp \
     gui/signup.cpp \
     gui/stockgraph.cpp \
     gui/stockgraphoneday.cpp \
@@ -54,6 +55,7 @@ HEADERS += \
     gui/newscard.h \
     gui/newspage.h \
     gui/nodatapage.h \
+    gui/signalcard.h \
     gui/signup.h \
     gui/stockgraph.h \
     gui/stockgraphoneday.h \
@@ -76,6 +78,7 @@ FORMS += \
     gui/homepage.ui \
     gui/mainwindow.ui \
     gui/nodatapage.ui \
+    gui/signalcard.ui \
     gui/signup.ui \
     gui/stockgraph.ui \
     gui/newscard.ui \

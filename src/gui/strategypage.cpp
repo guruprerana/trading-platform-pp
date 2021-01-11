@@ -1,5 +1,6 @@
 #include "strategypage.h"
 #include "ui_strategypage.h"
+#include "signalcard.h"
 
 StrategyPage::StrategyPage(QWidget *parent) :
   QWidget(parent),
@@ -40,11 +41,11 @@ void StrategyPage::updateWatchlistStocks(QVector<Stock *>
   strategyGraph->setStock(watchlistStocks[0]);
   strategy = new Strategy("SMA", watchlistStocks[0], false, "c");
 
-  drawStrategyGraph();
+  simulateStrategy();
 }
 
-void StrategyPage::drawStrategyGraph() {
-  auto stratSignals = strategy->simulate();
+void StrategyPage::simulateStrategy() {
+  strategy->simulate();
 
   if (strategy->get_name() == "SMA") {
     strategyGraph->drawSMA(
@@ -53,6 +54,28 @@ void StrategyPage::drawStrategyGraph() {
       strategy->timestamp_sma50,
       strategy->price_sma50
     );
+
+    qDeleteAll(ui->scrollAreaWidgetContents->findChildren<SignalCard *>());
+
+    while (ui->scrollAreaWidgetContents->layout()->count()) {
+      QLayoutItem *layoutItem = ui->scrollAreaWidgetContents->layout()->itemAt(0);
+
+      if (layoutItem->spacerItem()) {
+        ui->scrollAreaWidgetContents->layout()->removeItem(layoutItem);
+        // You could also use: layout->takeAt(i);
+        delete layoutItem;
+      }
+    }
+
+    for (auto &p : strategy->signals_sma) {
+      ui->scrollAreaWidgetContents->layout()->addWidget(
+        new SignalCard(p.first, p.second));
+    }
+
+    ui->scrollAreaWidgetContents->layout()->addItem(
+      new QSpacerItem(40, 20,
+                      QSizePolicy::Preferred,
+                      QSizePolicy::Expanding));
   }
 }
 
@@ -62,7 +85,7 @@ void StrategyPage::changeCurrentStock(int stockId) {
     watchlistCards[stockId]->setChecked(true);
     strategyGraph->setStock(watchlistStocks[stockId]);
     strategy->set_stock(watchlistStocks[stockId]);
-    drawStrategyGraph();
+    simulateStrategy();
     currentStockId = stockId;
   } else {
     watchlistCards[currentStockId]->setChecked(true);

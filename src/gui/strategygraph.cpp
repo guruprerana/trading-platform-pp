@@ -12,7 +12,6 @@ StrategyGraph::StrategyGraph(QWidget *parent) :
   sma20->setName("SMA 20");
   sma50->setName("SMA 50");
 
-//  sma20->setLineStyle(QCPGraph::lsLine);
   sma20->setPen(QPen(QColor(93, 173, 226), 3));
   sma50->setPen(QPen(QColor(229, 152, 102), 3));
 
@@ -87,8 +86,8 @@ void StrategyGraph::drawSMA(const QVector<double> &timestamp_sma20,
                             const QVector<double> &price_sma20,
                             const QVector<double> &timestamp_sma50,
                             const QVector<double> &price_sma50) {
-  sma20->setData(timestamp_sma20, price_sma20);
-  sma50->setData(timestamp_sma50, price_sma50);
+  sma20->setData(timestamp_sma20, price_sma20, true);
+  sma50->setData(timestamp_sma50, price_sma50, true);
   sma20->setVisible(true);
   sma50->setVisible(true);
 }

@@ -66,6 +66,7 @@ void Strategy::update_stock_data() {
   timestamp_sma50.clear();
   price_sma20.clear();
   price_sma50.clear();
+  signals_sma.clear();
 }
 
 void Strategy::calculate_sma(int interval, QVector<double> &timestamp_sma,
@@ -92,11 +93,28 @@ void Strategy::calculate_sma(int interval, QVector<double> &timestamp_sma,
   }
 }
 
-std::tuple<QVector<double>, QVector<double>> Strategy::calculate_signals_sma() {
+void Strategy::calculate_signals_sma() {
+  if (!timestamp_sma20.isEmpty() || !timestamp_sma50.isEmpty()) {
+    return;
+  }
+
   calculate_sma(20, timestamp_sma20, price_sma20);
   calculate_sma(50, timestamp_sma50, price_sma50);
 
-  return {{}, {}};
+  int sz20 = price_sma20.size();
+  int sz50 = price_sma50.size();
+
+  for (int i = 1; i < sz50; ++i) {
+    if (price_sma20[i + sz20 - sz50] > price_sma50[i] &&
+        price_sma20[i + sz20 - sz50 - 1] < price_sma50[i - 1]) {
+      signals_sma.append({timestamp_sma50[i], true}); // buy signal
+    }
+
+    if (price_sma20[i + sz20 - sz50] < price_sma50[i] &&
+        price_sma20[i + sz20 - sz50 - 1] > price_sma50[i - 1]) {
+      signals_sma.append({timestamp_sma50[i], false}); // sell signal
+    }
+  }
 }
 
 ////Set map  {time:price} of the stock over the last 6 months: the first element is for today and the last is for six months ago
@@ -311,10 +329,7 @@ std::tuple<QVector<double>, QVector<double>> Strategy::calculate_signals_sma() {
 //  return std::make_tuple(bought, percentage);
 //}
 
-std::tuple<QVector<double>, QVector<double>> Strategy::simulate() {
-  QVector<double> timeseries;
-  QVector<double> strategy_output;
-
+void Strategy::simulate() {
 //  int nb_points =
 //    this->get_map_six_months().size(); // number of points in our plot for the last six months = size of Qvector = size of map_six_months
   std::string name = this->get_name();
@@ -355,9 +370,6 @@ std::tuple<QVector<double>, QVector<double>> Strategy::simulate() {
   if (this->str4.compare(name) == 0) {
     return this->calculate_signals_sma();
   }
-
-  return std::make_tuple(timeseries, strategy_output);
-
 }
 
 
