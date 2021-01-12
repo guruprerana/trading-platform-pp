@@ -77,8 +77,80 @@ void Strategy::update_stock_data() {
   price_ema6.clear();
   signals_sma.clear();
   signals_ema.clear();
+  timestamp_mom.clear();
+  signals_mom.clear();
+  price_mom.clear();
+  timestamp_sma10.clear();
+  timestamp_sma5.clear();
+  price_sma10.clear();
+  price_sma5.clear();
+
+
+
+
 
 }
+
+void Strategy::calculate_mom(QVector<double> &timestamp_mom,
+                             QVector<double> &price_mom) {
+  if (!timestamp_mom.isEmpty()) {
+    return;
+  }
+  calculate_sma(9, timestamp_sma10, price_sma10);
+  calculate_sma(4, timestamp_sma5, price_sma5);
+
+  int sz10 = price_sma10.size();
+  int sz5 = price_sma10.size();
+
+for (int i = 1; i <sz10 ; ++i){
+    double moment = price_sma5[i + sz5 - sz10]/price_sma10[i];
+    timestamp_mom.append(timestamp[i]);
+    price_mom.append(moment);
+
+  }
+}
+
+void Strategy::calculate_signals_mom() {
+  if (!price_mom.isEmpty()) {
+    return;
+  }
+
+  calculate_mom(timestamp_mom, price_sma20);
+  int szmom = price_mom.size();
+
+  for (int i = 3; i < szmom; ++i) {
+    int action = auxiliary_momentum(price_mom,i);
+    if (action == 0) {
+        signals_mom.append({timestamp_mom[i],{1.0,false}});
+      //return std::make_tuple(false, 1.0);
+    } else if (action == -1) {
+      signals_mom.append({timestamp_mom[i],{0.8,true}});
+    }
+
+    if (action == 1) {
+      signals_mom.append({timestamp_mom[i],{1.0,true}});
+
+
+  }
+
+}}
+
+int Strategy::auxiliary_momentum(QVector<double> price_mom,int i) {
+  if (price_mom[i] < 1) {
+    return 0;
+  }
+
+  double diff1 = price_mom[i-3] - price_mom[i-2];
+  double diff2 = price_mom[i-1] - price_mom[i];
+
+  if (diff1 <= diff2) {
+    return 1;
+  } else {
+    return -1;
+  }
+}
+
+
 
 void Strategy::calculate_sma(int interval, QVector<double> &timestamp_sma,
                              QVector<double> &price_sma) {
@@ -446,6 +518,11 @@ void Strategy::simulate() {
 //  }
 
   if (this->str4.compare(name) == 0) {
+    return this->calculate_signals_mom();
+  }
+
+
+  if (this->str2.compare(name) == 0) {
     return this->calculate_signals_sma();
   }
 }
