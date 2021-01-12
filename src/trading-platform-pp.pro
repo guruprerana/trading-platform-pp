@@ -40,6 +40,7 @@ SOURCES += \
     gui/stockgraphsixmonths.cpp \
     gui/stockgraphthreedays.cpp \
     gui/watchlistcard.cpp \
+    gui/widgets/portfoliowidget.cpp \
     main.cpp \
     gui/mainwindow.cpp \
     library/qcustomplot.cpp \
@@ -67,6 +68,7 @@ HEADERS += \
     gui/stockgraphsixmonths.h \
     gui/stockgraphthreedays.h \
     gui/watchlistcard.h \
+    gui/widgets/portfoliowidget.h \
     library/qcustomplot.h \
     gui/neworder.h \
     gui/mainwindow.h \
@@ -85,6 +87,7 @@ FORMS += \
     gui/newspage.ui \
     gui/neworder.ui \
     gui/watchlistcard.ui \
+    gui/widgets/portfoliowidget.ui \
     gui/widgets/selectwatchlistwidget.ui
 
 DISTFILES += \
