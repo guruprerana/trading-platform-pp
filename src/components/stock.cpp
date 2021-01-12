@@ -66,7 +66,6 @@ QJsonObject Stock::getSentimentData() {
 
 
 void Stock::updateDataByMinute() {
-  API *api = new API();
   qint64 t = helper::getCurrentTime();
 
   if (t - getLatestTimestampByMinute() < 60) {
@@ -94,8 +93,8 @@ void Stock::updateDataByMinute() {
 }
 
 void Stock::updateDataByDay() {
-  API *api = new API();
   qint64 t = helper::getCurrentTime();
+
   if (getLatestTimestampByDay() > 0) { // only update data by day once
     return;
   }
@@ -111,7 +110,6 @@ void Stock::updateDataByDay() {
 }
 
 void Stock::updateNews() {
-  API *api = new API();
   std::string currentDate = helper::getCurrentDate();
   std::string apiResponse = api->getNewsCompany(getSymbol(),
                             currentDate,
