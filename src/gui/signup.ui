@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>693</width>
-    <height>432</height>
+    <height>550</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -176,7 +176,7 @@
       </layout>
      </item>
      <item>
-      <widget class="SelectWatchlistWidget" name="widget" native="true">
+      <widget class="SelectWatchlistWidget" name="selectWatchListWidget" native="true">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -191,6 +191,28 @@
        </property>
        <property name="acceptDrops">
         <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="errorLabel">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+	color: 'red';
+	font-weight: 'bold';
+}</string>
+       </property>
+       <property name="text">
+        <string>Error here.</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>

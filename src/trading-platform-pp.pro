@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui printsupport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -19,35 +19,55 @@ win32 {
   INCLUDEPATH += C:/curl-7.74.0-win64-mingw/include
 }
 
+LIBS += -lcurl
 SOURCES += \
     api/api.cpp \
     components/news.cpp \
+    components/session.cpp \
     components/stock.cpp \
     components/portfolio.cpp \
     components/trading_order.cpp \
     gui/chooseportfolio.cpp \
+    gui/companynewscard.cpp \
     gui/homepage.cpp \
     gui/newscard.cpp \
     gui/newspage.cpp \
+    gui/nodatapage.cpp \
     gui/signup.cpp \
-    helper/helper.cpp \
-    gui/widgets/selectwatchlistwidget.cpp \
+    gui/stockgraph.cpp \
+    gui/stockgraphoneday.cpp \
+    gui/stockgraphonemonth.cpp \
+    gui/stockgraphsixmonths.cpp \
+    gui/stockgraphthreedays.cpp \
+    gui/watchlistcard.cpp \
     main.cpp \
     gui/mainwindow.cpp \
+    library/qcustomplot.cpp \
+    helper/helper.cpp \
+    gui/widgets/selectwatchlistwidget.cpp \
     gui/neworder.cpp
 
 HEADERS += \
     api/api.h \
     components/news.h \
+    components/session.h \
     components/stock.h \
     components/portfolio.h \
     components/trading_order.h \
     gui/chooseportfolio.h \
+    gui/companynewscard.h \
     gui/homepage.h \
     gui/newscard.h \
     gui/newspage.h \
+    gui/nodatapage.h \
     gui/signup.h \
-    helper/helper.h \
+    gui/stockgraph.h \
+    gui/stockgraphoneday.h \
+    gui/stockgraphonemonth.h \
+    gui/stockgraphsixmonths.h \
+    gui/stockgraphthreedays.h \
+    gui/watchlistcard.h \
+    library/qcustomplot.h \
     gui/neworder.h \
     gui/mainwindow.h \
     gui/widgets/selectwatchlistwidget.h \
@@ -55,12 +75,16 @@ HEADERS += \
     
 FORMS += \
     gui/chooseportfolio.ui \
+    gui/companynewscard.ui \
     gui/homepage.ui \
     gui/mainwindow.ui \
+    gui/nodatapage.ui \
+    gui/signup.ui \
+    gui/stockgraph.ui \
     gui/newscard.ui \
     gui/newspage.ui \
-    gui/signup.ui \
     gui/neworder.ui \
+    gui/watchlistcard.ui \
     gui/widgets/selectwatchlistwidget.ui
 
 DISTFILES += \

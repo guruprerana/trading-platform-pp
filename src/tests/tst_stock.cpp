@@ -16,6 +16,7 @@ class TestStock : public QObject {
     void cleanupTestCase();
     void testUpdateData();
     void testNewsClass();
+    void testSentiment();
   };
 
   TestStock::TestStock() {}
@@ -29,10 +30,20 @@ class TestStock : public QObject {
   void TestStock::testUpdateData(){
       Stock *apple = new Stock("AAPL");
       apple->updateDataByMinute();
-      QJsonObject jsonDataMinute = apple->getDataByMinute();
-      std::string textDataMinute = helper::convertToString(jsonDataMinute);
-      std::cout << textDataMinute << std::endl;
-      QVERIFY(textDataMinute.size() != 0 && textDataMinute != "{}");
+      QMap<std::string, QVector<double>> jsonDataMinute = apple->getDataByMinute();
+      for (auto it : jsonDataMinute.toStdMap()) {
+          std::cout << it.first << " : " << std::endl ;
+          std::vector<double> vect = it.second.toStdVector();
+          for (std::vector<double>::const_iterator i = vect.begin(); i != vect.end(); ++i)
+              std::cout << *i << ", ";
+          }
+
+      std::string s = "chlot";
+      for (auto &c : s) {
+        std::string k(1, c);
+        QVERIFY(jsonDataMinute[k].size() >= 1);
+      }
+      std::cout << "Finished update data by minute" << std::endl;
 
       apple->updateDataByDay();
       QJsonObject jsonDataDay = apple->getDataByDay();
@@ -53,15 +64,23 @@ class TestStock : public QObject {
           }
       }
       apple->updateNews();
-      std::cout << apple->getNews() << std::endl;
+      qDebug() << apple->getNews() << endl;
 
       std::cout << helper::convertToFullTimeReadable(apple->getLatestTimestampByDay()) << std::endl;
+
+      delete apple;
   }
 
   void TestStock::testNewsClass(){
       News *markets = new News();
       markets->updateMarketNews();
       qDebug() << markets->getMarketNews() << endl;
+  }
+
+  void TestStock::testSentiment(){
+      Stock *apple = new Stock("AAPL");
+      apple->updateSentimentData();
+      qDebug() << apple->getSentimentData() << endl;
   }
 
 

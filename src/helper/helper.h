@@ -9,6 +9,7 @@
 #include <QMetaEnum>
 #include <chrono>
 #include <map>
+#include <QVector>
 
 namespace helper {
 QJsonObject parseJson(std::string apiResponse);
@@ -20,10 +21,10 @@ std::string convertToFullTimeReadable(qint64 unixTimeStamp);
 std::string convertQJValueToStdString(QJsonValue value);
 std::map<std::string, std::map<long, double>> convertToMap(QJsonObject data);
 QJsonArray convertStringToQJsonArray(std::string apiResponse);
-
 qint64 getCurrentTime();
 std::string getCurrentDate();
 std::string getCurrentFullDate();
+QVector<double> convert_to_vector(QJsonObject j, std::string k);
 
 template<typename QEnum>
 QString QEnumToQString(const QEnum value) {

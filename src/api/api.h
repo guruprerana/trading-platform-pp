@@ -24,6 +24,7 @@ class API {
                              std::string startTimestamp,
                              std::string endTimestamp);
   std::string getNewsMarket();
+  std::string getSentimentData(std::string stockSymbol);
 
  private:
   Q_GADGET

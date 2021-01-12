@@ -51,6 +51,12 @@ std::string API::getNewsMarket() {
   return callUrl(url);
 }
 
+std::string API::getSentimentData(std::string stockSymbol) {
+  std::string token = API_TOKEN;
+  std::string url = API_SENTIMENT + stockSymbol + "&token=" + token;
+  return callUrl(url);
+}
+
 std::string API::callUrl(std::string url) {
   std::string data;
   std::string token = API_TOKEN;
