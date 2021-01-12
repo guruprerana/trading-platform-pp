@@ -13,6 +13,8 @@
 namespace helper {
 QJsonObject parseJson(std::string apiResponse);
 std::string convertToString(QJsonObject jsonData);
+std::string toStdString(QString qs);
+QString toQString(std::string s);
 std::string convertToReadable(qint64 unixTimeStamp);
 std::string convertToFullTimeReadable(qint64 unixTimeStamp);
 std::string convertQJValueToStdString(QJsonValue value);

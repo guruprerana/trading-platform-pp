@@ -1,6 +1,7 @@
 #include "helper.h"
+#include <iostream>
 
-//converts string to QJsonObject
+// Converts string to QJsonObject
 QJsonObject helper::parseJson(std::string apiResponse) {
   QString QapiResponse = QString::fromStdString(apiResponse);
   QJsonDocument doc = QJsonDocument::fromJson(QapiResponse.toUtf8());
@@ -8,8 +9,7 @@ QJsonObject helper::parseJson(std::string apiResponse) {
   return jsonData;
 }
 
-
-//converts QJsonObject to string
+// Converts QJsonObject to string
 std::string helper::convertToString(QJsonObject jsonData) {
   QJsonDocument doc(jsonData);
   QString strJson(doc.toJson(QJsonDocument::Compact));
@@ -17,22 +17,32 @@ std::string helper::convertToString(QJsonObject jsonData) {
   return textData;
 }
 
-//converts unix timestamp to human-readable in YYYY-MM-DD format (the rest of seconds is neglected)
-//needed to call the api about market news. Will be called in api.h
+// Converts QString to std::string
+std::string helper::toStdString(QString qs) {
+  return qs.toUtf8().constData();
+}
+
+// Converts std::string to QString
+QString helper::toQString(std::string s) {
+  return QString::fromStdString(s);
+}
+
+// Converts unix timestamp to human-readable in YYYY-MM-DD format (the rest of seconds is neglected)
+//  needed to call the api about market news. Will be called in api.h
 std::string helper::convertToReadable(qint64 unixTimeStamp) {
   QString date =
-    QDateTime::fromMSecsSinceEpoch(unixTimeStamp).toString("yyyy-MM-dd");
+    QDateTime::fromSecsSinceEpoch(unixTimeStamp).toString("yyyy-MM-dd");
 
-  return date.toStdString();
+  return toStdString(date);
 }
 
 //converts unix timestamp to human-readable in YYYY-MM-DD HH:MM format (the rest of seconds is neglected)
 //needed to call the api about market news. Will be called in api.h
 std::string helper::convertToFullTimeReadable(qint64 unixTimeStamp) {
   QString fullDate =
-    QDateTime::fromMSecsSinceEpoch(unixTimeStamp).toString("yyyy-MM-dd HH:MM");
+    QDateTime::fromSecsSinceEpoch(unixTimeStamp).toString("yyyy-MM-dd HH:MM");
 
-  return fullDate.toStdString();
+  return toStdString(fullDate);
 }
 
 // Returns current Unix timestamp time.
@@ -40,17 +50,17 @@ qint64 helper::getCurrentTime() {
   return QDateTime::currentSecsSinceEpoch();
 }
 
-// Returns the current day in the format YYYY-MM-DD
+// Returns the current day in the format yyyy-MM-DD
 std::string helper::getCurrentDate() {
   QString currentDate = QDateTime::currentDateTime().toString("yyyy-MM-dd");
-  return currentDate.toStdString();
+  return toStdString(currentDate);
 }
 
-// Returns the current day in the format YYYY-MM-DD HH:MM
+// Returns the current day in the format YYYY-MM-DD HH:mm
 std::string helper::getCurrentFullDate() {
   QString currentFullDate =
-    QDateTime::currentDateTime().toString("yyyy-MM-dd HH:MM");
-  return currentFullDate.toStdString();
+    QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm");
+  return toStdString(currentFullDate);
 }
 
 //converts QJsonValue to std::string
