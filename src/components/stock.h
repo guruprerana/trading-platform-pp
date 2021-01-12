@@ -12,9 +12,9 @@ class Stock {
  private:
   std::string symbol;
   QJsonObject dataByDay;
+  qint64 latestTimeStampByDay;
+  qint64 latestTimeStampByMinute;
   QMap<std::string, QVector<double>> dataByMinute;
-  long latestTimeStampByDay;
-  long latestTimeStampByMinute;
   QJsonArray stockNews;
   QJsonObject sentimentData;
   API *api;
@@ -24,8 +24,8 @@ class Stock {
   ~Stock();
 
   std::string getSymbol();
-  long getLatestTimestampByDay();
-  long getLatestTimestampByMinute();
+  qint64 getLatestTimestampByDay();
+  qint64 getLatestTimestampByMinute();
   QJsonObject getDataByDay();
   QJsonArray getNews();
   QMap<std::string, QVector<double>> getDataByMinute();

@@ -1,6 +1,7 @@
 #ifndef HELPER_H
 #define HELPER_h
 
+#include <QDateTime>
 #include <QString>
 #include <QJsonObject>
 #include <QJsonArray>
@@ -13,11 +14,16 @@
 namespace helper {
 QJsonObject parseJson(std::string apiResponse);
 std::string convertToString(QJsonObject jsonData);
-std::string convertToReadable(long unixTimeStamp);
+std::string toStdString(QString qs);
+QString toQString(std::string s);
+std::string convertToReadable(qint64 unixTimeStamp);
+std::string convertToFullTimeReadable(qint64 unixTimeStamp);
 std::string convertQJValueToStdString(QJsonValue value);
 std::map<std::string, std::map<long, double>> convertToMap(QJsonObject data);
 QJsonArray convertStringToQJsonArray(std::string apiResponse);
-std::string convertToFullTimeReadable(long unixTimeStamp);
+qint64 getCurrentTime();
+std::string getCurrentDate();
+std::string getCurrentFullDate();
 QVector<double> convert_to_vector(QJsonObject j, std::string k);
 
 template<typename QEnum>

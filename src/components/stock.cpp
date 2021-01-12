@@ -24,11 +24,11 @@ std::string Stock::getSymbol() {
   return symbol;
 }
 
-long Stock::getLatestTimestampByDay() {
+qint64 Stock::getLatestTimestampByDay() {
   return latestTimeStampByDay;
 }
 
-long Stock::getLatestTimestampByMinute() {
+qint64 Stock::getLatestTimestampByMinute() {
   return latestTimeStampByMinute;
 }
 
@@ -66,7 +66,7 @@ QJsonObject Stock::getSentimentData() {
 
 
 void Stock::updateDataByMinute() {
-  std::time_t t = std::time(0);
+  qint64 t = helper::getCurrentTime();
 
   if (t - getLatestTimestampByMinute() < 60) {
     return;
@@ -93,11 +93,12 @@ void Stock::updateDataByMinute() {
 }
 
 void Stock::updateDataByDay() {
+  qint64 t = helper::getCurrentTime();
+
   if (getLatestTimestampByDay() > 0) { // only update data by day once
     return;
   }
 
-  std::time_t t = std::time(0);
   std::string apiResponse = api->getStockData(getSymbol(), "D", t - 15768000, t);
   // 15768000 represents 6 months in seconds. Basically we want the api to call 6 months worth of data with 1-day intervals
   latestTimeStampByDay = t;
@@ -109,10 +110,10 @@ void Stock::updateDataByDay() {
 }
 
 void Stock::updateNews() {
-  std::time_t t = std::time(0);
+  std::string currentDate = helper::getCurrentDate();
   std::string apiResponse = api->getNewsCompany(getSymbol(),
-                            helper::convertToReadable(t),
-                            helper::convertToReadable(t));
+                            currentDate,
+                            currentDate);
   // We do not change convertToReadable(t) because it gives the current date and the api gives news with day intervals.
   // Basically, we want all the news today regardless of the exact time.
   stockNews = helper::convertStringToQJsonArray(apiResponse);
