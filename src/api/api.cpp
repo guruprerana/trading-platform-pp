@@ -8,6 +8,8 @@ const std::string API::API_NEWSCOMPANY =
   "https://finnhub.io/api/v1/company-news?symbol=";
 const std::string API::API_NEWSMARKET =
   "https://finnhub.io/api/v1/news?category=general&token=";
+const std::string API::API_SENTIMENT =
+  "https://finnhub.io/api/v1/news-sentiment?symbol=";;
 const std::string API::API_TOKEN = "buk0iff48v6r2017bpg0";
 
 // Constructor of the API class

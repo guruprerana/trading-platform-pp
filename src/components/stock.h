@@ -12,7 +12,6 @@ class Stock {
  private:
   std::string symbol;
   QJsonObject dataByDay;
-  QJsonObject dataByMinute;
   qint64 latestTimeStampByDay;
   qint64 latestTimeStampByMinute;
   QMap<std::string, QVector<double>> dataByMinute;

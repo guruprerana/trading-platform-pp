@@ -15,6 +15,7 @@ class API {
   API_ENDPOINT,
   API_NEWSCOMPANY,
   API_NEWSMARKET,
+  API_SENTIMENT,
   API_TOKEN;
 
   std::string callUrl(std::string url);
