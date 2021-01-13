@@ -79,11 +79,15 @@ void Strategy::update_stock_data() {
   signals_ema.clear();
   timestamp_mom.clear();
   signals_mom.clear();
-  price_mom.clear();
+  price_mom.clear(); // list of momentum
   timestamp_sma10.clear();
   timestamp_sma5.clear();
   price_sma10.clear();
   price_sma5.clear();
+  slope.clear();
+  signals_lr.clear();
+  intercept.clear();
+  timestamp_lr.clear();
 
 
 
@@ -265,6 +269,71 @@ void Strategy::calculate_signals_ema() {
   }
 
 }
+
+
+void Strategy::calculate_signals_lr(){
+    if (!signals_lr.isEmpty())
+    {return;}
+    calculate_lr(10,timestamp_lr,slope,intercept);
+    for (int i = 1; i<slope.size(); i ++){
+        if (slope[i] <=0) {
+            signals_lr.append({timestamp_lr[i], false});
+        }
+        else{
+            signals_lr.append({timestamp_lr[i], true});
+        }
+    }
+
+
+}
+
+void Strategy::calculate_lr(int interval, QVector<double> &timestamp_lr,
+                            QVector<double> &slope,QVector<double> &intercept){
+    if (!slope.isEmpty())
+    {return;}
+    for (int i = interval; i < price.size(); ++i){
+    double value_average = this->compute_average_value(i,interval);
+    double key_average = this->compute_average_key(i,interval);
+    double sum_prod = 0;
+    double sum_square = 0;
+    for (int j=0;j<interval;j++){
+        sum_prod += timestamp[i -  j] * price[i - j];
+        sum_square += timestamp[i -  j] * timestamp[i -  j];
+    }
+    double ss_xx = sum_square - (key_average * key_average * interval);
+    double ss_xy = sum_prod - (key_average * value_average * interval);
+    double slope_lr = ss_xy / ss_xx;
+    double yintercept = value_average - (slope_lr * key_average);
+    slope.append(slope_lr);
+    intercept.append(yintercept);
+    timestamp_lr.append(timestamp[i]);
+
+    }
+
+}
+
+double Strategy::compute_average_key(int i, int interval ) {
+  double key_average = 0;
+
+  for (int j=0;j<interval;j++) {
+    key_average += timestamp[i - j];
+  }
+
+  return (key_average / interval);
+}
+
+double Strategy::compute_average_value(int i, int interval) {
+  double value_average = 0;
+
+  for (int j=0;j<interval;j++) {
+    value_average += price[i - j];
+  }
+
+  return (value_average / interval);
+}
+
+
+
 
 ////Set map  {time:price} of the stock over the last 6 months: the first element is for today and the last is for six months ago
 //void Strategy::set_map_six_months() {
@@ -525,6 +594,12 @@ void Strategy::simulate() {
   if (this->str2.compare(name) == 0) {
     return this->calculate_signals_sma();
   }
+
+  if (this->str3.compare(name) == 0) {
+    return this->calculate_signals_lr();
+  }
+
+
 }
 
 

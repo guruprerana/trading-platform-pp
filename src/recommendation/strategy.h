@@ -32,6 +32,13 @@ class Strategy {
   void calculate_signals_ema();
   void calculate_signals_mom();
   int auxiliary_momentum(QVector<double> price_mom,int i);
+  void calculate_signals_lr();
+  void calculate_lr(int interval, QVector<double> &timestamp_lr,
+                    QVector<double> &slope,QVector<double> &intercept);
+  double compute_average_key(int i, int interval );
+  double compute_average_value(int i, int interval );
+
+
   void simulate();
 
 //  //Handling maps of data
@@ -89,6 +96,11 @@ class Strategy {
   QVector<double>timestamp_sma5;
   QVector<double>price_sma10;
   QVector<double>price_sma5;
+
+  QVector<double>slope;
+  QVector<QPair<double, bool>>signals_lr;
+  QVector<double>intercept;
+  QVector<double>timestamp_lr;
 
 
 
