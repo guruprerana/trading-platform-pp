@@ -47,6 +47,7 @@ class Portfolio {
 
   void addStockToWatchList(QString &symbol);
   void removeStockFromWatchList(QString &symbol);
+  QVector <QPair<QString, qint32>> getOwnedStockList();
 
   void addTradingOrder(TradingOrder *trading_order);
 

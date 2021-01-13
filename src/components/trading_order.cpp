@@ -9,7 +9,7 @@ void TradingOrder::setSymbol(QString symbol) {
   this->symbol = symbol;
 }
 
-void TradingOrder::setQuantity(qreal quantity) {
+void TradingOrder::setQuantity(qint32 quantity) {
   this->quantity = quantity;
 }
 
@@ -39,6 +39,42 @@ void TradingOrder::setTradingTime(qint64 trading_order_time_stamp) {
 
 void TradingOrder::setValuePerQuantity(qreal value_per_quantity) {
   this->value_per_quantity = value_per_quantity;
+}
+
+QString TradingOrder::getSymbol() const {
+  return symbol;
+}
+
+qreal TradingOrder::getQuantity() const {
+  return quantity;
+}
+
+TradingOrder::TradingStrategy TradingOrder::getStrategy() const {
+  return strategy;
+}
+
+TradingOrder::TradingOrderType TradingOrder::getOrderType() const {
+  return order_type;
+}
+
+TradingOrder::TradingAction TradingOrder::getAction() const {
+  return action;
+}
+
+TradingOrder::TradingTiming TradingOrder::getTiming() const {
+  return timing;
+}
+
+qreal TradingOrder::getLimitPrice() const {
+  return limit_price;
+}
+
+qint64 TradingOrder::getTradingTime() const {
+  return trading_order_time_stamp;
+}
+
+qreal TradingOrder::getValuePerQuantity() const {
+  return value_per_quantity;
 }
 
 double TradingOrder::valuation() {

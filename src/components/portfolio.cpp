@@ -1,4 +1,5 @@
 #include "portfolio.h"
+#include "helper/helper.h"
 #include <QVariant>
 #include <QJsonArray>
 
@@ -28,6 +29,34 @@ void Portfolio::addStockToWatchList(QString &symbol) {
   }
 
   stock_watch_list.append(symbol);
+}
+
+// Returns a list of stock that the portfoilo owns currently and how many
+// quantity does the portfoilo own.
+QVector <QPair<QString, qint32>> Portfolio::getOwnedStockList() {
+  QMap<QString, qint32> mp;
+
+  for (auto &tradingOrder : trading_order_history) {
+    QString symbol = tradingOrder->getSymbol();
+    qint32 quantity = tradingOrder->getQuantity();
+    TradingOrder::TradingAction action = tradingOrder->getAction();
+
+    if (action == TradingOrder::TradingAction::Buy) {
+      mp[symbol] += quantity;
+    } else {
+      mp[symbol] -= quantity;
+    }
+  }
+
+  QVector <QPair<QString, qint32>> list;
+
+  for (auto stock : list) {
+    if (stock.second > 0) {
+      list.push_back(stock);
+    }
+  }
+
+  return list;
 }
 
 void Portfolio::removeStockFromWatchList(QString &symbol) {
