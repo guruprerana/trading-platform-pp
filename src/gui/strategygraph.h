@@ -23,6 +23,8 @@ class StrategyGraph : public StockGraph {
                const QVector<double> &timestamp_ema11,
                const QVector<double> &price_ema11);
   void drawLR(double slope, double intercept, const QVector<double> &timestamp);
+  void drawMomentum(const QVector<double> &timestamp,
+                    const QVector<double> &price);
   void addGraph(QCPGraph *graph);
   void removeAllGraphs();
 
@@ -35,6 +37,8 @@ class StrategyGraph : public StockGraph {
   QCPGraph *ema6;
   QCPGraph *ema11;
   QCPGraph *lr;
+  QCPGraph *mom;
+  QCPAxisRect *momentumAxisRect;
 };
 
 #endif // STRATEGYGRAPH_H

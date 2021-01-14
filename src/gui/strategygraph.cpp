@@ -1,16 +1,35 @@
 #include "strategygraph.h"
 #include "ui_stockgraph.h"
 #include "helper/helper.h"
+#include <algorithm>
 
 StrategyGraph::StrategyGraph(QWidget *parent) :
   StockGraph(parent) {
-  initTimeRange();
-  setCandlestickBinSize();
   sma20 = new QCPGraph(ui->plot->xAxis, ui->plot->yAxis);
   sma50 = new QCPGraph(ui->plot->xAxis, ui->plot->yAxis);
   ema6 = new QCPGraph(ui->plot->xAxis, ui->plot->yAxis);
   ema11 = new QCPGraph(ui->plot->xAxis, ui->plot->yAxis);
   lr = new QCPGraph(ui->plot->xAxis, ui->plot->yAxis);
+
+  momentumAxisRect = new QCPAxisRect(ui->plot);
+  ui->plot->plotLayout()->addElement(1, 0, momentumAxisRect);
+  momentumAxisRect->setMaximumSize(QSize(QWIDGETSIZE_MAX, 200));
+  momentumAxisRect->axis(QCPAxis::atBottom)->setLayer("axes");
+  momentumAxisRect->axis(QCPAxis::atBottom)->grid()->setLayer("grid");
+  ui->plot->plotLayout()->setRowSpacing(0);
+  momentumAxisRect->setAutoMargins(QCP::msLeft | QCP::msRight | QCP::msBottom);
+  momentumAxisRect->setMargins(QMargins(0, 0, 0, 0));
+
+  mom = new QCPGraph(momentumAxisRect->axis(
+                       QCPAxis::atBottom), momentumAxisRect->axis(QCPAxis::atLeft));
+  mom->setName("Momentum");
+
+  // interconnect x axis ranges of main and bottom axis rects:
+  connect(ui->plot->xAxis, SIGNAL(rangeChanged(QCPRange)),
+          momentumAxisRect->axis(QCPAxis::atBottom), SLOT(setRange(QCPRange)));
+  connect(momentumAxisRect->axis(QCPAxis::atBottom),
+          SIGNAL(rangeChanged(QCPRange)),
+          ui->plot->xAxis, SLOT(setRange(QCPRange)));
 
   sma20->setName("SMA 20");
   sma50->setName("SMA 50");
@@ -32,10 +51,19 @@ StrategyGraph::StrategyGraph(QWidget *parent) :
   candleStick->setVisible(false);
 
   candleStick->removeFromLegend();
+
+  initTimeRange();
+  setCandlestickBinSize();
 }
 
 StrategyGraph::~StrategyGraph() {
-
+  delete sma20;
+  delete sma50;
+  delete ema6;
+  delete ema11;
+  delete lr;
+  delete momentumAxisRect;
+  delete mom;
 }
 
 void StrategyGraph::setStock(Stock *other_stock) {
@@ -63,11 +91,14 @@ void StrategyGraph::initTimeRange() {
   dateTimeTicker->setDateTimeFormat("dd/MM/yyyy");
   double now = QDateTime::currentDateTime().toTime_t();
   //2628288 is the number of seconds per month: Here we show a 6-month interval
+  momentumAxisRect->axis(QCPAxis::atBottom)->setTicker(dateTimeTicker);
   ui->plot->xAxis->setRange(now - 2628288 * 6, now);
   ui->plot->yAxis->setTickLabels(false);
   ui->plot->xAxis->ticker()->setTickCount(10);
+//  ui->plot->xAxis->setTicks(
+//    false); // only want vertical grid in main axis rect, so hide xAxis backbone, ticks, and labels
   ui->plot->xAxis->setTicker(dateTimeTicker);
-  ui->plot->xAxis->setTickLabelRotation(15);
+//  ui->plot->xAxis->setTickLabelRotation(15);
   ui->plot->rescaleAxes();
   ui->plot->xAxis->scaleRange(1.025, ui->plot->xAxis->range().center());
   ui->plot->yAxis->scaleRange(1.1, ui->plot->yAxis->range().center());
@@ -105,6 +136,11 @@ void StrategyGraph::removeAllGraphs() {
   ema6->removeFromLegend();
   ema11->removeFromLegend();
   lr->removeFromLegend();
+  mom->removeFromLegend();
+  momentumAxisRect->setVisible(false);
+
+  ui->plot->plotLayout()->take(momentumAxisRect);
+  ui->plot->plotLayout()->simplify();
 }
 
 void StrategyGraph::addGraph(QCPGraph *graph) {
@@ -145,4 +181,15 @@ void StrategyGraph::drawLR(double slope, double intercept,
   lr->setData(lrTimestamp, lrPrice);
   removeAllGraphs();
   addGraph(lr);
+}
+
+void StrategyGraph::drawMomentum(const QVector<double> &timestamp,
+                                 const QVector<double> &price) {
+  removeAllGraphs();
+  ui->plot->plotLayout()->addElement(1, 0, momentumAxisRect);
+  momentumAxisRect->setVisible(true);
+  momentumAxisRect->axis(QCPAxis::atLeft)->setRange(
+    *std::min_element(price.begin(), price.end()) * 0.99,
+    *std::max_element(price.begin(), price.end()) * 1.01);
+  mom->setData(timestamp, price);
 }

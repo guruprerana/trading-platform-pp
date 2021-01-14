@@ -88,16 +88,16 @@ void StrategyPage::simulateStrategy() {
   }
 
   else if (strategy->get_name() == "MOM") {
-    qDebug() << strategy->timestamp_sma5.size() << endl;
-    qDebug() << strategy->timestamp_sma10.size() << endl;
-    qDebug() << strategy->timestamp_mom.size() << ' ' << strategy->price_mom.size()
-             << endl;
-    qDebug() << strategy->signals_mom << endl;
+    strategyGraph->drawMomentum(
+      strategy->timestamp_mom,
+      strategy->price_mom
+    );
+    ui->scrollAreaWidgetContents->layout()->addWidget(
+      new SignalCard(strategy->signals_mom.back().first,
+                     strategy->signals_mom.back().second.second));
   }
 
   else if (strategy->get_name() == "LR") {
-    qDebug() << strategy->slope.back() << endl;
-    qDebug() << strategy->intercept.back() << endl;
     strategyGraph->drawLR(
       strategy->slope.back(),
       strategy->intercept.back(),
