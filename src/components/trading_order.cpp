@@ -9,7 +9,7 @@ void TradingOrder::setSymbol(QString symbol) {
   this->symbol = symbol;
 }
 
-void TradingOrder::setQuantity(qint32 quantity) {
+void TradingOrder::setQuantity(qreal quantity) {
   this->quantity = quantity;
 }
 

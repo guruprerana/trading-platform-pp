@@ -50,7 +50,7 @@ class TradingOrder {
   double valuation();
 
   void setSymbol(QString symbol);
-  void setQuantity(qint32 quantity);
+  void setQuantity(qreal quantity);
   void setStrategy(TradingStrategy strategy);
   void setOrderType(TradingOrderType order_type);
   void setAction(TradingAction action);
@@ -74,7 +74,7 @@ class TradingOrder {
 
  private:
   QString symbol;
-  qint32 quantity;
+  qreal quantity;
   TradingStrategy strategy;
   TradingOrderType order_type;
   TradingAction action;

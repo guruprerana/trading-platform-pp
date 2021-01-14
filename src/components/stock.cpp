@@ -123,7 +123,11 @@ void Stock::updateSentimentData() {
   sentimentData = helper::parseJson(apiResponse);
 }
 
-
+//
+double Stock::getLatestClosedPrice() {
+  updateDataByMinute();
+  return getDataByMinute()["c"].back();
+}
 
 
 

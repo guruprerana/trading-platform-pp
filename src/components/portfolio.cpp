@@ -18,23 +18,63 @@ void LoadUp::load(const QJsonObject &json) {
   }
 }
 
+qreal StockRecord::quantityRecorded() const {
+  qreal quantity = 0;
+
+  for (auto &x : record) {
+    quantity += x.second;
+  }
+
+  return quantity;
+}
+
+qreal StockRecord::baseCost() const {
+  qreal base_cost = 0;
+
+  for (auto &x : record) {
+    base_cost += x.first * x.second;
+  }
+
+  return base_cost;
+}
+
+qreal StockRecord::getValuation() const {
+  qreal current_price = stock->getLatestClosedPrice();
+  return current_price * quantityRecorded();
+}
+
+// DOES NOT TAKE ACCOUNT OF SOLD STOCK
+qreal StockRecord::totalGainLoss() const {
+  return getValuation() - baseCost();
+}
+
 // Returns the value of the owned stocks
 qreal Portfolio::stockValuation() {
   qreal res = 0;
   auto list = getOwnedStockList();
 
-  for (auto &s : list) {
-    std::string sname = s.first.toUtf8().constData();   // QString to std string
-    Stock stock(sname);
-    res += (stock.getDataByMinute())["c"].back() * s.second;
+  foreach (StockRecord s, stock_records) {
+    res += s.getValuation();
   }
 
-  return res + current_money;
+  return res;
 }
 
 // Returns the total value of the portfolio
 qreal Portfolio::valuation() {
   return stockValuation() + current_money;
+}
+
+qreal Portfolio::getPercentOfAccount(QString symbol) {
+  if (stock_records.contains(symbol)) {
+    return 0;
+  }
+
+  return stock_records.value(symbol).getValuation() / valuation();
+}
+
+qreal Portfolio::getPercentOfAccount(std::string symbol) {
+  return getPercentOfAccount(helper::toQString(symbol));
 }
 
 void Portfolio::addStockToWatchList(QString &symbol) {
@@ -43,34 +83,6 @@ void Portfolio::addStockToWatchList(QString &symbol) {
   }
 
   stock_watch_list.append(symbol);
-}
-
-// Returns a list of stock that the portfoilo owns currently and how many
-// quantity does the portfoilo own.
-QVector <QPair<QString, qint32>> Portfolio::getOwnedStockList() {
-  QMap<QString, qint32> mp;
-
-  for (auto &tradingOrder : trading_order_history) {
-    QString symbol = tradingOrder->getSymbol();
-    qint32 quantity = tradingOrder->getQuantity();
-    TradingOrder::TradingAction action = tradingOrder->getAction();
-
-    if (action == TradingOrder::TradingAction::Buy) {
-      mp[symbol] += quantity;
-    } else {
-      mp[symbol] -= quantity;
-    }
-  }
-
-  QVector <QPair<QString, qint32>> list;
-
-  for (auto stock : list) {
-    if (stock.second > 0) {
-      list.push_back(stock);
-    }
-  }
-
-  return list;
 }
 
 void Portfolio::removeStockFromWatchList(QString &symbol) {
