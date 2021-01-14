@@ -34,6 +34,7 @@ SOURCES += \
     gui/strategygraph.cpp \
     gui/strategypage.cpp \
     gui/watchlistcard.cpp \
+    gui/widgets/portfoliowidget.cpp \
     main.cpp \
     gui/mainwindow.cpp \
     recommendation/strategy.cpp \
@@ -65,6 +66,7 @@ HEADERS += \
     gui/strategygraph.h \
     gui/strategypage.h \
     gui/watchlistcard.h \
+    gui/widgets/portfoliowidget.h \
     library/qcustomplot.h \
     gui/neworder.h \
     gui/mainwindow.h \
@@ -86,6 +88,7 @@ FORMS += \
     gui/neworder.ui \
     gui/strategypage.ui \
     gui/watchlistcard.ui \
+    gui/widgets/portfoliowidget.ui \
     gui/widgets/selectwatchlistwidget.ui
 
 DISTFILES += \

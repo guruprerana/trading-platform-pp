@@ -13,7 +13,8 @@ MainWindow::MainWindow(QWidget *parent)
   // we add all the pages to the layout and then just hide them
   // when they are not displayed
   signUpPage = new SignUp(this);
-  choosePortfolioPage = new ChoosePortfolio(this);
+  QVector <Portfolio *> portfolios = session->getPortfolios();
+  choosePortfolioPage = new ChoosePortfolio(portfolios, this);
   homepage = new HomePage(this);
   newsPage = new NewsPage(this);
   new_order = new NewOrder(this);
@@ -27,8 +28,15 @@ MainWindow::MainWindow(QWidget *parent)
   layout->addWidget(new_order);
   layout->addWidget(strategyPage);
 
+  if (portfolios.size() == 0) {
+    // no existing portfolios, proceed to sign up
+    choosePortfolioPage->hide();
+  } else {
+    // we do have portfolios, proceed to choosing which
+    signUpPage->hide();
+  }
+
   homepage->hide();
-  choosePortfolioPage->hide();
   newsPage->hide();
   new_order->hide();
   strategyPage->hide();
@@ -36,11 +44,15 @@ MainWindow::MainWindow(QWidget *parent)
 
   ui->centralwidget->setLayout(layout);
 
-  // connect the sign up signals
+  // connect the signals
   connect(signUpPage, &SignUp::signUpWithDetails, this,
           &MainWindow::onCreatePortfolio);
   connect(new_order, &NewOrder::newOrderCreated, this,
           &MainWindow::onCreateOrder);
+  connect(choosePortfolioPage, &ChoosePortfolio::createNewPortfolio, this,
+          &MainWindow::onCreateNewPortfolio);
+  connect(choosePortfolioPage, &ChoosePortfolio::portfolioChosen, this,
+          &MainWindow::onChoosePortfolio);
 }
 
 MainWindow::~MainWindow() {
@@ -127,4 +139,18 @@ void MainWindow::onCreateOrder(TradingOrder *order) {
   }
 
   current->addTradingOrder(order);
+}
+
+void MainWindow::onCreateNewPortfolio() {
+  hideAllPages();
+  uncheckAllTabs();
+  ui->toolBar->hide();
+  signUpPage->show();
+}
+
+void MainWindow::onChoosePortfolio(Portfolio *portfolio) {
+  session->setCurrentPortfolio(portfolio);
+  homepage->updateWatchlistStocks(session->getCurrentWatchlistStocks());
+  this->ui->toolBar->show();
+  this->on_actionHome_triggered();
 }

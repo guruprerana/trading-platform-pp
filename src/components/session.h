@@ -24,6 +24,10 @@ class Session {
 
   QVector<Stock *> getCurrentWatchlistStocks();
 
+  QVector<Portfolio *> &getPortfolios() {
+    return portfolios;
+  }
+
   Portfolio *getPortfolio(QString &id) const;
   void addPortfolio(Portfolio *newPortfolio);
 
@@ -31,6 +35,13 @@ class Session {
   void addStocks(QStringList &symbols);
 
   Stock *getStock(QString &symbol);
+
+  void setCurrentPortfolio(Portfolio *portfolio) {
+    currentPortfolio = portfolio;
+  }
+  void setCurrentPortfolio(QString &id) {
+    currentPortfolio = getPortfolio(id);
+  }
 
   void loadFromFile(const QString &filename);
   void saveToFile(const QString &filename) const;

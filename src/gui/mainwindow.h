@@ -43,6 +43,11 @@ class MainWindow : public QMainWindow {
 
   void on_actionStrategies_triggered();
 
+  void onCreatePortfolio(QString id, qreal initialAmount, QStringList watchlist);
+  void onCreateOrder(TradingOrder *order);
+  void onCreateNewPortfolio();
+  void onChoosePortfolio(Portfolio *portfolio);
+
  private:
   Ui::MainWindow *ui;
   Session *session;
@@ -54,9 +59,5 @@ class MainWindow : public QMainWindow {
   NewOrder *new_order;
   StrategyPage *strategyPage;
   QHBoxLayout *layout;
-
- private slots:
-  void onCreatePortfolio(QString id, qreal initialAmount, QStringList watchlist);
-  void onCreateOrder(TradingOrder *order);
 };
 #endif // MAINWINDOW_H
