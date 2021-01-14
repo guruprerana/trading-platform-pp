@@ -23,6 +23,7 @@ class HomePage : public QWidget {
 
   void updateWatchlistStocks(QVector<Stock *> other_watchlistStocks);
   void displayNews();
+  void displaySentimentAnalysis();
 
  private slots:
   void realtimeUpdateStocks();
