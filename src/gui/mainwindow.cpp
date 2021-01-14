@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
   homepage = new HomePage(this);
   newsPage = new NewsPage(this);
   new_order = new NewOrder(this);
+  strategyPage = new StrategyPage(this);
 
   QHBoxLayout *layout = new QHBoxLayout;
   layout->addWidget(signUpPage);
@@ -25,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
   layout->addWidget(homepage);
   layout->addWidget(newsPage);
   layout->addWidget(new_order);
+  layout->addWidget(strategyPage);
 
   if (portfolios.size() == 0) {
     // no existing portfolios, proceed to sign up
@@ -37,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent)
   homepage->hide();
   newsPage->hide();
   new_order->hide();
+  strategyPage->hide();
   ui->toolBar->hide();
 
   ui->centralwidget->setLayout(layout);
@@ -61,6 +64,7 @@ MainWindow::~MainWindow() {
   delete newsPage;
   delete layout;
   delete new_order;
+  delete strategyPage;
 }
 
 void MainWindow::hideAllPages() {
@@ -69,6 +73,7 @@ void MainWindow::hideAllPages() {
   choosePortfolioPage->hide();
   newsPage->hide();
   new_order->hide();
+  strategyPage->hide();
 }
 
 void MainWindow::uncheckAllTabs() {
@@ -76,7 +81,7 @@ void MainWindow::uncheckAllTabs() {
   ui->actionTrade->setChecked(false);
   ui->actionPerformance->setChecked(false);
   ui->actionNews->setChecked(false);
-  ui->actionMarkets->setChecked(false);
+  ui->actionStrategies->setChecked(false);
 }
 
 void MainWindow::on_actionHome_triggered() {
@@ -107,10 +112,11 @@ void MainWindow::on_actionNews_triggered() {
   newsPage->show();
 }
 
-void MainWindow::on_actionMarkets_triggered() {
+void MainWindow::on_actionStrategies_triggered() {
   hideAllPages();
   uncheckAllTabs();
-  ui->actionMarkets->setChecked(true);
+  ui->actionStrategies->setChecked(true);
+  strategyPage->show();
 }
 
 void MainWindow::onCreatePortfolio(QString id, qreal initialAmount,
@@ -118,7 +124,9 @@ void MainWindow::onCreatePortfolio(QString id, qreal initialAmount,
   session->addPortfolio(new Portfolio(id, initialAmount, watchlist));
 
   // initially toolbar is hidden and shown when submit button pressed
-  homepage->updateWatchlistStocks(session->getCurrentWatchlistStocks());
+  auto watchlistStocks = session->getCurrentWatchlistStocks();
+  homepage->updateWatchlistStocks(watchlistStocks);
+  strategyPage->updateWatchlistStocks(watchlistStocks);
   this->ui->toolBar->show();
   this->on_actionHome_triggered();
 }

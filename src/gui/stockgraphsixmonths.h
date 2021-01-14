@@ -11,7 +11,7 @@ class StockGraphSixMonths : public StockGraph {
   explicit StockGraphSixMonths(QWidget *parent = nullptr);
   ~StockGraphSixMonths();
   void setStock(Stock *other_stock);
-  void updateData();
+  void updateData(bool firstTime);
   void initTimeRange();
   void setCandlestickBinSize();
 
