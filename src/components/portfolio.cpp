@@ -18,9 +18,23 @@ void LoadUp::load(const QJsonObject &json) {
   }
 }
 
+// Returns the value of the owned stocks
+qreal Portfolio::stockValuation() {
+  qreal res = 0;
+  auto list = getOwnedStockList();
+
+  for (auto &s : list) {
+    std::string sname = s.first.toUtf8().constData();   // QString to std string
+    Stock stock(sname);
+    res += (stock.getDataByMinute())["c"].back() * s.second;
+  }
+
+  return res + current_money;
+}
+
+// Returns the total value of the portfolio
 qreal Portfolio::valuation() {
-  // TO IMPLEMENT
-  return 0;
+  return stockValuation() + current_money;
 }
 
 void Portfolio::addStockToWatchList(QString &symbol) {

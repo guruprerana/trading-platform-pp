@@ -36,6 +36,7 @@ class Portfolio {
     current_money(amount), stock_watch_list(watchlist) {};
   ~Portfolio();
 
+  qreal stockValuation();
   qreal valuation();
 
   QString getId() const {
