@@ -87,6 +87,27 @@ void StrategyPage::simulateStrategy() {
     }
   }
 
+  else if (strategy->get_name() == "MOM") {
+    qDebug() << strategy->timestamp_sma5.size() << endl;
+    qDebug() << strategy->timestamp_sma10.size() << endl;
+    qDebug() << strategy->timestamp_mom.size() << ' ' << strategy->price_mom.size()
+             << endl;
+    qDebug() << strategy->signals_mom << endl;
+  }
+
+  else if (strategy->get_name() == "LR") {
+    qDebug() << strategy->slope.back() << endl;
+    qDebug() << strategy->intercept.back() << endl;
+    strategyGraph->drawLR(
+      strategy->slope.back(),
+      strategy->intercept.back(),
+      strategy->timestamp_lr
+    );
+    ui->scrollAreaWidgetContents->layout()->addWidget(
+      new SignalCard(strategy->signals_lr.back().first,
+                     strategy->signals_lr.back().second));
+  }
+
   ui->scrollAreaWidgetContents->layout()->addItem(
     new QSpacerItem(40, 20,
                     QSizePolicy::Preferred,
@@ -118,6 +139,8 @@ void StrategyPage::on_comboBox_currentIndexChanged(int index) {
   } else if (index == 1) {
     strategy->set_name("EMA");
   } else if (index == 2) {
+    strategy->set_name("MOM");
+  } else {
     strategy->set_name("LR");
   }
 

@@ -27,17 +27,17 @@ class Strategy {
   void calculate_ema(int interval, QVector<double> &timestamp_ema,
                      QVector<double> &price_ema);
   void calculate_mom(QVector<double> &timestamp_mom,
-                      QVector<double> &price_mom);
+                     QVector<double> &price_mom);
   void calculate_signals_sma();
   void calculate_signals_ema();
   void calculate_signals_mom();
-  int auxiliary_momentum(QVector<double> price_mom,int i);
   void calculate_signals_lr();
   void calculate_lr(int interval, QVector<double> &timestamp_lr,
-                    QVector<double> &slope,QVector<double> &intercept);
-  double compute_average_key(int i, int interval );
-  double compute_average_value(int i, int interval );
+                    QVector<double> &slope, QVector<double> &intercept);
+  double compute_average_key(int i, int interval);
+  double compute_average_value(int i, int interval);
 
+  int auxiliary_momentum(const QVector<double> &price_mom, int i);
 
   void simulate();
 

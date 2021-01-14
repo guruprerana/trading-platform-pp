@@ -71,12 +71,14 @@ void Strategy::update_stock_data() {
   timestamp_sma50.clear();
   price_sma20.clear();
   price_sma50.clear();
+  signals_sma.clear();
+
   timestamp_ema11.clear();
   price_ema11.clear();
   timestamp_ema6.clear();
   price_ema6.clear();
-  signals_sma.clear();
   signals_ema.clear();
+
   timestamp_mom.clear();
   signals_mom.clear();
   price_mom.clear(); // list of momentum
@@ -84,15 +86,11 @@ void Strategy::update_stock_data() {
   timestamp_sma5.clear();
   price_sma10.clear();
   price_sma5.clear();
+
   slope.clear();
   signals_lr.clear();
   intercept.clear();
   timestamp_lr.clear();
-
-
-
-
-
 }
 
 void Strategy::calculate_mom(QVector<double> &timestamp_mom,
@@ -100,17 +98,17 @@ void Strategy::calculate_mom(QVector<double> &timestamp_mom,
   if (!timestamp_mom.isEmpty()) {
     return;
   }
-  calculate_sma(9, timestamp_sma10, price_sma10);
-  calculate_sma(4, timestamp_sma5, price_sma5);
+
+  calculate_sma(10, timestamp_sma10, price_sma10);
+  calculate_sma(5, timestamp_sma5, price_sma5);
 
   int sz10 = price_sma10.size();
   int sz5 = price_sma10.size();
 
-for (int i = 1; i <sz10 ; ++i){
-    double moment = price_sma5[i + sz5 - sz10]/price_sma10[i];
-    timestamp_mom.append(timestamp[i]);
+  for (int i = 0; i < sz10 ; ++i) {
+    double moment = price_sma5[i + sz5 - sz10] / price_sma10[i];
+    timestamp_mom.append(timestamp_sma10[i]);
     price_mom.append(moment);
-
   }
 }
 
@@ -119,33 +117,30 @@ void Strategy::calculate_signals_mom() {
     return;
   }
 
-  calculate_mom(timestamp_mom, price_sma20);
+  calculate_mom(timestamp_mom, price_mom);
   int szmom = price_mom.size();
 
   for (int i = 3; i < szmom; ++i) {
-    int action = auxiliary_momentum(price_mom,i);
+    int action = auxiliary_momentum(price_mom, i);
+
     if (action == 0) {
-        signals_mom.append({timestamp_mom[i],{1.0,false}});
+      signals_mom.append({timestamp_mom[i], {1.0, false}});
       //return std::make_tuple(false, 1.0);
     } else if (action == -1) {
-      signals_mom.append({timestamp_mom[i],{0.8,true}});
+      signals_mom.append({timestamp_mom[i], {0.8, true}});
+    } else if (action == 1) {
+      signals_mom.append({timestamp_mom[i], {1.0, true}});
     }
-
-    if (action == 1) {
-      signals_mom.append({timestamp_mom[i],{1.0,true}});
-
-
   }
+}
 
-}}
-
-int Strategy::auxiliary_momentum(QVector<double> price_mom,int i) {
+int Strategy::auxiliary_momentum(const QVector<double> &price_mom, int i) {
   if (price_mom[i] < 1) {
     return 0;
   }
 
-  double diff1 = price_mom[i-3] - price_mom[i-2];
-  double diff2 = price_mom[i-1] - price_mom[i];
+  double diff1 = price_mom[i - 3] - price_mom[i - 2];
+  double diff2 = price_mom[i - 1] - price_mom[i];
 
   if (diff1 <= diff2) {
     return 1;
@@ -271,35 +266,41 @@ void Strategy::calculate_signals_ema() {
 }
 
 
-void Strategy::calculate_signals_lr(){
-    if (!signals_lr.isEmpty())
-    {return;}
-    calculate_lr(10,timestamp_lr,slope,intercept);
-    for (int i = 1; i<slope.size(); i ++){
-        if (slope[i] <=0) {
-            signals_lr.append({timestamp_lr[i], false});
-        }
-        else{
-            signals_lr.append({timestamp_lr[i], true});
-        }
+void Strategy::calculate_signals_lr() {
+  if (!signals_lr.isEmpty()) {
+    return;
+  }
+
+  calculate_lr(10, timestamp_lr, slope, intercept);
+
+  for (int i = 1; i < slope.size(); i ++) {
+    if (slope[i] <= 0) {
+      signals_lr.append({timestamp_lr[i], false});
+    } else {
+      signals_lr.append({timestamp_lr[i], true});
     }
+  }
 
 
 }
 
 void Strategy::calculate_lr(int interval, QVector<double> &timestamp_lr,
-                            QVector<double> &slope,QVector<double> &intercept){
-    if (!slope.isEmpty())
-    {return;}
-    for (int i = interval; i < price.size(); ++i){
-    double value_average = this->compute_average_value(i,interval);
-    double key_average = this->compute_average_key(i,interval);
+                            QVector<double> &slope, QVector<double> &intercept) {
+  if (!slope.isEmpty()) {
+    return;
+  }
+
+  for (int i = interval; i < price.size(); ++i) {
+    double value_average = this->compute_average_value(i, interval);
+    double key_average = this->compute_average_key(i, interval);
     double sum_prod = 0;
     double sum_square = 0;
-    for (int j=0;j<interval;j++){
-        sum_prod += timestamp[i -  j] * price[i - j];
-        sum_square += timestamp[i -  j] * timestamp[i -  j];
+
+    for (int j = 0; j < interval; j++) {
+      sum_prod += timestamp[i -  j] * price[i - j];
+      sum_square += timestamp[i -  j] * timestamp[i -  j];
     }
+
     double ss_xx = sum_square - (key_average * key_average * interval);
     double ss_xy = sum_prod - (key_average * value_average * interval);
     double slope_lr = ss_xy / ss_xx;
@@ -308,14 +309,14 @@ void Strategy::calculate_lr(int interval, QVector<double> &timestamp_lr,
     intercept.append(yintercept);
     timestamp_lr.append(timestamp[i]);
 
-    }
+  }
 
 }
 
-double Strategy::compute_average_key(int i, int interval ) {
+double Strategy::compute_average_key(int i, int interval) {
   double key_average = 0;
 
-  for (int j=0;j<interval;j++) {
+  for (int j = 0; j < interval; j++) {
     key_average += timestamp[i - j];
   }
 
@@ -325,7 +326,7 @@ double Strategy::compute_average_key(int i, int interval ) {
 double Strategy::compute_average_value(int i, int interval) {
   double value_average = 0;
 
-  for (int j=0;j<interval;j++) {
+  for (int j = 0; j < interval; j++) {
     value_average += price[i - j];
   }
 
@@ -586,12 +587,12 @@ void Strategy::simulate() {
 //    }
 //  }
 
-  if (this->str4.compare(name) == 0) {
+  if (this->str2.compare(name) == 0) {
     return this->calculate_signals_mom();
   }
 
 
-  if (this->str2.compare(name) == 0) {
+  if (this->str4.compare(name) == 0) {
     return this->calculate_signals_sma();
   }
 

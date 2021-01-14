@@ -10,21 +10,25 @@ StrategyGraph::StrategyGraph(QWidget *parent) :
   sma50 = new QCPGraph(ui->plot->xAxis, ui->plot->yAxis);
   ema6 = new QCPGraph(ui->plot->xAxis, ui->plot->yAxis);
   ema11 = new QCPGraph(ui->plot->xAxis, ui->plot->yAxis);
+  lr = new QCPGraph(ui->plot->xAxis, ui->plot->yAxis);
 
   sma20->setName("SMA 20");
   sma50->setName("SMA 50");
   ema6->setName("EMA 6");
   ema11->setName("EMA 11");
+  lr->setName("Linear Regression 10");
 
   sma20->setPen(QPen(QColor(93, 173, 226), 3));
   sma50->setPen(QPen(QColor(229, 152, 102), 3));
   ema6->setPen(QPen(QColor(93, 63, 106), 3));
   ema11->setPen(QPen(QColor(244, 208, 63), 3));
+  lr->setPen(QPen(QColor(38, 166, 91), 3));
 
   sma20->setVisible(false);
   sma50->setVisible(false);
   ema6->setVisible(false);
   ema11->setVisible(false);
+  lr->setVisible(false);
   candleStick->setVisible(false);
 
   candleStick->removeFromLegend();
@@ -95,10 +99,12 @@ void StrategyGraph::removeAllGraphs() {
   sma50->setVisible(false);
   ema6->setVisible(false);
   ema11->setVisible(false);
+  lr->setVisible(false);
   sma20->removeFromLegend();
   sma50->removeFromLegend();
   ema6->removeFromLegend();
   ema11->removeFromLegend();
+  lr->removeFromLegend();
 }
 
 void StrategyGraph::addGraph(QCPGraph *graph) {
@@ -126,4 +132,17 @@ void StrategyGraph::drawEMA(const QVector<double> &timestamp_ema6,
   removeAllGraphs();
   addGraph(ema6);
   addGraph(ema11);
+}
+
+void StrategyGraph::drawLR(double slope, double intercept,
+                           const QVector<double> &timestamp) {
+  QVector<double> lrTimestamp;
+  lrTimestamp.append(timestamp[timestamp.size() - 30]);
+  lrTimestamp.append(timestamp.back() + 2 * 864000);
+  QVector<double> lrPrice;
+  lrPrice.append(slope * timestamp[timestamp.size() - 30] + intercept);
+  lrPrice.append(slope * (timestamp.back() + 2 * 864000) + intercept);
+  lr->setData(lrTimestamp, lrPrice);
+  removeAllGraphs();
+  addGraph(lr);
 }
