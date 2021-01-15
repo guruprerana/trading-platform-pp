@@ -8,16 +8,7 @@ CONFIG += c++11
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-linux-g++* {
-  LIBS += -lcurl
-}
-
-win32 {
-  # remember to put libcurl-x64 to mingw folder
-  LIBS += C:/curl-7.74.0-win64-mingw/lib/libcurl.a \
-          C:/curl-7.74.0-win64-mingw/lib/libcurl.dll.a
-  INCLUDEPATH += C:/curl-7.74.0-win64-mingw/include
-}
+LIBS += -lcurl
 
 LIBS += -lcurl
 SOURCES += \
@@ -33,15 +24,20 @@ SOURCES += \
     gui/newscard.cpp \
     gui/newspage.cpp \
     gui/nodatapage.cpp \
+    gui/signalcard.cpp \
     gui/signup.cpp \
     gui/stockgraph.cpp \
     gui/stockgraphoneday.cpp \
     gui/stockgraphonemonth.cpp \
     gui/stockgraphsixmonths.cpp \
     gui/stockgraphthreedays.cpp \
+    gui/strategygraph.cpp \
+    gui/strategypage.cpp \
     gui/watchlistcard.cpp \
+    gui/widgets/portfoliowidget.cpp \
     main.cpp \
     gui/mainwindow.cpp \
+    recommendation/strategy.cpp \
     library/qcustomplot.cpp \
     helper/helper.cpp \
     gui/widgets/selectwatchlistwidget.cpp \
@@ -60,18 +56,23 @@ HEADERS += \
     gui/newscard.h \
     gui/newspage.h \
     gui/nodatapage.h \
+    gui/signalcard.h \
     gui/signup.h \
     gui/stockgraph.h \
     gui/stockgraphoneday.h \
     gui/stockgraphonemonth.h \
     gui/stockgraphsixmonths.h \
     gui/stockgraphthreedays.h \
+    gui/strategygraph.h \
+    gui/strategypage.h \
     gui/watchlistcard.h \
+    gui/widgets/portfoliowidget.h \
     library/qcustomplot.h \
     gui/neworder.h \
     gui/mainwindow.h \
     gui/widgets/selectwatchlistwidget.h \
-    helper/helper.h
+    helper/helper.h \
+    recommendation/strategy.h
     
 FORMS += \
     gui/chooseportfolio.ui \
@@ -79,12 +80,15 @@ FORMS += \
     gui/homepage.ui \
     gui/mainwindow.ui \
     gui/nodatapage.ui \
+    gui/signalcard.ui \
     gui/signup.ui \
     gui/stockgraph.ui \
     gui/newscard.ui \
     gui/newspage.ui \
     gui/neworder.ui \
+    gui/strategypage.ui \
     gui/watchlistcard.ui \
+    gui/widgets/portfoliowidget.ui \
     gui/widgets/selectwatchlistwidget.ui
 
 DISTFILES += \

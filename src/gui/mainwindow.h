@@ -6,6 +6,7 @@
 #include "signup.h"
 #include "newspage.h"
 #include "neworder.h"
+#include "strategypage.h"
 
 #include <QMainWindow>
 #include <QBoxLayout>
@@ -40,7 +41,12 @@ class MainWindow : public QMainWindow {
 
   void on_actionNews_triggered();
 
-  void on_actionMarkets_triggered();
+  void on_actionStrategies_triggered();
+
+  void onCreatePortfolio(QString id, qreal initialAmount, QStringList watchlist);
+  void onCreateOrder(TradingOrder *order);
+  void onCreateNewPortfolio();
+  void onChoosePortfolio(Portfolio *portfolio);
 
  private:
   Ui::MainWindow *ui;
@@ -51,10 +57,7 @@ class MainWindow : public QMainWindow {
   HomePage *homepage;
   NewsPage *newsPage;
   NewOrder *new_order;
+  StrategyPage *strategyPage;
   QHBoxLayout *layout;
-
- private slots:
-  void onCreatePortfolio(QString id, qreal initialAmount, QStringList watchlist);
-  void onCreateOrder(TradingOrder *order);
 };
 #endif // MAINWINDOW_H
