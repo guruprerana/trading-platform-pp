@@ -26,7 +26,9 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: black;</string>
+   <string notr="true">border-color: black;
+border-width: 2px;
+border-style: solid;</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1">
    <item>
@@ -39,11 +41,11 @@
      </property>
      <property name="font">
       <font>
-       <pointsize>18</pointsize>
+       <pointsize>14</pointsize>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">color: white;</string>
+      <string notr="true">border-width: 0;</string>
      </property>
      <property name="text">
       <string>ticker</string>
@@ -71,11 +73,11 @@
        </property>
        <property name="font">
         <font>
-         <pointsize>18</pointsize>
+         <pointsize>14</pointsize>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: white;</string>
+        <string notr="true">border-width: 0;</string>
        </property>
        <property name="text">
         <string>valuation</string>
@@ -98,11 +100,11 @@
        </property>
        <property name="font">
         <font>
-         <pointsize>18</pointsize>
+         <pointsize>14</pointsize>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: white;</string>
+        <string notr="true">border-width: 0;</string>
        </property>
        <property name="text">
         <string>delta</string>
