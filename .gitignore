@@ -33,3 +33,21 @@
 
 .vscode
 .vs
+
+# Qt generated user files
+*.user
+*Debug
+
+# Build files
+build
+
+# VS files
+.vscode
+.vs
+
+# Mac related
+.DS_*
+*/.DS_*
+
+# Builds
+build-*
