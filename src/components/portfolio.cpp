@@ -38,7 +38,7 @@ qreal StockRecord::baseCost() const {
   return base_cost;
 }
 
-qreal StockRecord::getValuation() const {
+qreal StockRecord::valuation() const {
   qreal current_price = stock->getLatestClosedPrice();
   return current_price * quantityRecorded();
 }
@@ -48,10 +48,37 @@ qreal StockRecord::totalGainLoss() const {
   return getValuation() - baseCost();
 }
 
+void StockRecord::addStock(qreal price, qreal quantity) {
+  record.insert(QPair<qreal, qreal>(price, quantity));
+}
+
+void StockRecord::removeStock(qreal quantity) {
+  if (quantity > quantityRecorded()) {
+    return;
+  }
+
+  while (quantity > 1e-9) { // basically "while (quantity > 0)"
+    Q_ASSERT(!record.empty());
+
+    auto x = *record.begin();
+    record.erase(record.begin());
+
+    auto minuend = qMin(quantity, x.second);
+    quantity -= minuend;
+    x.second -= minuend;
+
+    if (abs(x.second) > 1e-9) {
+      record.insert(x);
+      // loop should end after this
+    }
+  }
+
+  return;
+}
+
 // Returns the value of the owned stocks
 qreal Portfolio::stockValuation() {
   qreal res = 0;
-  auto list = getOwnedStockList();
 
   foreach (StockRecord s, stock_records) {
     res += s.getValuation();
@@ -63,18 +90,6 @@ qreal Portfolio::stockValuation() {
 // Returns the total value of the portfolio
 qreal Portfolio::valuation() {
   return stockValuation() + current_money;
-}
-
-qreal Portfolio::getPercentOfAccount(QString symbol) {
-  if (stock_records.contains(symbol)) {
-    return 0;
-  }
-
-  return stock_records.value(symbol).getValuation() / valuation();
-}
-
-qreal Portfolio::getPercentOfAccount(std::string symbol) {
-  return getPercentOfAccount(helper::toQString(symbol));
 }
 
 void Portfolio::addStockToWatchList(QString &symbol) {
@@ -94,12 +109,98 @@ void Portfolio::removeStockFromWatchList(QString &symbol) {
 }
 
 void Portfolio::addTradingOrder(TradingOrder *trading_order) {
-  trading_order_history.push_back(trading_order);
+  QString symbol = trading_order->getSymbol();
+
+  // init if not exist
+  if (!stock_records.contains(symbol)) {
+    stock_records[symbol] = StockRecord(symbol);
+  }
+
+  // main code
+  if (trading_order->getAction() == TradingOrder::TradingAction::Buy) {
+    qreal current_price = stock_records[symbol].stock->getLatestClosedPrice();
+    stock_records[symbol].addStock(current_price, trading_order->getQuantity());
+    trading_order_history.push_back(trading_order);
+  } else if (trading_order->getAction() == TradingOrder::TradingAction::Sell) {
+
+  } else {  // do not need to implement this case (SellShort)
+    return;
+  }
 }
 
 void Portfolio::addLoadUp(LoadUp *load_up) {
   this->current_money += load_up->getQuantity();
   load_up_history.push_back(load_up);
+}
+
+QVector<QString> Portfolio::currentOwnedStock() {
+  QHash<QString, StockRecord>::const_iterator it = stock_records.constBegin();
+
+  QSet<QString> owned;
+
+  while (it != stock_records.constEnd()) {
+    if (it.value().quantityRecorded() > 1e-9) { // the same as > 0
+      owned.insert(it.key());
+    }
+
+    ++it;
+  }
+
+  QVector <QString> owned_qvector;
+
+  for (auto v : owned) {
+    owned_qvector.push_back(v);
+  }
+
+  return owned_qvector;
+}
+
+qreal Portfolio::getQuantityLeft(QString symbol) {
+  if (stock_records.contains(symbol)) {
+    return 0;
+  }
+
+  return stock_records.value(symbol).quantityRecorded();
+}
+
+qreal Portfolio::getQuantityLeft(std::string symbol) {
+  return getQuantityLeft(helper::toQString(symbol));
+}
+
+qreal Portfolio::getBaseCost(QString symbol) {
+  if (stock_records.contains(symbol)) {
+    return 0;
+  }
+
+  return stock_records.value(symbol).baseCost();
+}
+
+qreal Portfolio::getBaseCost(std::string symbol) {
+  return getBaseCost(helper::toQString(symbol));
+}
+
+qreal Portfolio::getTotalGainLoss(QString symbol) {
+  if (stock_records.contains(symbol)) {
+    return 0;
+  }
+
+  return stock_records.value(symbol).totalGainLoss();
+}
+
+qreal Portfolio::getTotalGainLoss(std::string symbol) {
+  return getTotalGainLoss(helper::toQString(symbol));
+}
+
+qreal Portfolio::getPercentOfAccount(QString symbol) {
+  if (stock_records.contains(symbol)) {
+    return 0;
+  }
+
+  return stock_records.value(symbol).valuation() / valuation();
+}
+
+qreal Portfolio::getPercentOfAccount(std::string symbol) {
+  return getPercentOfAccount(helper::toQString(symbol));
 }
 
 void Portfolio::save(QJsonObject &json) const {

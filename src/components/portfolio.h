@@ -7,14 +7,15 @@
 
 #include "stock.h"
 #include "trading_order.h"
+#include "helper/helper.h"
 
 #include <QSet>
 #include <QVector>
 #include <QJsonObject>
 #include <QStringList>
 
+#include <set>
 #include <string>
-#include <map>
 
 class LoadUp {
  public:
@@ -38,20 +39,22 @@ class LoadUp {
 // AFTER SELL A PART OF STOCK WE DO NOT KEEP TRACK THEM
 class StockRecord {
  public:
-  StockRecord(Stock s): stock(new Stock(s)) {};
+  StockRecord(std::string s): stock(new Stock(s)) {};
+  StockRecord(QString s): stock(new Stock(helper::toStdString(s))) {};
   StockRecord(Stock *s): stock(s) {};
   ~StockRecord() {};
 
   qreal quantityRecorded() const;
   qreal baseCost() const;
-  qreal getValuation() const;
+  qreal valuation() const;
   qreal totalGainLoss() const;
   void addStock(qreal price, qreal quantity);
-  void removeStock();
+  void removeStock(qreal quantity);
 
   Stock *stock;
  private:
-  QSet <QPair<qreal, qreal>> record;    // first = price, second = quantity
+  std::multiset <QPair<qreal, qreal>> record; // first = price, second = quantity
+
 };
 
 class Portfolio {
@@ -75,10 +78,18 @@ class Portfolio {
   void removeStockFromWatchList(QString &symbol);
   void addTradingOrder(TradingOrder *trading_order);
   void addLoadUp(LoadUp *load_up);
-  qreal getPercentOfAccount(QString symbol);
-  qreal getPercentOfAccount(std::string symbol);
   void load(const QJsonObject &json);
   void save(QJsonObject &json) const;
+
+  QVector <QString> currentOwnedStock();
+  qreal getQuantityLeft(QString symbol);
+  qreal getQuantityLeft(std::string symbol);
+  qreal getBaseCost(QString symbol);
+  qreal getBaseCost(std::string symbol);
+  qreal getTotalGainLoss(QString symbol);
+  qreal getTotalGainLoss(std::string symbol);
+  qreal getPercentOfAccount(QString symbol);
+  qreal getPercentOfAccount(std::string symbol);
 
  private:
   QString id;
