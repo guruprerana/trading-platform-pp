@@ -64,6 +64,9 @@ void NewOrder::on_orderPushButton_released() {
   if (write(*order)) {
     emit newOrderCreated(order);
     setDefault();
+    ui->remainingBalance->setText(QString::number(
+                                    currentPortfolio->getCurrentMoney()) +
+                                  "$");
   }
 }
 
@@ -79,6 +82,7 @@ void NewOrder::setDefault() {
   ui->limitPriceValueLineEdit->setText("0");
   ui->timingValueComboBox->setCurrentIndex(0);
   ui->estimatedValueTextBrowser->setText("0");
+  ui->errorLabel->hide();
 }
 
 void NewOrder::updateWatchlistStocks(QVector<Stock *> watchlistStocks) {
@@ -155,6 +159,7 @@ bool NewOrder::write(TradingOrder &trading_order) {
 
 void NewOrder::setErrorText(QString error) {
   ui->errorLabel->setText(error);
+  ui->errorLabel->show();
 }
 
 void NewOrder::updateEstimatedValue() {
@@ -182,4 +187,10 @@ void NewOrder::on_symbolComboBox_activated(const QString &arg1) {
 
 void NewOrder::on_quantityValueSpinBox_valueChanged(double arg1) {
   updateEstimatedValue();
+}
+
+void NewOrder::setCurrentPortfolio(Portfolio *portfolio) {
+  this->currentPortfolio = portfolio;
+  ui->remainingBalance->setText(QString::number(portfolio->getCurrentMoney()) +
+                                "$");
 }

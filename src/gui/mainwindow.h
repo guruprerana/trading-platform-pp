@@ -47,6 +47,9 @@ class MainWindow : public QMainWindow {
   void onCreateOrder(TradingOrder *order);
   void onCreateNewPortfolio();
   void onChoosePortfolio(Portfolio *portfolio);
+  Portfolio *getCurrentPortfolio() {
+    return session->getCurrentPortfolio();
+  }
 
  private:
   Ui::MainWindow *ui;

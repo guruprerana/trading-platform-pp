@@ -30,6 +30,7 @@ class NewOrder : public QWidget {
 
   bool write(TradingOrder &trading_order);
   void updateWatchlistStocks(QVector<Stock *> watchlistStocks);
+  void setCurrentPortfolio(Portfolio *portfolio);
 
  signals:
   void newOrderCreated(TradingOrder *newOrder);
@@ -53,6 +54,7 @@ class NewOrder : public QWidget {
   void setDefault();
 
   QVector<Stock *> watchlistStocks;
+  Portfolio *currentPortfolio;
 };
 
 #endif // NEWORDER_H

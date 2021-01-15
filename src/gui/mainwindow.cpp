@@ -135,6 +135,7 @@ void MainWindow::onCreatePortfolio(QString id, qreal initialAmount,
   homepage->updateWatchlistStocks(watchlistStocks);
   strategyPage->updateWatchlistStocks(watchlistStocks);
   new_order->updateWatchlistStocks(watchlistStocks);
+  new_order->setCurrentPortfolio(getCurrentPortfolio());
   this->ui->toolBar->show();
   this->on_actionHome_triggered();
 }
@@ -163,6 +164,7 @@ void MainWindow::onChoosePortfolio(Portfolio *portfolio) {
   homepage->updateWatchlistStocks(watchlistStocks);
   strategyPage->updateWatchlistStocks(watchlistStocks);
   new_order->updateWatchlistStocks(watchlistStocks);
+  new_order->setCurrentPortfolio(getCurrentPortfolio());
   this->ui->toolBar->show();
   this->on_actionHome_triggered();
 }

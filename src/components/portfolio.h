@@ -101,6 +101,9 @@ class Portfolio {
   qreal getTotalGainLoss(std::string symbol);
   qreal getPercentOfAccount(QString symbol);
   qreal getPercentOfAccount(std::string symbol);
+  qreal getCurrentMoney() {
+    return current_money;
+  }
 
  private:
   QString id;
