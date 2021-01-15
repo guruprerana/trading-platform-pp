@@ -75,7 +75,7 @@ void NewOrder::setDefault() {
   ui->orderTypeValueComboBox->setCurrentIndex(0);
   ui->limitPriceValueLineEdit->setText("0");
   ui->timingValueComboBox->setCurrentIndex(0);
-  ui->estimatedValueTextBrowser->setText("0");
+  ui->estimatedValueValueLabel->setText("0");
 }
 
 void NewOrder::updateWatchlistStocks(QVector<Stock *> watchlistStocks) {
@@ -111,5 +111,28 @@ void NewOrder::write(TradingOrder &trading_order) const {
                           (timimg));
 
   trading_order.setTradingTime(QDateTime::currentDateTime().toTime_t());
-  trading_order.setValuePerQuantity(0);
+  trading_order.setValuePerQuantity(
+    ui->pricePerQuantityValueLabel->text().toDouble());
+}
+
+void NewOrder::updatePricePerQuantityAndEstimateValue() {
+  Stock stock(helper::toStdString(ui->symbolComboBox->currentText()));
+  qreal trade_quantity = ui->quantityValueSpinBox->value();
+  qreal current_price = stock.getLatestClosedPrice();
+
+  ui->pricePerQuantityValueLabel->setNum(current_price);
+  ui->estimatedValueValueLabel->setNum(current_price * trade_quantity);
+}
+
+void NewOrder::on_symbolComboBox_currentTextChanged(const QString &symbol) {
+  updatePricePerQuantityAndEstimateValue();
+}
+
+void NewOrder::on_actionsValueComboBox_currentTextChanged(
+  const QString &action) {
+  updatePricePerQuantityAndEstimateValue();
+}
+
+void NewOrder::on_quantityValueSpinBox_valueChanged(double quantity) {
+  updatePricePerQuantityAndEstimateValue();
 }

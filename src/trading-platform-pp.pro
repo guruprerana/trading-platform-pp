@@ -10,7 +10,6 @@ CONFIG += c++11
 
 LIBS += -lcurl
 
-LIBS += -lcurl
 SOURCES += \
     api/api.cpp \
     components/news.cpp \
