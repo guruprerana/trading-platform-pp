@@ -57,11 +57,13 @@ Run the following commands on the terminal:
 ### Ubuntu
 ```
 sudo apt install curl
+sudo apt install libcurl4-openssl-dev
 ```
 
 ### macOS
 ```
 brew install curl
+brew install openssl
 ```
 
 ## Building guide
@@ -74,7 +76,6 @@ Otherwise you can follow these steps.
 
 Run the following commands on the terminal:
 ```
-sudo apt-get install build-essential
 sudo apt-get install qt5-default
 ```
 
@@ -82,7 +83,7 @@ sudo apt-get install qt5-default
 
 Run the following commands on the terminal:
 ```
-brew qt5-default
+brew install qt5-default
 ```
 
 Now you need to run this script that you can find in `scripts\build.sh`:
@@ -92,4 +93,66 @@ mkdir build
 cd build
 qmake ../src/trading-platform-pp.pro
 make -j8
+./trading-platform-pp
 ```
+
+# Screenshots of the Project:
+Here we will show some screenshots of the projects and instructions to use it.
+## Important Terms:
+#### Portfolio
+A Portfolio is a set of stocks that you choose in order to make orders only with these stocks. It has a unique name and its own performance assessment.
+
+## Choose Portfolio
+The Project starts by showing all previous portfolios that you have created and allows you to create a new one.
+![](images/choosePortfolio.png)
+
+## Create Portfolio
+In case you are going to create a new portfolio, we show the following page:
+
+![](images/createPortfolio.png)
+
+- Type a name for your new portfolio.
+
+- Choose an initial amount of money in USD. 
+
+- Select the stocks you want to trade using symbols (You can start typing "AAP" to find AAPL for example)
+
+- Submit
+
+## Home Tab
+
+![](images/homeTab.png)
+
+- On the right, there is a list of symbols in this Portfolio
+
+- We display the graph of the price of each stock. You can select 1 day - 3 days - 1 month - 6 months periods. You can also select another stock from Watchlist Symbols on the right to switch to their price graph.
+
+- Under the graph, there is the Bullish Percentage (Percentage of people who believe that stock will go up) and Bearish Percentage (Percentage of people who believe that stock will go down).
+
+- Under the sentiment analysis, there is a column showing the company news and which you can change by clicking on the arrows to the upper-left of the column
+
+## Performance Tab
+
+![](images/performanceTab.png)
+
+## News Tab
+
+![](images/newsTab.png)
+
+- For more information about the market and the most updated news of all major disciplines that can affect the market, the user can consult Market News Tab where there is a list of news links from various sources like CNBC.
+
+## Strategy Tab
+
+![](images/strategyTab.png)
+
+This is where the user can look at the different graphs of strategies we have used as well as the signals that they give so that they understand better how they work and how he/she can use them for trading.
+
+The Strategies we have so far are:
+
+- Simple Moving Averages
+
+- Exponential Moving Averages
+
+- Momentum
+
+- Linear Regression
