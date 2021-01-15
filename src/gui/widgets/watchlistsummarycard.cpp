@@ -11,12 +11,16 @@ WatchlistSummaryCard::WatchlistSummaryCard(Stock *stock, QWidget *parent) :
   stock->getDataByDay();
 
   std::string ticker = stock->getSymbol();
+  stock->updateDataByMinute();
+  stock->updateDataByDay();
   QMap<std::string, QVector<double>> valuation = stock->getDataByMinute();
-  double delta = 100 * (stock->getDataByDay()["c"].toArray().last().toDouble()) / stock->getDataByDay()["c"].toArray().last().toDouble();
+  double today = stock->getDataByDay()["c"].toArray().last().toDouble();
+  double yesterday = stock->getDataByDay()["c"].toArray().at(stock->getDataByDay()["c"].toArray().size()-2).toDouble();
+  double delta = 100 * (today - yesterday) / yesterday;
 
-  ui->valuation->setText(QString::number(valuation["c"].last()));
+  ui->valuation->setText("Valuation: $" + QString::number(valuation["c"].last(), 'g', 3));
   ui->ticker->setText(QString::fromStdString(ticker));
-  ui->delta->setText(QString::number(delta));
+  ui->delta->setText("Daily Change: " + QString::number(delta, 'g', 3) + "%");
 
 }
 

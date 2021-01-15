@@ -34,11 +34,8 @@ SOURCES += \
     gui/strategygraph.cpp \
     gui/strategypage.cpp \
     gui/watchlistcard.cpp \
-<<<<<<< HEAD
     gui/widgets/watchlistsummarycard.cpp \
-=======
     gui/widgets/portfoliowidget.cpp \
->>>>>>> 843658a2f1e317a89fed852a6aa1a305bf914519
     main.cpp \
     gui/mainwindow.cpp \
     recommendation/strategy.cpp \
@@ -70,11 +67,8 @@ HEADERS += \
     gui/strategygraph.h \
     gui/strategypage.h \
     gui/watchlistcard.h \
-<<<<<<< HEAD
     gui/widgets/watchlistsummarycard.h \
-=======
     gui/widgets/portfoliowidget.h \
->>>>>>> 843658a2f1e317a89fed852a6aa1a305bf914519
     library/qcustomplot.h \
     gui/neworder.h \
     gui/mainwindow.h \
@@ -96,13 +90,9 @@ FORMS += \
     gui/neworder.ui \
     gui/strategypage.ui \
     gui/watchlistcard.ui \
-<<<<<<< HEAD
     gui/widgets/selectwatchlistwidget.ui \
     gui/widgets/watchlistsummarycard.ui
-=======
-    gui/widgets/portfoliowidget.ui \
-    gui/widgets/selectwatchlistwidget.ui
->>>>>>> 843658a2f1e317a89fed852a6aa1a305bf914519
+    gui/widgets/portfoliowidget.ui
 
 DISTFILES += \
     style.astylerc

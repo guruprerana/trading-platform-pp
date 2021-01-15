@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>393</width>
+    <width>300</width>
     <height>100</height>
    </rect>
   </property>
@@ -18,103 +18,106 @@
   </property>
   <property name="maximumSize">
    <size>
-    <width>16777215</width>
+    <width>300</width>
     <height>100</height>
    </size>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QLabel" name="ticker">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>10</y>
-     <width>100</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="maximumSize">
-    <size>
-     <width>100</width>
-     <height>30</height>
-    </size>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>18</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>ticker</string>
-   </property>
-   <property name="textFormat">
-    <enum>Qt::AutoText</enum>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-   </property>
-  </widget>
-  <widget class="QLabel" name="valuation">
-   <property name="geometry">
-    <rect>
-     <x>290</x>
-     <y>10</y>
-     <width>100</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="maximumSize">
-    <size>
-     <width>100</width>
-     <height>30</height>
-    </size>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>18</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>valuation</string>
-   </property>
-   <property name="textFormat">
-    <enum>Qt::AutoText</enum>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-   </property>
-  </widget>
-  <widget class="QLabel" name="delta">
-   <property name="geometry">
-    <rect>
-     <x>290</x>
-     <y>50</y>
-     <width>100</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="maximumSize">
-    <size>
-     <width>100</width>
-     <height>30</height>
-    </size>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>18</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>delta</string>
-   </property>
-   <property name="textFormat">
-    <enum>Qt::AutoText</enum>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-  </widget>
+  <property name="styleSheet">
+   <string notr="true">background-color: black;</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1">
+   <item>
+    <widget class="QLabel" name="ticker">
+     <property name="maximumSize">
+      <size>
+       <width>100</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>18</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: white;</string>
+     </property>
+     <property name="text">
+      <string>ticker</string>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::AutoText</enum>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="rightMargin">
+      <number>10</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="valuation">
+       <property name="maximumSize">
+        <size>
+         <width>2000</width>
+         <height>2000</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>18</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: white;</string>
+       </property>
+       <property name="text">
+        <string>valuation</string>
+       </property>
+       <property name="textFormat">
+        <enum>Qt::AutoText</enum>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="delta">
+       <property name="maximumSize">
+        <size>
+         <width>2000</width>
+         <height>2000</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>18</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: white;</string>
+       </property>
+       <property name="text">
+        <string>delta</string>
+       </property>
+       <property name="textFormat">
+        <enum>Qt::AutoText</enum>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

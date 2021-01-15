@@ -185,7 +185,7 @@ void HomePage::on_rightButton_clicked() {
 
 void HomePage::displayWatchlistSummaries() {
   for (Stock *stock : watchlistStocks) {
-    ui->watchlistSummaryDisplayLayout->addWidget(new WatchlistSummaryCard(stock,
+    ui->watchlistSummaryLayout->addWidget(new WatchlistSummaryCard(stock,
         this), 0);
   }
 }
