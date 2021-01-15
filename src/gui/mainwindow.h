@@ -37,8 +37,6 @@ class MainWindow : public QMainWindow {
 
   void on_actionHome_triggered();
 
-  void on_actionPerformance_triggered();
-
   void on_actionNews_triggered();
 
   void on_actionStrategies_triggered();
