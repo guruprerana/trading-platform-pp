@@ -2,6 +2,7 @@
 
 #include <QVariant>
 #include <QJsonArray>
+#include <QDebug>
 
 void LoadUp::save(QJsonObject &json) const {
   json.insert("time_stamp", QJsonValue::fromVariant(QVariant(time_stamp)));
@@ -116,23 +117,27 @@ void Portfolio::addTradingOrder(TradingOrder *trading_order) {
 
   // init if not exist
   if (!stock_records.contains(symbol)) {
-    qDebug() << "did not exists before" << Qt::endl;
+    qDebug() << "did not exists before" << endl;
     stock_records[symbol] = StockRecord(symbol);
   }
 
   qDebug() << "current tradingorder size" << trading_order_history.size() <<
-           Qt::endl;
-  qDebug() << stock_records[symbol].quantityRecorded() << Qt::endl;
+           endl;
+  qDebug() << stock_records[symbol].quantityRecorded() << endl;
 
   // main code
   if (trading_order->getAction() == TradingOrder::TradingAction::Buy) {
-    qDebug() << "we buy" << Qt::endl;
+    qDebug() << "we buy" << endl;
     qreal current_price = stock_records[symbol].stock->getLatestClosedPrice();
-    qDebug() << "current_price: " << current_price << Qt::endl;
+    qDebug() << "current_price: " << current_price << endl;
     stock_records[symbol].addStock(current_price, trading_order->getQuantity());
     trading_order_history.push_back(trading_order);
     qDebug() << "trading_order_history size: " << trading_order_history.size() <<
-             Qt::endl;
+             endl;
+
+    // update the current money
+    this->current_money = this->current_money - (current_price *
+                          trading_order->getQuantity());
   } else if (trading_order->getAction() == TradingOrder::TradingAction::Sell) {
 
   } else {  // do not need to implement this case (SellShort)
@@ -149,11 +154,11 @@ void Portfolio::computeRecordFromHistory() {
   stock_records = QHash<QString, StockRecord>();
 
   qDebug() << "computeRecordFromHistory"  << ' ' << trading_order_history.size()
-           << Qt::endl;
+           << endl;
 
   for (auto &trading_order : trading_order_history) {
     QString symbol = trading_order->getSymbol();
-    qDebug() << symbol << ' ' << trading_order->getQuantity() << Qt::endl;
+    qDebug() << symbol << ' ' << trading_order->getQuantity() << endl;
 
     // init if not exist
     if (!stock_records.contains(symbol)) {

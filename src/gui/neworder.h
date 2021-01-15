@@ -28,7 +28,7 @@ class NewOrder : public QWidget {
   explicit NewOrder(QWidget *parent = nullptr);
   ~NewOrder();
 
-  void write(TradingOrder &trading_order) const;
+  bool write(TradingOrder &trading_order);
   void updateWatchlistStocks(QVector<Stock *> watchlistStocks);
 
  signals:
@@ -40,6 +40,13 @@ class NewOrder : public QWidget {
  private slots:
   void on_orderPushButton_released();
   void on_cancelPushButton_pressed();
+  void updateEstimatedValue();
+
+  void on_symbolComboBox_activated(const QString &arg1);
+
+  void on_quantityValueSpinBox_valueChanged(double arg1);
+
+  void setErrorText(QString error);
 
  private:
   Ui::NewOrder *ui;

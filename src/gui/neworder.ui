@@ -297,12 +297,12 @@ text-align: center;</string>
            </property>
            <item>
             <property name="text">
-             <string>Call</string>
+             <string>ETF</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>ETF</string>
+             <string>Call</string>
             </property>
            </item>
            <item>
@@ -421,12 +421,12 @@ text-align: center;</string>
            </property>
            <item>
             <property name="text">
-             <string>Limit</string>
+             <string>Market Order</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>Market Order</string>
+             <string>Limit</string>
             </property>
            </item>
            <item>
@@ -620,7 +620,7 @@ p, li { white-space: pre-wrap; }
               <string>Timing</string>
              </property>
              <property name="alignment">
-              <set>Qt::AlignCenter</set>
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
              </property>
             </widget>
            </item>
@@ -645,6 +645,11 @@ p, li { white-space: pre-wrap; }
              </item>
              <item>
               <property name="text">
+               <string>Immediate or Cancelled</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
                <string>Extended Hours</string>
               </property>
              </item>
@@ -656,11 +661,6 @@ p, li { white-space: pre-wrap; }
              <item>
               <property name="text">
                <string>Good Until Cancelled</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Immediate or Cancelled</string>
               </property>
              </item>
             </widget>
@@ -679,6 +679,19 @@ p, li { white-space: pre-wrap; }
             </spacer>
            </item>
           </layout>
+         </item>
+         <item>
+          <widget class="QLabel" name="errorLabel">
+           <property name="styleSheet">
+            <string notr="true">color: red;</string>
+           </property>
+           <property name="text">
+            <string>Error label</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
          </item>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_12">
