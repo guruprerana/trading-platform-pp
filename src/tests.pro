@@ -14,10 +14,12 @@ SOURCES += \
     api/api.cpp \
     components/stock.cpp \
     components/news.cpp \
-    helper/helper.cpp
+    helper/helper.cpp \
+    recommendation/strategy.cpp
 
 HEADERS += \
     api/api.h \
     components/stock.h \
     helper/helper.h \
-    components/news.h
+    components/news.h \
+    recommendation/strategy.h

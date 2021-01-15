@@ -1,8 +1,12 @@
 #include "components/stock.h"
 #include "components/news.h"
 #include "helper/helper.h"
+#include "recommendation/strategy.h"
 #include <QtTest>
+#include <QVector>
 #include <iostream>
+
+
 
 class TestStock : public QObject {
     Q_OBJECT
@@ -17,6 +21,7 @@ class TestStock : public QObject {
     void testUpdateData();
     void testNewsClass();
     void testSentiment();
+
   };
 
   TestStock::TestStock() {}
@@ -30,6 +35,7 @@ class TestStock : public QObject {
   void TestStock::testUpdateData(){
       Stock *apple = new Stock("AAPL");
       apple->updateDataByMinute();
+
       QMap<std::string, QVector<double>> jsonDataMinute = apple->getDataByMinute();
       for (auto it : jsonDataMinute.toStdMap()) {
           std::cout << it.first << " : " << std::endl ;
@@ -56,7 +62,7 @@ class TestStock : public QObject {
       std::map<std::string, std::map<long, double>> mapDataDay = helper::convertToMap(jsonDataDay);
 
       for (auto it : mapDataDay) {
-          std::cout << it.first << " : ";
+          std::cout << it.first << " :: ";
           std::map<long, double> &internal_map = it.second;
           for (auto it2: internal_map) {
                   std::cout << ",";
@@ -75,12 +81,16 @@ class TestStock : public QObject {
       News *markets = new News();
       markets->updateMarketNews();
       qDebug() << markets->getMarketNews() << endl;
+      delete markets;
   }
 
   void TestStock::testSentiment(){
       Stock *apple = new Stock("AAPL");
       apple->updateSentimentData();
       qDebug() << apple->getSentimentData() << endl;
+      QJsonObject sentiment = apple->getSentimentData()["sentiment"].toObject();
+      qDebug() << sentiment << endl;
+      delete apple;
   }
 
 
