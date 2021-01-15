@@ -13,6 +13,8 @@
 #include <QVariant>
 #include <QWidget>
 
+#include "../components/stock.h"
+
 namespace Ui {
 class NewOrder;
 }
@@ -25,6 +27,7 @@ class NewOrder : public QWidget {
   ~NewOrder();
 
   void write(TradingOrder &trading_order) const;
+  void updateWatchlistStocks(QVector<Stock *> watchlistStocks);
 
  signals:
   void newOrderCreated(TradingOrder *newOrder);
@@ -36,6 +39,8 @@ class NewOrder : public QWidget {
  private:
   Ui::NewOrder *ui;
   void setDefault();
+
+  QVector<Stock *> watchlistStocks;
 };
 
 #endif // NEWORDER_H

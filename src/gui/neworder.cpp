@@ -4,6 +4,7 @@
 #include "./widgets/stockperformancerow.h"
 
 #include <QVBoxLayout>
+#include <QString>
 
 NewOrder::NewOrder(QWidget *parent) :
   QWidget(parent),
@@ -38,7 +39,6 @@ void NewOrder::on_cancelPushButton_pressed() {
 }
 
 void NewOrder::setDefault() {
-  ui->symbolValueLineEdit->setText("GOOGL");
   ui->strategyValueComboBox->setCurrentIndex(0);
   ui->actionsValueComboBox->setCurrentIndex(0);
   ui->quantityValueSpinBox->setValue(0);
@@ -48,8 +48,16 @@ void NewOrder::setDefault() {
   ui->estimatedValueTextBrowser->setText("0");
 }
 
+void NewOrder::updateWatchlistStocks(QVector<Stock *> watchlistStocks) {
+  this->watchlistStocks = watchlistStocks;
+
+  for (auto stock : watchlistStocks) {
+    ui->symbolComboBox->addItem(QString::fromStdString(stock->getSymbol()));
+  }
+}
+
 void NewOrder::write(TradingOrder &trading_order) const {
-  trading_order.setSymbol(ui->symbolValueLineEdit->text());
+  trading_order.setSymbol(ui->symbolComboBox->currentText());
 
   QString strategy = ui->strategyValueComboBox->currentText();
   trading_order.setStrategy(helper::QStringToQEnum<TradingOrder::TradingStrategy>

@@ -234,12 +234,12 @@ text-align: center;</string>
             <string>Symbol</string>
            </property>
            <property name="alignment">
-            <set>Qt::AlignCenter</set>
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="symbolValueLineEdit">
+          <widget class="QComboBox" name="symbolComboBox">
            <property name="minimumSize">
             <size>
              <width>100</width>
@@ -251,14 +251,6 @@ text-align: center;</string>
              <width>100</width>
              <height>30</height>
             </size>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
-           <property name="text">
-            <string>GOOGL</string>
            </property>
           </widget>
          </item>
@@ -285,7 +277,7 @@ text-align: center;</string>
             <string>Strategy</string>
            </property>
            <property name="alignment">
-            <set>Qt::AlignCenter</set>
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
            </property>
           </widget>
          </item>
@@ -351,7 +343,7 @@ text-align: center;</string>
             <string>Actions</string>
            </property>
            <property name="alignment">
-            <set>Qt::AlignCenter</set>
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
            </property>
           </widget>
          </item>
@@ -409,7 +401,7 @@ text-align: center;</string>
             <string>Order type</string>
            </property>
            <property name="alignment">
-            <set>Qt::AlignCenter</set>
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
            </property>
           </widget>
          </item>
@@ -481,7 +473,7 @@ text-align: center;</string>
             <string>Quantity</string>
            </property>
            <property name="alignment">
-            <set>Qt::AlignCenter</set>
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
            </property>
           </widget>
          </item>
@@ -528,7 +520,7 @@ text-align: center;</string>
             <string>Limit Price</string>
            </property>
            <property name="alignment">
-            <set>Qt::AlignCenter</set>
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
            </property>
           </widget>
          </item>
