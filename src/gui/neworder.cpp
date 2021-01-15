@@ -178,8 +178,9 @@ void NewOrder::updatePricePerQuantityAndEstimateValue() {
   qreal trade_quantity = ui->quantityValueSpinBox->value();
   qreal current_price = stock->getLatestClosedPrice();
 
-  ui->pricePerQuantityValueLabel->setNum(current_price);
-  ui->estimatedValueValueLabel->setNum(current_price * trade_quantity);
+  ui->pricePerQuantityValueLabel->setText(QString::number(current_price, 'f', 4));
+  ui->estimatedValueValueLabel->setText(QString::number(current_price *
+                                        trade_quantity, 'f', 4));
 }
 
 void NewOrder::on_symbolComboBox_currentTextChanged(const QString &symbol) {
