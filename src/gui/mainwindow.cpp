@@ -150,7 +150,9 @@ void MainWindow::onCreateNewPortfolio() {
 
 void MainWindow::onChoosePortfolio(Portfolio *portfolio) {
   session->setCurrentPortfolio(portfolio);
-  homepage->updateWatchlistStocks(session->getCurrentWatchlistStocks());
+  auto watchlistStocks = session->getCurrentWatchlistStocks();
+  homepage->updateWatchlistStocks(watchlistStocks);
+  strategyPage->updateWatchlistStocks(watchlistStocks);
   this->ui->toolBar->show();
   this->on_actionHome_triggered();
 }
