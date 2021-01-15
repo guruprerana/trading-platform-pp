@@ -134,7 +134,13 @@ void Portfolio::addTradingOrder(TradingOrder *trading_order) {
     qDebug() << "trading_order_history size: " << trading_order_history.size() <<
              Qt::endl;
   } else if (trading_order->getAction() == TradingOrder::TradingAction::Sell) {
+    // cant sell
+    if (stock_records[symbol].quantityRecorded() < trading_order->getQuantity()) {
+      return;
+    }
 
+    stock_records[symbol].removeStock(trading_order->getQuantity());
+    trading_order_history.push_back(trading_order);
   } else {  // do not need to implement this case (SellShort)
     return;
   }
@@ -165,7 +171,12 @@ void Portfolio::computeRecordFromHistory() {
       qreal current_price = stock_records[symbol].stock->getLatestClosedPrice();
       stock_records[symbol].addStock(current_price, trading_order->getQuantity());
     } else if (trading_order->getAction() == TradingOrder::TradingAction::Sell) {
+      // cant sell
+      if (stock_records[symbol].quantityRecorded() < trading_order->getQuantity()) {
+        continue;
+      }
 
+      stock_records[symbol].removeStock(trading_order->getQuantity());
     } else {  // do not need to implement this case (SellShort)
       return;
     }
