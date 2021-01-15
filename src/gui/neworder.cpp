@@ -1,11 +1,24 @@
 #include "neworder.h"
 #include "ui_neworder.h"
 #include "helper/helper.h"
+#include "./widgets/stockperformancerow.h"
+
+#include <QVBoxLayout>
 
 NewOrder::NewOrder(QWidget *parent) :
   QWidget(parent),
   ui(new Ui::NewOrder) {
   ui->setupUi(this);
+
+  QVBoxLayout *tableLayout = new QVBoxLayout();
+
+  for (int i = 0; i < 10; i++) {
+    tableLayout->addWidget(new StockPerformanceRow);
+  }
+
+  QWidget *widget = new QWidget();
+  widget->setLayout(tableLayout);
+  ui->tableScroll->setWidget(widget);
 }
 
 NewOrder::~NewOrder() {
