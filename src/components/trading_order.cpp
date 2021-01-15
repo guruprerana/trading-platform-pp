@@ -87,7 +87,7 @@ void TradingOrder::read(const QJsonObject &json) {
   }
 
   if (json.contains("quantity") && json["quantity"].isDouble()) {
-    quantity = json["quantity"].toInt();
+    quantity = json["quantity"].toDouble();
   }
 
   if (json.contains("strategy") && json["strategy"].isString()) {

@@ -47,8 +47,12 @@ MainWindow::MainWindow(QWidget *parent)
   // connect the signals
   connect(signUpPage, &SignUp::signUpWithDetails, this,
           &MainWindow::onCreatePortfolio);
+
+//  connect(this, &MainWindow::on_actionTrade_triggered, new_order,
+//          &NewOrder::computePerformanceTable);
   connect(new_order, &NewOrder::newOrderCreated, this,
           &MainWindow::onCreateOrder);
+
   connect(choosePortfolioPage, &ChoosePortfolio::createNewPortfolio, this,
           &MainWindow::onCreateNewPortfolio);
   connect(choosePortfolioPage, &ChoosePortfolio::portfolioChosen, this,
@@ -95,6 +99,9 @@ void MainWindow::on_actionTrade_triggered() {
   hideAllPages();
   uncheckAllTabs();
   ui->actionTrade->setChecked(true);
+
+  Portfolio *current = session->getCurrentPortfolio();
+  new_order->computePerformanceTable(current);
   new_order->show();
 }
 
@@ -140,6 +147,7 @@ void MainWindow::onCreateOrder(TradingOrder *order) {
   }
 
   current->addTradingOrder(order);
+  new_order->computePerformanceTable(current);
 }
 
 void MainWindow::onCreateNewPortfolio() {

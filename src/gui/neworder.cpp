@@ -3,13 +3,16 @@
 #include "helper/helper.h"
 #include "./widgets/stockperformancerow.h"
 
-#include <QVBoxLayout>
 #include <QString>
 
 NewOrder::NewOrder(QWidget *parent) :
   QWidget(parent),
   ui(new Ui::NewOrder) {
   ui->setupUi(this);
+
+  // Sets signals to self
+//  connect(this, &NewOrder::newOrderCreated, this,
+//          &NewOrder::computePerformanceTable);
 
   QVBoxLayout *tableLayout = new QVBoxLayout();
 
@@ -24,6 +27,33 @@ NewOrder::NewOrder(QWidget *parent) :
 
 NewOrder::~NewOrder() {
   delete ui;
+}
+
+void NewOrder::computePerformanceTable(Portfolio *portfolio) {
+  QVBoxLayout *tableLayout = new QVBoxLayout();
+
+  qDebug() << "starts computing performance table " << Qt::endl;
+
+  portfolio->computeRecordFromHistory();    // just to make sure
+
+  qDebug() << "finishes computing performance table. starts adding rows " <<
+           Qt::endl;
+
+  QVector <QString> owned_stock = portfolio->currentOwnedStock();
+
+  for (int id = 0; id < owned_stock.size(); id ++) {
+    QString symbol = owned_stock[id];
+    qDebug() << id << ' ' << symbol << Qt::endl;
+    StockPerformanceRow *row = new StockPerformanceRow;
+    row->from(portfolio, id, symbol);
+    tableLayout->addWidget(row);
+  }
+
+  QWidget *widget = new QWidget();
+  widget->setLayout(tableLayout);
+  ui->tableScroll->setWidget(widget);
+
+  return;
 }
 
 void NewOrder::on_orderPushButton_released() {

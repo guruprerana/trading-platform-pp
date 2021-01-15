@@ -17,6 +17,7 @@
 #include <set>
 #include <string>
 
+// We do not need to use this class
 class LoadUp {
  public:
   LoadUp() {};
@@ -45,9 +46,9 @@ class StockRecord {
   StockRecord(Stock *s): stock(s) {};
   ~StockRecord() {};
 
-  bool operator == (const StockRecord &x) const {
-    return stock->getSymbol() == x.stock->getSymbol();
-  }
+//  bool operator == (const StockRecord &x) const {
+//    return stock->getSymbol() == x.stock->getSymbol();
+//  }
 
   qreal quantityRecorded() const;
   qreal marketValuePerQuantity() const;
@@ -63,6 +64,7 @@ class StockRecord {
 
 };
 
+// Stores one profile's details
 class Portfolio {
  public:
   Portfolio() {};
@@ -87,13 +89,14 @@ class Portfolio {
   void load(const QJsonObject &json);
   void save(QJsonObject &json) const;
 
+  void computeRecordFromHistory();
   QVector <QString> currentOwnedStock();
   qreal getQuantityLeft(QString symbol);
   qreal getQuantityLeft(std::string symbol);
   qreal getMarketValue(QString symbol);
   qreal getMarketValue(std::string symbol);
-  qreal getBaseCost(QString symbol);
-  qreal getBaseCost(std::string symbol);
+  qreal getCostBasis(QString symbol);
+  qreal getCostBasis(std::string symbol);
   qreal getTotalGainLoss(QString symbol);
   qreal getTotalGainLoss(std::string symbol);
   qreal getPercentOfAccount(QString symbol);
@@ -108,6 +111,7 @@ class Portfolio {
   QVector<TradingOrder *> trading_order_history;
   QVector<LoadUp *> load_up_history;
   QHash <QString, StockRecord> stock_records;
+
 };
 
 #endif // PORTFOLIO_H

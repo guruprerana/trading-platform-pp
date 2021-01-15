@@ -12,7 +12,9 @@
 #include <QString>
 #include <QVariant>
 #include <QWidget>
+#include <QVBoxLayout>
 
+#include "../components/portfolio.h"
 #include "../components/stock.h"
 
 namespace Ui {
@@ -31,6 +33,9 @@ class NewOrder : public QWidget {
 
  signals:
   void newOrderCreated(TradingOrder *newOrder);
+
+ public slots:
+  void computePerformanceTable(Portfolio *portfolio);
 
  private slots:
   void on_orderPushButton_released();
