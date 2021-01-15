@@ -91,7 +91,7 @@ FORMS += \
     gui/strategypage.ui \
     gui/watchlistcard.ui \
     gui/widgets/selectwatchlistwidget.ui \
-    gui/widgets/watchlistsummarycard.ui
+    gui/widgets/watchlistsummarycard.ui \
     gui/widgets/portfoliowidget.ui
 
 DISTFILES += \
