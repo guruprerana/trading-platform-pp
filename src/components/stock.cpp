@@ -136,7 +136,12 @@ void Stock::updateSentimentData() {
 // Based on Vinh
 double Stock::getLatestClosedPrice() {
   updateDataByMinute();
-  return getDataByMinute()["c"].back();
+
+  if (getDataByMinute()["c"].size() > 0) {
+    return getDataByMinute()["c"].back();
+  }
+
+  return 0;
 }
 
 

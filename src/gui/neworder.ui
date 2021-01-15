@@ -13,10 +13,75 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0,1">
+  <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0,0,1">
    <property name="spacing">
     <number>0</number>
    </property>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="spacing">
+      <number>40</number>
+     </property>
+     <property name="topMargin">
+      <number>10</number>
+     </property>
+     <property name="bottomMargin">
+      <number>10</number>
+     </property>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_9">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Remaining Balance</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="remainingBalance">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
    <item>
     <layout class="QVBoxLayout" name="performanceTable">
      <item>
@@ -303,12 +368,12 @@ text-align: center;</string>
            </property>
            <item>
             <property name="text">
-             <string>Call</string>
+             <string>ETF</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>ETF</string>
+             <string>Call</string>
             </property>
            </item>
            <item>
@@ -427,12 +492,12 @@ text-align: center;</string>
            </property>
            <item>
             <property name="text">
-             <string>Limit</string>
+             <string>MarketOrder</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>Market Order</string>
+             <string>Limit</string>
             </property>
            </item>
            <item>
@@ -728,7 +793,7 @@ text-align: center;</string>
               <string>Timing</string>
              </property>
              <property name="alignment">
-              <set>Qt::AlignCenter</set>
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
              </property>
             </widget>
            </item>
@@ -748,7 +813,12 @@ text-align: center;</string>
              </property>
              <item>
               <property name="text">
-               <string>Day Only</string>
+               <string>DayOnly</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Immediate or Cancelled</string>
               </property>
              </item>
              <item>
@@ -764,11 +834,6 @@ text-align: center;</string>
              <item>
               <property name="text">
                <string>Good Until Cancelled</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Immediate or Cancelled</string>
               </property>
              </item>
             </widget>
@@ -787,6 +852,19 @@ text-align: center;</string>
             </spacer>
            </item>
           </layout>
+         </item>
+         <item>
+          <widget class="QLabel" name="errorLabel">
+           <property name="styleSheet">
+            <string notr="true">color: red;</string>
+           </property>
+           <property name="text">
+            <string>Error label</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
          </item>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_12">

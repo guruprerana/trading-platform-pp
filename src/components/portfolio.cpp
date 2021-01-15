@@ -122,12 +122,22 @@ void Portfolio::removeStockFromWatchList(QString &symbol) {
   }
 }
 
+Stock *Portfolio::getStock(QString symbol) {
+  for (auto stockptr : watchlistStocks) {
+    if (stockptr->getSymbol() == helper::toStdString(symbol)) {
+      return stockptr;
+    }
+  }
+
+  return nullptr;
+}
+
 void Portfolio::addTradingOrder(TradingOrder *trading_order) {
   QString symbol = trading_order->getSymbol();
 
   // init if not exist
   if (!stock_records.contains(symbol)) {
-    stock_records[symbol] = StockRecord(symbol);
+    stock_records[symbol] = StockRecord(getStock(symbol));
   }
 
   qreal trade_price = trading_order->getValuePerQuantity();
@@ -176,15 +186,12 @@ void Portfolio::computeRecordFromHistory() {
 
     // init if not exist
     if (!stock_records.contains(symbol)) {
-      stock_records[symbol] = StockRecord(symbol);
+      stock_records[symbol] = StockRecord(getStock(symbol));
     }
 
     qreal trade_price = trading_order->getValuePerQuantity();
     qreal trade_quantity = trading_order->getQuantity();
     qreal quantity_recorded = stock_records[symbol].quantityRecorded();
-
-    qDebug() << symbol << ' ' << trade_price << ' ' << trade_quantity << ' ' <<
-             quantity_recorded << ' ' << current_money << Qt::endl;
 
     if (trading_order->getAction() == TradingOrder::TradingAction::Buy) {
       if (trade_price * trade_quantity > current_money) {   // can't buy

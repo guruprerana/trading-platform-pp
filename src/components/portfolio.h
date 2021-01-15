@@ -41,9 +41,9 @@ class LoadUp {
 // AFTER SELL A PART OF STOCK WE DO NOT KEEP TRACK OF THEM
 class StockRecord {
  public:
-  StockRecord(): stock(new Stock("BX22")) {};   // placeholder
-  StockRecord(std::string s): stock(new Stock(s)) {};
-  StockRecord(QString s): stock(new Stock(helper::toStdString(s))) {};
+  StockRecord(): stock(nullptr) {};
+//  StockRecord(std::string s): stock(new Stock(s)) {};
+//  StockRecord(QString s): stock(new Stock(helper::toStdString(s))) {};
   StockRecord(Stock *s): stock(s) {};
   ~StockRecord() {};
 
@@ -80,6 +80,10 @@ class Portfolio {
 
   void addStockToWatchList(QString &symbol);
   void removeStockFromWatchList(QString &symbol);
+  void updateWatchlistStocks(QVector<Stock *> stocks) {
+    watchlistStocks = stocks;
+  }
+  Stock *getStock(QString symbol);
   void addTradingOrder(TradingOrder *trading_order);
   void addLoadUp(LoadUp *load_up);
   void load(const QJsonObject &json);
@@ -97,6 +101,9 @@ class Portfolio {
   qreal getTotalGainLoss(std::string symbol);
   qreal getPercentOfAccount(QString symbol);
   qreal getPercentOfAccount(std::string symbol);
+  qreal getCurrentMoney() {
+    return current_money;
+  }
 
  private:
   QString id;
@@ -108,6 +115,7 @@ class Portfolio {
   QVector<LoadUp *> load_up_history;
   QHash <QString, StockRecord> stock_records;
 
+  QVector<Stock *> watchlistStocks;
 };
 
 #endif // PORTFOLIO_H

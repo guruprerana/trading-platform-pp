@@ -81,7 +81,7 @@
    <item>
     <widget class="QLabel" name="dayChangeLabel">
      <property name="text">
-      <string>day change</string>
+      <string>-</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

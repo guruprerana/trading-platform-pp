@@ -83,7 +83,6 @@ void MainWindow::hideAllPages() {
 void MainWindow::uncheckAllTabs() {
   ui->actionHome->setChecked(false);
   ui->actionTrade->setChecked(false);
-  ui->actionPerformance->setChecked(false);
   ui->actionNews->setChecked(false);
   ui->actionStrategies->setChecked(false);
 }
@@ -103,12 +102,6 @@ void MainWindow::on_actionTrade_triggered() {
   Portfolio *current = session->getCurrentPortfolio();
   new_order->computePerformanceTable(current);
   new_order->show();
-}
-
-void MainWindow::on_actionPerformance_triggered() {
-  hideAllPages();
-  uncheckAllTabs();
-  ui->actionPerformance->setChecked(true);
 }
 
 void MainWindow::on_actionNews_triggered() {
@@ -135,6 +128,7 @@ void MainWindow::onCreatePortfolio(QString id, qreal initialAmount,
   homepage->updateWatchlistStocks(watchlistStocks);
   strategyPage->updateWatchlistStocks(watchlistStocks);
   new_order->updateWatchlistStocks(watchlistStocks);
+  new_order->setCurrentPortfolio(getCurrentPortfolio());
   this->ui->toolBar->show();
   this->on_actionHome_triggered();
 }
@@ -163,6 +157,7 @@ void MainWindow::onChoosePortfolio(Portfolio *portfolio) {
   homepage->updateWatchlistStocks(watchlistStocks);
   strategyPage->updateWatchlistStocks(watchlistStocks);
   new_order->updateWatchlistStocks(watchlistStocks);
+  new_order->setCurrentPortfolio(getCurrentPortfolio());
   this->ui->toolBar->show();
   this->on_actionHome_triggered();
 }
