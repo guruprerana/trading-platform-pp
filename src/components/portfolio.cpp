@@ -1,5 +1,5 @@
 #include "portfolio.h"
-#include "helper/helper.h"
+
 #include <QVariant>
 #include <QJsonArray>
 
@@ -28,7 +28,11 @@ qreal StockRecord::quantityRecorded() const {
   return quantity;
 }
 
-qreal StockRecord::baseCost() const {
+qreal StockRecord::marketValuePerQuantity() const {
+  return stock->getLatestClosedPrice();
+}
+
+qreal StockRecord::costBasis() const {
   qreal base_cost = 0;
 
   for (auto &x : record) {
@@ -39,13 +43,12 @@ qreal StockRecord::baseCost() const {
 }
 
 qreal StockRecord::valuation() const {
-  qreal current_price = stock->getLatestClosedPrice();
-  return current_price * quantityRecorded();
+  return marketValuePerQuantity() * quantityRecorded();
 }
 
 // DOES NOT TAKE ACCOUNT OF SOLD STOCK
 qreal StockRecord::totalGainLoss() const {
-  return getValuation() - baseCost();
+  return valuation() - costBasis();
 }
 
 void StockRecord::addStock(qreal price, qreal quantity) {
@@ -81,7 +84,7 @@ qreal Portfolio::stockValuation() {
   qreal res = 0;
 
   foreach (StockRecord s, stock_records) {
-    res += s.getValuation();
+    res += s.valuation();
   }
 
   return res;
@@ -167,12 +170,25 @@ qreal Portfolio::getQuantityLeft(std::string symbol) {
   return getQuantityLeft(helper::toQString(symbol));
 }
 
+// Return the value of all quantity owned, not per quantity
+qreal Portfolio::getMarketValue(QString symbol) {
+  if (stock_records.contains(symbol)) {
+    return 0;
+  }
+
+  return stock_records.value(symbol).valuation();
+}
+
+qreal Portfolio::getMarketValue(std::string symbol) {
+  return getMarketValue(helper::toQString(symbol));
+}
+
 qreal Portfolio::getBaseCost(QString symbol) {
   if (stock_records.contains(symbol)) {
     return 0;
   }
 
-  return stock_records.value(symbol).baseCost();
+  return stock_records.value(symbol).costBasis();
 }
 
 qreal Portfolio::getBaseCost(std::string symbol) {

@@ -39,13 +39,19 @@ class LoadUp {
 // AFTER SELL A PART OF STOCK WE DO NOT KEEP TRACK THEM
 class StockRecord {
  public:
+  StockRecord(): stock(new Stock("BX22")) {};   // placeholder
   StockRecord(std::string s): stock(new Stock(s)) {};
   StockRecord(QString s): stock(new Stock(helper::toStdString(s))) {};
   StockRecord(Stock *s): stock(s) {};
   ~StockRecord() {};
 
+  bool operator == (const StockRecord &x) const {
+    return stock->getSymbol() == x.stock->getSymbol();
+  }
+
   qreal quantityRecorded() const;
-  qreal baseCost() const;
+  qreal marketValuePerQuantity() const;
+  qreal costBasis() const;
   qreal valuation() const;
   qreal totalGainLoss() const;
   void addStock(qreal price, qreal quantity);
@@ -84,6 +90,8 @@ class Portfolio {
   QVector <QString> currentOwnedStock();
   qreal getQuantityLeft(QString symbol);
   qreal getQuantityLeft(std::string symbol);
+  qreal getMarketValue(QString symbol);
+  qreal getMarketValue(std::string symbol);
   qreal getBaseCost(QString symbol);
   qreal getBaseCost(std::string symbol);
   qreal getTotalGainLoss(QString symbol);
