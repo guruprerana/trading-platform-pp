@@ -16,27 +16,42 @@ void StockGraphOneDay::setStock(Stock *other_stock) {
   clearData();
   lineChart->setData({}, {});
   candleStick->setData({}, {}, {}, {}, {});
-  updateData();
+  updateData(true);
 }
 
-void StockGraphOneDay::updateData() {
+void StockGraphOneDay::updateData(bool firstTime = false) {
   stock->updateDataByMinute();
-  int sz = stock->getDataByMinuteSize();
-  int oldSz = timestamp.size();
+  auto dataByMinute = stock->getDataByMinute();
+  long last = -1e9;
 
-  for (int i = oldSz; i < sz; i++) {
-    auto curData = stock->getDataByMinute(i);
-    timestamp.append(curData["h"]);
-    open.append(curData["o"]);
-    high.append(curData["h"]);
-    low.append(curData["l"]);
-    close.append(curData["c"]);
-    lineChart->addData(curData["t"], curData["c"]);
-    candleStick->addData(curData["t"], curData["o"], curData["h"], curData["l"],
-                         curData["c"]);
+  if (!timestamp.isEmpty()) {
+    last = timestamp.back();
   }
 
-  plot();
+  double now = QDateTime::currentDateTime().toTime_t();
+  // 86400 is the number of seconds per day: Here we show a 1-day interval
+
+  for (int i = 0; i < dataByMinute["t"].size(); ++i) {
+    if (dataByMinute["t"][i] <= last || now - 86400 > dataByMinute["t"][i]) {
+      continue;
+    }
+
+    timestamp.append(dataByMinute["t"][i]);
+    open.append(dataByMinute["o"][i]);
+    high.append(dataByMinute["h"][i]);
+    low.append(dataByMinute["l"][i]);
+    close.append(dataByMinute["c"][i]);
+    lineChart->addData(dataByMinute["t"][i], dataByMinute["c"][i]);
+    candleStick->addData(dataByMinute["t"][i],
+                         dataByMinute["o"][i],
+                         dataByMinute["h"][i],
+                         dataByMinute["l"][i],
+                         dataByMinute["c"][i]);
+  }
+
+  if (firstTime) {
+    plot();
+  }
 }
 
 void StockGraphOneDay::initTimeRange() {

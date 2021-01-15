@@ -17,10 +17,10 @@ void StockGraphOneMonth::setStock(Stock *other_stock) {
   clearData();
   lineChart->setData({}, {});
   candleStick->setData({}, {}, {}, {}, {});
-  updateData();
+  updateData(true);
 }
 
-void StockGraphOneMonth::updateData() {
+void StockGraphOneMonth::updateData(bool firstTime = false) {
   stock->updateDataByDay();
   QJsonObject dataByDay = stock->getDataByDay();
 
@@ -47,7 +47,9 @@ void StockGraphOneMonth::updateData() {
     }
   }
 
-  plot();
+  if (firstTime) {
+    plot();
+  }
 }
 
 void StockGraphOneMonth::initTimeRange() {
