@@ -7,11 +7,31 @@
     <x>0</x>
     <y>0</y>
     <width>823</width>
-    <height>581</height>
+    <height>610</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QComboBox::item:selected {
+      border: 1px solid #6a6ea9;
+  }
+
+  QComboBox::item:selected:!active {
+      background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                  stop: 0 #ABAFE5, stop: 1 #8588B2);
+  }
+
+  QComboBox::item:selected:active {
+      background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                  stop: 0 #6a6ea9, stop: 1 #888dd9);
+  }
+
+  QComboBox::item:hover {
+      background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                  stop: 0 #FAFBFE, stop: 1 #DCDEF1);
+  }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0,0,1">
    <property name="spacing">
