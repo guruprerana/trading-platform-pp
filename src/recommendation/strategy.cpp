@@ -103,7 +103,7 @@ void Strategy::calculate_mom(QVector<double> &timestamp_mom,
   calculate_sma(5, timestamp_sma5, price_sma5);
 
   int sz10 = price_sma10.size();
-  int sz5 = price_sma10.size();
+  int sz5 = price_sma5.size();
 
   for (int i = 0; i < sz10 ; ++i) {
     double moment = price_sma5[i + sz5 - sz10] / price_sma10[i];
