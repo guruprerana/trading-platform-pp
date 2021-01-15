@@ -19,20 +19,23 @@ void LoadUp::load(const QJsonObject &json) {
   }
 }
 
+// Returns how much quantity is recorded.
 qreal StockRecord::quantityRecorded() const {
   qreal quantity = 0;
 
   for (auto &x : record) {
-    quantity += x.second;
+    quantity += x.second;   // x = {price, quantity}
   }
 
   return quantity;
 }
 
+// Returns the current market value, based on the API.
 qreal StockRecord::marketValuePerQuantity() const {
   return stock->getLatestClosedPrice();
 }
 
+// Returns the cost of buying owned quantity.
 qreal StockRecord::costBasis() const {
   qreal base_cost = 0;
 
@@ -43,19 +46,25 @@ qreal StockRecord::costBasis() const {
   return base_cost;
 }
 
+// Returns the value of owned quantity.
 qreal StockRecord::valuation() const {
   return marketValuePerQuantity() * quantityRecorded();
 }
 
-// DOES NOT TAKE ACCOUNT OF SOLD STOCK
+// Returns the gain/loss of owned quantity. DOES NOT TAKE ACCOUNT OF SOLD
+// QUANTITY.
 qreal StockRecord::totalGainLoss() const {
   return valuation() - costBasis();
 }
 
+// Adds a new pair of price-quantity to the record.
 void StockRecord::addStock(qreal price, qreal quantity) {
   record.insert(QPair<qreal, qreal>(price, quantity));
 }
 
+// Remove a part of quantity from the record. Since we can remove any arbitrary
+// own quantity, it will make more senses to remove quantity with lowest base
+// costs / buying prices.
 void StockRecord::removeStock(qreal quantity) {
   if (quantity > quantityRecorded()) {
     return;
@@ -80,7 +89,7 @@ void StockRecord::removeStock(qreal quantity) {
   return;
 }
 
-// Returns the value of the owned stocks
+// Returns the current market value of the owned stocks.
 qreal Portfolio::stockValuation() {
   qreal res = 0;
 
@@ -91,11 +100,13 @@ qreal Portfolio::stockValuation() {
   return res;
 }
 
-// Returns the total value of the portfolio
+// Returns the total value of the portfolio. This includes current market value
+// of owned stocks + raw money
 qreal Portfolio::valuation() {
   return stockValuation() + current_money;
 }
 
+// Self-explained.
 void Portfolio::addStockToWatchList(QString &symbol) {
   if (stock_watch_list.indexOf(symbol) >= 0) {
     return;
@@ -117,66 +128,87 @@ void Portfolio::addTradingOrder(TradingOrder *trading_order) {
 
   // init if not exist
   if (!stock_records.contains(symbol)) {
-    qDebug() << "did not exists before" << endl;
     stock_records[symbol] = StockRecord(symbol);
   }
 
-  qDebug() << "current tradingorder size" << trading_order_history.size() <<
-           endl;
-  qDebug() << stock_records[symbol].quantityRecorded() << endl;
+  qreal trade_price = trading_order->getValuePerQuantity();
+  qreal trade_quantity = trading_order->getQuantity();
+  qreal quantity_recorded = stock_records[symbol].quantityRecorded();
 
-  // main code
   if (trading_order->getAction() == TradingOrder::TradingAction::Buy) {
-    qDebug() << "we buy" << endl;
-    qreal current_price = stock_records[symbol].stock->getLatestClosedPrice();
-    qDebug() << "current_price: " << current_price << endl;
-    stock_records[symbol].addStock(current_price, trading_order->getQuantity());
-    trading_order_history.push_back(trading_order);
-    qDebug() << "trading_order_history size: " << trading_order_history.size() <<
-             endl;
-
-    // update the current money
-    this->current_money = this->current_money - (current_price *
-                          trading_order->getQuantity());
+    if (trade_price * trade_quantity > current_money) {   // can't buy
+      return;
+    } else {
+      current_money -= trade_price * trade_quantity;
+      stock_records[symbol].addStock(trade_price, trading_order->getQuantity());
+      trading_order_history.push_back(trading_order);
+    }
   } else if (trading_order->getAction() == TradingOrder::TradingAction::Sell) {
-
+    if (quantity_recorded < trade_quantity) {   // can't sell
+      return;
+    } else {
+      current_money += trade_price * trade_quantity;
+      stock_records[symbol].removeStock(trading_order->getQuantity());
+      trading_order_history.push_back(trading_order);
+    }
   } else {  // do not need to implement this case (SellShort)
     return;
   }
 }
 
+// This function has no uses for now.
 void Portfolio::addLoadUp(LoadUp *load_up) {
   this->current_money += load_up->getQuantity();
   load_up_history.push_back(load_up);
 }
 
+// Computes stock_records based on trading_order_history. There is a few reasons
+// for its existence:
+//  - Old save files do not have stock_records before, so constructing from
+//    trading_order_history is necessary
+//  - To ease the implementation of other functions (call this before doing
+//    anything will ensure stock_records will have the correct value.
 void Portfolio::computeRecordFromHistory() {
   stock_records = QHash<QString, StockRecord>();
-
-  qDebug() << "computeRecordFromHistory"  << ' ' << trading_order_history.size()
-           << endl;
+  current_money = initial_money;
 
   for (auto &trading_order : trading_order_history) {
     QString symbol = trading_order->getSymbol();
-    qDebug() << symbol << ' ' << trading_order->getQuantity() << endl;
 
     // init if not exist
     if (!stock_records.contains(symbol)) {
       stock_records[symbol] = StockRecord(symbol);
     }
 
-    // main code
-    if (trading_order->getAction() == TradingOrder::TradingAction::Buy) {
-      qreal current_price = stock_records[symbol].stock->getLatestClosedPrice();
-      stock_records[symbol].addStock(current_price, trading_order->getQuantity());
-    } else if (trading_order->getAction() == TradingOrder::TradingAction::Sell) {
+    qreal trade_price = trading_order->getValuePerQuantity();
+    qreal trade_quantity = trading_order->getQuantity();
+    qreal quantity_recorded = stock_records[symbol].quantityRecorded();
 
+    qDebug() << symbol << ' ' << trade_price << ' ' << trade_quantity << ' ' <<
+             quantity_recorded << ' ' << current_money << endl;
+
+    if (trading_order->getAction() == TradingOrder::TradingAction::Buy) {
+      if (trade_price * trade_quantity > current_money) {   // can't buy
+        continue;
+      } else {
+        current_money -= trade_price * trade_quantity;
+        stock_records[symbol].addStock(trade_price, trading_order->getQuantity());
+      }
+    } else if (trading_order->getAction() == TradingOrder::TradingAction::Sell) {
+      if (quantity_recorded < trade_quantity) {   // can't sell
+        continue;
+      } else {
+        current_money += trade_price * trade_quantity;
+        stock_records[symbol].removeStock(trading_order->getQuantity());
+      }
     } else {  // do not need to implement this case (SellShort)
-      return;
+      continue;
     }
   }
 }
 
+// Returns current owned stocks - stocks that appear in stock_records and have
+// positive quantity.
 QVector<QString> Portfolio::currentOwnedStock() {
   QHash<QString, StockRecord>::const_iterator it = stock_records.constBegin();
 
@@ -199,7 +231,8 @@ QVector<QString> Portfolio::currentOwnedStock() {
   return owned_qvector;
 }
 
-qreal Portfolio::getQuantityLeft(QString symbol) {
+// Return owned quantity of a stock.
+qreal Portfolio::getOwnedQuantity(QString symbol) {
   if (!stock_records.contains(symbol)) {
     return 0;
   }
@@ -207,11 +240,11 @@ qreal Portfolio::getQuantityLeft(QString symbol) {
   return stock_records.value(symbol).quantityRecorded();
 }
 
-qreal Portfolio::getQuantityLeft(std::string symbol) {
-  return getQuantityLeft(helper::toQString(symbol));
+qreal Portfolio::getOwnedQuantity(std::string symbol) {
+  return getOwnedQuantity(helper::toQString(symbol));
 }
 
-// Return the value of all quantity owned, not per quantity
+// Return the value of owned quantity of a stock.
 qreal Portfolio::getMarketValue(QString symbol) {
   if (!stock_records.contains(symbol)) {
     return 0;
@@ -224,6 +257,7 @@ qreal Portfolio::getMarketValue(std::string symbol) {
   return getMarketValue(helper::toQString(symbol));
 }
 
+// Return the cost basis / buying prices of owned quantity of a stock.
 qreal Portfolio::getCostBasis(QString symbol) {
   if (!stock_records.contains(symbol)) {
     return 0;
@@ -236,6 +270,8 @@ qreal Portfolio::getCostBasis(std::string symbol) {
   return getCostBasis(helper::toQString(symbol));
 }
 
+// Return the difference between current value and cost basis of owned quantity
+// of a stock.
 qreal Portfolio::getTotalGainLoss(QString symbol) {
   if (!stock_records.contains(symbol)) {
     return 0;
@@ -248,6 +284,9 @@ qreal Portfolio::getTotalGainLoss(std::string symbol) {
   return getTotalGainLoss(helper::toQString(symbol));
 }
 
+// Return how much the market value of owned quantity of a stock is weighted in
+// the portfoilio.
+// The formula: market_value / portfoilo.valuation * 100
 qreal Portfolio::getPercentOfAccount(QString symbol) {
   if (!stock_records.contains(symbol)) {
     return 0;
@@ -262,6 +301,7 @@ qreal Portfolio::getPercentOfAccount(std::string symbol) {
 
 void Portfolio::save(QJsonObject &json) const {
   json.insert("id", QJsonValue(id));
+  json.insert("initial_money", QJsonValue(initial_money));
   json.insert("current_money", QJsonValue(current_money));
 
   QJsonArray watchlist = QJsonArray::fromStringList(stock_watch_list);
@@ -291,6 +331,10 @@ void Portfolio::save(QJsonObject &json) const {
 void Portfolio::load(const QJsonObject &json) {
   if (json.contains("id") && json["id"].isString()) {
     id = json["id"].toString();
+  }
+
+  if (json.contains("initial_money") && json["initial_money"].isDouble()) {
+    initial_money = json["initial_money"].toDouble();
   }
 
   if (json.contains("current_money") && json["current_money"].isDouble()) {

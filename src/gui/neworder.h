@@ -31,9 +31,11 @@ class NewOrder : public QWidget {
   bool write(TradingOrder &trading_order);
   void updateWatchlistStocks(QVector<Stock *> watchlistStocks);
   void setCurrentPortfolio(Portfolio *portfolio);
+  void updatePricePerQuantityAndEstimateValue();
 
  signals:
   void newOrderCreated(TradingOrder *newOrder);
+  void updatePricePerQuantity(qreal price);
 
  public slots:
   void computePerformanceTable(Portfolio *portfolio);
@@ -41,13 +43,13 @@ class NewOrder : public QWidget {
  private slots:
   void on_orderPushButton_released();
   void on_cancelPushButton_pressed();
-  void updateEstimatedValue();
-
-  void on_symbolComboBox_activated(const QString &arg1);
 
   void on_quantityValueSpinBox_valueChanged(double arg1);
 
   void setErrorText(QString error);
+  void on_symbolComboBox_currentTextChanged(const QString &symbol);
+
+  void on_actionsValueComboBox_currentTextChanged(const QString &arg1);
 
  private:
   Ui::NewOrder *ui;

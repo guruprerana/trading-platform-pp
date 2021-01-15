@@ -17,7 +17,8 @@
 #include <set>
 #include <string>
 
-// We do not need to use this class
+// Stores an adding-more-money-to-account action, but we have no uses for it
+// now.
 class LoadUp {
  public:
   LoadUp() {};
@@ -35,9 +36,9 @@ class LoadUp {
   qreal quantity;
 };
 
-// This class stores quantity of a stock, and the price when bought it
-// We store them in a set of pair <buying price - quantity>
-// AFTER SELL A PART OF STOCK WE DO NOT KEEP TRACK THEM
+// Stores infomation about a stock: quantity, the prices when bought it. We
+// store the infomation in a multiset of pairs {buying price, quantity}.
+// AFTER SELL A PART OF STOCK WE DO NOT KEEP TRACK OF THEM
 class StockRecord {
  public:
   StockRecord(): stock(new Stock("BX22")) {};   // placeholder
@@ -45,10 +46,6 @@ class StockRecord {
   StockRecord(QString s): stock(new Stock(helper::toStdString(s))) {};
   StockRecord(Stock *s): stock(s) {};
   ~StockRecord() {};
-
-//  bool operator == (const StockRecord &x) const {
-//    return stock->getSymbol() == x.stock->getSymbol();
-//  }
 
   qreal quantityRecorded() const;
   qreal marketValuePerQuantity() const;
@@ -61,15 +58,14 @@ class StockRecord {
   Stock *stock;
  private:
   std::multiset <QPair<qreal, qreal>> record; // first = price, second = quantity
-
 };
 
-// Stores one profile's details
+// Stores one portfolio's details
 class Portfolio {
  public:
   Portfolio() {};
   Portfolio(QString id_n, qreal amount, QStringList watchlist) : id(id_n),
-    current_money(amount), stock_watch_list(watchlist) {};
+    initial_money(amount), current_money(amount), stock_watch_list(watchlist) {};
   ~Portfolio();
 
   qreal stockValuation();
@@ -91,8 +87,8 @@ class Portfolio {
 
   void computeRecordFromHistory();
   QVector <QString> currentOwnedStock();
-  qreal getQuantityLeft(QString symbol);
-  qreal getQuantityLeft(std::string symbol);
+  qreal getOwnedQuantity(QString symbol);
+  qreal getOwnedQuantity(std::string symbol);
   qreal getMarketValue(QString symbol);
   qreal getMarketValue(std::string symbol);
   qreal getCostBasis(QString symbol);
@@ -108,7 +104,7 @@ class Portfolio {
  private:
   QString id;
 
-  qreal current_money;
+  qreal initial_money, current_money;
 
   QStringList stock_watch_list;
   QVector<TradingOrder *> trading_order_history;

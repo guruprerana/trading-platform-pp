@@ -133,7 +133,7 @@ void Stock::updateSentimentData() {
   sentimentData = helper::parseJson(apiResponse);
 }
 
-//
+// Based on Vinh
 double Stock::getLatestClosedPrice() {
   updateDataByMinute();
 

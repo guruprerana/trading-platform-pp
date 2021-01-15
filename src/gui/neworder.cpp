@@ -81,7 +81,6 @@ void NewOrder::setDefault() {
   ui->orderTypeValueComboBox->setCurrentIndex(0);
   ui->limitPriceValueLineEdit->setText("0");
   ui->timingValueComboBox->setCurrentIndex(0);
-  ui->estimatedValueTextBrowser->setText("0");
   ui->errorLabel->hide();
 }
 
@@ -152,7 +151,8 @@ bool NewOrder::write(TradingOrder &trading_order) {
   }
 
   trading_order.setTradingTime(QDateTime::currentDateTime().toTime_t());
-  trading_order.setValuePerQuantity(0);
+  trading_order.setValuePerQuantity(
+    ui->pricePerQuantityValueLabel->text().toDouble());
 
   return true;
 }
@@ -162,7 +162,13 @@ void NewOrder::setErrorText(QString error) {
   ui->errorLabel->show();
 }
 
-void NewOrder::updateEstimatedValue() {
+void NewOrder::setCurrentPortfolio(Portfolio *portfolio) {
+  this->currentPortfolio = portfolio;
+  ui->remainingBalance->setText(QString::number(portfolio->getCurrentMoney()) +
+                                "$");
+}
+
+void NewOrder::updatePricePerQuantityAndEstimateValue() {
   Stock *stock;
   QString symbol = ui->symbolComboBox->currentText();
 
@@ -176,21 +182,22 @@ void NewOrder::updateEstimatedValue() {
     return;
   }
 
-  qreal currentPrice = stock->getLatestClosedPrice();
-  ui->estimatedValueTextBrowser->setText(QString::number(currentPrice *
-                                         ui->quantityValueSpinBox->value()));
+  qreal trade_quantity = ui->quantityValueSpinBox->value();
+  qreal current_price = stock->getLatestClosedPrice();
+
+  ui->pricePerQuantityValueLabel->setNum(current_price);
+  ui->estimatedValueValueLabel->setNum(current_price * trade_quantity);
 }
 
-void NewOrder::on_symbolComboBox_activated(const QString &arg1) {
-  updateEstimatedValue();
+void NewOrder::on_symbolComboBox_currentTextChanged(const QString &symbol) {
+  updatePricePerQuantityAndEstimateValue();
 }
 
-void NewOrder::on_quantityValueSpinBox_valueChanged(double arg1) {
-  updateEstimatedValue();
+void NewOrder::on_actionsValueComboBox_currentTextChanged(
+  const QString &action) {
+  updatePricePerQuantityAndEstimateValue();
 }
 
-void NewOrder::setCurrentPortfolio(Portfolio *portfolio) {
-  this->currentPortfolio = portfolio;
-  ui->remainingBalance->setText(QString::number(portfolio->getCurrentMoney()) +
-                                "$");
+void NewOrder::on_quantityValueSpinBox_valueChanged(double quantity) {
+  updatePricePerQuantityAndEstimateValue();
 }
