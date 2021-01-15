@@ -100,7 +100,14 @@ Portfolio *Session::getPortfolio(QString &id) const {
 void Session::addPortfolio(Portfolio *newPortfolio) {
   portfolios.push_back(newPortfolio);
 
+  QVector<Stock *> stocks;
   addStocks(newPortfolio->getWatchList());
+
+  for (auto s : newPortfolio->getWatchList()) {
+    stocks.push_back(addStock(s));
+  }
+
+  newPortfolio->updateWatchlistStocks(stocks);
 
   // change current portfolio
   currentPortfolio = newPortfolio;
