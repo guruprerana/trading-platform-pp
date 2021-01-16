@@ -56,9 +56,18 @@ class TradingOrder {
   void setAction(TradingAction action);
   void setTiming(TradingTiming timing);
   void setLimitPrice(qreal limit_price);
-
   void setTradingTime(qint64 trading_order_time_stamp);
   void setValuePerQuantity(qreal value_per_quantity);
+
+  QString getSymbol() const;
+  qreal getQuantity() const;
+  TradingStrategy getStrategy() const;
+  TradingOrderType getOrderType() const;
+  TradingAction getAction() const;
+  TradingTiming getTiming() const;
+  qreal getLimitPrice() const;
+  qint64 getTradingTime() const;
+  qreal getValuePerQuantity() const;
 
   void read(const QJsonObject &json);
   void write(QJsonObject &json) const;

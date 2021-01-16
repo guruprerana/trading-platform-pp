@@ -30,6 +30,7 @@ class Stock {
   QJsonArray getNews();
   QMap<std::string, QVector<double>> getDataByMinute();
   QMap<std::string, double> getDataByMinute(int idx);
+  double getLatestClosedPrice();
   int getDataByMinuteSize();
   QJsonObject getSentimentData();
   void updateDataByDay();
@@ -39,6 +40,8 @@ class Stock {
   //We return here the updated data so that the GUI team could add only the new data points and not all the data we have.
   void updateNews();
   void updateSentimentData();
+
+
 };
 
 #endif // STOCK_H
