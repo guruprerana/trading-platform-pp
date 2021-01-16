@@ -143,3 +143,13 @@ QVector<double> helper::convert_to_vector(QJsonObject j, std::string k) {
 
   return q;
 }
+
+// Returns a std::string version of the given QString
+std::string helper::toStdString(QString qs) {
+  return qs.toUtf8().constData();
+}
+
+// Returns a QString version of the given std::string
+QString helper::toQString(std::string s) {
+  return QString::fromStdString(s);
+}

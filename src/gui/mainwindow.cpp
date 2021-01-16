@@ -47,8 +47,12 @@ MainWindow::MainWindow(QWidget *parent)
   // connect the signals
   connect(signUpPage, &SignUp::signUpWithDetails, this,
           &MainWindow::onCreatePortfolio);
+
+//  connect(this, &MainWindow::on_actionTrade_triggered, new_order,
+//          &NewOrder::computePerformanceTable);
   connect(new_order, &NewOrder::newOrderCreated, this,
           &MainWindow::onCreateOrder);
+
   connect(choosePortfolioPage, &ChoosePortfolio::createNewPortfolio, this,
           &MainWindow::onCreateNewPortfolio);
   connect(choosePortfolioPage, &ChoosePortfolio::portfolioChosen, this,
@@ -79,7 +83,6 @@ void MainWindow::hideAllPages() {
 void MainWindow::uncheckAllTabs() {
   ui->actionHome->setChecked(false);
   ui->actionTrade->setChecked(false);
-  ui->actionPerformance->setChecked(false);
   ui->actionNews->setChecked(false);
   ui->actionStrategies->setChecked(false);
 }
@@ -95,13 +98,10 @@ void MainWindow::on_actionTrade_triggered() {
   hideAllPages();
   uncheckAllTabs();
   ui->actionTrade->setChecked(true);
-  new_order->show();
-}
 
-void MainWindow::on_actionPerformance_triggered() {
-  hideAllPages();
-  uncheckAllTabs();
-  ui->actionPerformance->setChecked(true);
+  Portfolio *current = session->getCurrentPortfolio();
+  new_order->computePerformanceTable(current);
+  new_order->show();
 }
 
 void MainWindow::on_actionNews_triggered() {
@@ -127,6 +127,8 @@ void MainWindow::onCreatePortfolio(QString id, qreal initialAmount,
   auto watchlistStocks = session->getCurrentWatchlistStocks();
   homepage->updateWatchlistStocks(watchlistStocks);
   strategyPage->updateWatchlistStocks(watchlistStocks);
+  new_order->updateWatchlistStocks(watchlistStocks);
+  new_order->setCurrentPortfolio(getCurrentPortfolio());
   this->ui->toolBar->show();
   this->on_actionHome_triggered();
 }
@@ -139,6 +141,7 @@ void MainWindow::onCreateOrder(TradingOrder *order) {
   }
 
   current->addTradingOrder(order);
+  new_order->computePerformanceTable(current);
 }
 
 void MainWindow::onCreateNewPortfolio() {
@@ -153,6 +156,8 @@ void MainWindow::onChoosePortfolio(Portfolio *portfolio) {
   auto watchlistStocks = session->getCurrentWatchlistStocks();
   homepage->updateWatchlistStocks(watchlistStocks);
   strategyPage->updateWatchlistStocks(watchlistStocks);
+  new_order->updateWatchlistStocks(watchlistStocks);
+  new_order->setCurrentPortfolio(getCurrentPortfolio());
   this->ui->toolBar->show();
   this->on_actionHome_triggered();
 }

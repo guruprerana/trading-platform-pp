@@ -81,7 +81,6 @@ spacing: 5px;</string>
    </attribute>
    <addaction name="actionHome"/>
    <addaction name="actionTrade"/>
-   <addaction name="actionPerformance"/>
    <addaction name="actionNews"/>
    <addaction name="actionStrategies"/>
    <addaction name="separator"/>
@@ -113,19 +112,6 @@ spacing: 5px;</string>
    </property>
    <property name="text">
     <string>Trade</string>
-   </property>
-  </action>
-  <action name="actionPerformance">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../resources/resources.qrc">
-     <normaloff>:/performance.png</normaloff>
-     <activeon>:/performance_on.png</activeon>:/performance.png</iconset>
-   </property>
-   <property name="text">
-    <string>Performance</string>
    </property>
   </action>
   <action name="actionNews">
