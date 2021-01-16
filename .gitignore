@@ -31,6 +31,9 @@
 *.out
 *.app
 
+.vscode
+.vs
+
 # Qt generated user files
 *.user
 *Debug
