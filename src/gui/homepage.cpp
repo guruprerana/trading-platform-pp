@@ -4,7 +4,8 @@
 #include "watchlistcard.h"
 #include "helper/helper.h"
 #include "./widgets/watchlistsummarycard.h"
-#include "QString"
+#include <QString>
+#include <QVBoxLayout>
 
 HomePage::HomePage(QWidget *parent) :
   QWidget(parent),
@@ -184,8 +185,13 @@ void HomePage::on_rightButton_clicked() {
 }
 
 void HomePage::displayWatchlistSummaries() {
+    QWidget *widget = new QWidget();
+    QVBoxLayout *layout = new QVBoxLayout();
+
   for (Stock *stock : watchlistStocks) {
-    ui->watchlistSummaryLayout->addWidget(new WatchlistSummaryCard(stock,
+    layout->addWidget(new WatchlistSummaryCard(stock,
         this), 0);
   }
+  widget->setLayout(layout);
+  ui->watchlistScroll->setWidget(widget);
 }

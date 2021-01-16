@@ -209,7 +209,27 @@ QLayout: {
     </layout>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="watchlistSummaryLayout"/>
+    <widget class="QScrollArea" name="watchlistScroll">
+     <property name="maximumSize">
+      <size>
+       <width>330</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>328</width>
+        <height>429</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
    </item>
   </layout>
  </widget>
