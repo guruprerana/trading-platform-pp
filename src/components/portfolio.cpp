@@ -89,7 +89,7 @@ void StockRecord::removeStock(qreal quantity) {
 }
 
 // Returns the current market value of the owned stocks.
-qreal Portfolio::stockValuation() {
+qreal Portfolio::stockValuation() const {
   qreal res = 0;
 
   foreach (StockRecord s, stock_records) {
@@ -101,11 +101,10 @@ qreal Portfolio::stockValuation() {
 
 // Returns the total value of the portfolio. This includes current market value
 // of owned stocks + raw money
-qreal Portfolio::valuation() {
+qreal Portfolio::valuation() const {
   return stockValuation() + current_money;
 }
 
-// Self-explained.
 void Portfolio::addStockToWatchList(QString &symbol) {
   if (stock_watch_list.indexOf(symbol) >= 0) {
     return;
@@ -122,6 +121,7 @@ void Portfolio::removeStockFromWatchList(QString &symbol) {
   }
 }
 
+// Returns a pointer to the stock, if it appears in watchlistStocks
 Stock *Portfolio::getStock(QString symbol) {
   for (auto stockptr : watchlistStocks) {
     if (stockptr->getSymbol() == helper::toStdString(symbol)) {
@@ -132,6 +132,8 @@ Stock *Portfolio::getStock(QString symbol) {
   return nullptr;
 }
 
+// Adds a trading order to the portfolio, if and only if it satisfies the
+// "no-negative-numbers" constrains after ordering it.
 void Portfolio::addTradingOrder(TradingOrder *trading_order) {
   QString symbol = trading_order->getSymbol();
 
@@ -177,6 +179,8 @@ void Portfolio::addLoadUp(LoadUp *load_up) {
 //    trading_order_history is necessary
 //  - To ease the implementation of other functions (call this before doing
 //    anything will ensure stock_records will have the correct value.
+//
+// See also: addTradingOrder
 void Portfolio::computeRecordFromHistory() {
   stock_records = QHash<QString, StockRecord>();
   current_money = initial_money;
@@ -215,7 +219,7 @@ void Portfolio::computeRecordFromHistory() {
 
 // Returns current owned stocks - stocks that appear in stock_records and have
 // positive quantity.
-QVector<QString> Portfolio::currentOwnedStock() {
+QVector<QString> Portfolio::currentOwnedStock() const {
   QHash<QString, StockRecord>::const_iterator it = stock_records.constBegin();
 
   QSet<QString> owned;
@@ -238,7 +242,7 @@ QVector<QString> Portfolio::currentOwnedStock() {
 }
 
 // Return owned quantity of a stock.
-qreal Portfolio::getOwnedQuantity(QString symbol) {
+qreal Portfolio::getOwnedQuantity(QString symbol) const {
   if (!stock_records.contains(symbol)) {
     return 0;
   }
@@ -246,12 +250,12 @@ qreal Portfolio::getOwnedQuantity(QString symbol) {
   return stock_records.value(symbol).quantityRecorded();
 }
 
-qreal Portfolio::getOwnedQuantity(std::string symbol) {
+qreal Portfolio::getOwnedQuantity(std::string symbol) const {
   return getOwnedQuantity(helper::toQString(symbol));
 }
 
 // Return the value of owned quantity of a stock.
-qreal Portfolio::getMarketValue(QString symbol) {
+qreal Portfolio::getMarketValue(QString symbol) const {
   if (!stock_records.contains(symbol)) {
     return 0;
   }
@@ -259,12 +263,12 @@ qreal Portfolio::getMarketValue(QString symbol) {
   return stock_records.value(symbol).valuation();
 }
 
-qreal Portfolio::getMarketValue(std::string symbol) {
+qreal Portfolio::getMarketValue(std::string symbol) const {
   return getMarketValue(helper::toQString(symbol));
 }
 
 // Return the cost basis / buying prices of owned quantity of a stock.
-qreal Portfolio::getCostBasis(QString symbol) {
+qreal Portfolio::getCostBasis(QString symbol) const {
   if (!stock_records.contains(symbol)) {
     return 0;
   }
@@ -272,13 +276,13 @@ qreal Portfolio::getCostBasis(QString symbol) {
   return stock_records.value(symbol).costBasis();
 }
 
-qreal Portfolio::getCostBasis(std::string symbol) {
+qreal Portfolio::getCostBasis(std::string symbol) const {
   return getCostBasis(helper::toQString(symbol));
 }
 
 // Return the difference between current value and cost basis of owned quantity
 // of a stock.
-qreal Portfolio::getTotalGainLoss(QString symbol) {
+qreal Portfolio::getTotalGainLoss(QString symbol) const {
   if (!stock_records.contains(symbol)) {
     return 0;
   }
@@ -286,14 +290,14 @@ qreal Portfolio::getTotalGainLoss(QString symbol) {
   return stock_records.value(symbol).totalGainLoss();
 }
 
-qreal Portfolio::getTotalGainLoss(std::string symbol) {
+qreal Portfolio::getTotalGainLoss(std::string symbol) const {
   return getTotalGainLoss(helper::toQString(symbol));
 }
 
 // Return how much the market value of owned quantity of a stock is weighted in
 // the portfoilio.
 // The formula: market_value / portfoilo.valuation * 100
-qreal Portfolio::getPercentOfAccount(QString symbol) {
+qreal Portfolio::getPercentOfAccount(QString symbol) const {
   if (!stock_records.contains(symbol)) {
     return 0;
   }
@@ -301,7 +305,7 @@ qreal Portfolio::getPercentOfAccount(QString symbol) {
   return stock_records.value(symbol).valuation() / valuation() * 100;
 }
 
-qreal Portfolio::getPercentOfAccount(std::string symbol) {
+qreal Portfolio::getPercentOfAccount(std::string symbol) const {
   return getPercentOfAccount(helper::toQString(symbol));
 }
 
