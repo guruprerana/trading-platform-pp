@@ -192,6 +192,13 @@ void StrategyGraph::drawLR(double slope, double intercept,
 void StrategyGraph::drawMomentum(const QVector<double> &timestamp,
                                  const QVector<double> &price) {
   removeAllGraphs();
+
+  qDebug() << timestamp << endl;
+
+  if (timestamp.isEmpty()) {
+    return;
+  }
+
   ui->plot->plotLayout()->addElement(1, 0, momentumAxisRect);
   momentumAxisRect->setVisible(true);
   momentumAxisRect->axis(QCPAxis::atLeft)->setRange(
