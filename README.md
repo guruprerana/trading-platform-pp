@@ -73,7 +73,7 @@ brew install curl
 
 ### Highly recommended
 
-Donwload [Qt Creator](https://www.qt.io/product/development-tools) then open the project in Qt Creator to run it.
+Download [Qt Creator](https://www.qt.io/product/development-tools) then open the project in Qt Creator to run it.
 - Open Qt Creator
 - Click on `File`
 - Click on `Open File or Project...`
