@@ -54,7 +54,14 @@ void Session::loadFromFile(const QString &filename) {
       currentPortfolio = portfolio;
 
       // initialize all stock in the watchlist of each portfolio
-      addStocks(portfolio->getWatchList());
+
+      QVector<Stock *> stocks;
+
+      for (auto s : portfolio->getWatchList()) {
+        stocks.push_back(addStock(s));
+      }
+
+      portfolio->updateWatchlistStocks(stocks);
     }
   }
 }
@@ -93,7 +100,14 @@ Portfolio *Session::getPortfolio(QString &id) const {
 void Session::addPortfolio(Portfolio *newPortfolio) {
   portfolios.push_back(newPortfolio);
 
+  QVector<Stock *> stocks;
   addStocks(newPortfolio->getWatchList());
+
+  for (auto s : newPortfolio->getWatchList()) {
+    stocks.push_back(addStock(s));
+  }
+
+  newPortfolio->updateWatchlistStocks(stocks);
 
   // change current portfolio
   currentPortfolio = newPortfolio;

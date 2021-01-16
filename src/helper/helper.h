@@ -29,6 +29,9 @@ T QStringToQEnum(const QString &s) {
   return static_cast<T>(QMetaEnum::fromType<T>().keyToValue(s.toLocal8Bit()));
 }
 
+std::string toStdString(QString qs);
+QString toQString(std::string s);
+
 }
 
 

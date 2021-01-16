@@ -41,6 +41,42 @@ void TradingOrder::setValuePerQuantity(qreal value_per_quantity) {
   this->value_per_quantity = value_per_quantity;
 }
 
+QString TradingOrder::getSymbol() const {
+  return symbol;
+}
+
+qreal TradingOrder::getQuantity() const {
+  return quantity;
+}
+
+TradingOrder::TradingStrategy TradingOrder::getStrategy() const {
+  return strategy;
+}
+
+TradingOrder::TradingOrderType TradingOrder::getOrderType() const {
+  return order_type;
+}
+
+TradingOrder::TradingAction TradingOrder::getAction() const {
+  return action;
+}
+
+TradingOrder::TradingTiming TradingOrder::getTiming() const {
+  return timing;
+}
+
+qreal TradingOrder::getLimitPrice() const {
+  return limit_price;
+}
+
+qint64 TradingOrder::getTradingTime() const {
+  return trading_order_time_stamp;
+}
+
+qreal TradingOrder::getValuePerQuantity() const {
+  return value_per_quantity;
+}
+
 double TradingOrder::valuation() {
   return value_per_quantity * quantity;
 }
@@ -51,7 +87,7 @@ void TradingOrder::read(const QJsonObject &json) {
   }
 
   if (json.contains("quantity") && json["quantity"].isDouble()) {
-    quantity = json["quantity"].toInt();
+    quantity = json["quantity"].toDouble();
   }
 
   if (json.contains("strategy") && json["strategy"].isString()) {

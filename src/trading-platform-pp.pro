@@ -10,7 +10,6 @@ CONFIG += c++11
 
 LIBS += -lcurl
 
-LIBS += -lcurl
 SOURCES += \
     api/api.cpp \
     components/news.cpp \
@@ -36,6 +35,7 @@ SOURCES += \
     gui/watchlistcard.cpp \
     gui/widgets/watchlistsummarycard.cpp \
     gui/widgets/portfoliowidget.cpp \
+    gui/widgets/stockperformancerow.cpp \
     main.cpp \
     gui/mainwindow.cpp \
     recommendation/strategy.cpp \
@@ -69,6 +69,7 @@ HEADERS += \
     gui/watchlistcard.h \
     gui/widgets/watchlistsummarycard.h \
     gui/widgets/portfoliowidget.h \
+    gui/widgets/stockperformancerow.h \
     library/qcustomplot.h \
     gui/neworder.h \
     gui/mainwindow.h \
@@ -92,7 +93,8 @@ FORMS += \
     gui/watchlistcard.ui \
     gui/widgets/selectwatchlistwidget.ui \
     gui/widgets/watchlistsummarycard.ui \
-    gui/widgets/portfoliowidget.ui
+    gui/widgets/portfoliowidget.ui \
+    gui/widgets/stockperformancerow.ui
 
 DISTFILES += \
     style.astylerc
