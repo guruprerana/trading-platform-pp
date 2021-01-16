@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent)
   : QMainWindow(parent)
   , ui(new Ui::MainWindow) {
   ui->setupUi(this);
-
+  setWindowIcon(QIcon(":logo.jpeg"));
   session = new Session();
 
   // initialize the different pages and add them to the layout
