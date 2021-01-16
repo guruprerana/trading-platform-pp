@@ -3,7 +3,7 @@ TradingPlatform++, as the name suggests, is a fully featured stock trading platf
 
 ## Features we provide:
 1. Give the user the ability to create many portfolios where each portfolio has some stocks to trade and its own performance assessment.
-2. Display the line chart and candle chart of any stock that Finnhub provides along with a vertical tracer to show the closing price.
+2. Display the line chart and candle chart of any stock that [Finnhub](https://finnhub.io/) provides along with a vertical tracer to show the closing price.
 3. Display each company's specific news under its graph.
 4. Allow the user to buy and sell stocks with different order types and display his performance accordingly.
 5. Show the Market news in a specific tab for more detailed info about the markets.
@@ -37,6 +37,9 @@ We have been organized mainly into these subgroups:
 2. Khanh Nguyen
 3. Maxime Lamy
 4. Mamoune Mouchtaki
+5. Vinh Nguyen 
+6. Rayen Ayari
+
 
 ### Research Team
 
@@ -51,7 +54,8 @@ We have been organized mainly into these subgroups:
 
 ## Installing cURL
 
-In order to call the API Finnhub, we use [libcurl](https://curl.se/libcurl/).
+In order to call the API [Finnhub](https://finnhub.io/)  , we use [libcurl](https://curl.se/libcurl/).
+
 Run the following commands on the terminal:
 
 ### Ubuntu
@@ -63,30 +67,34 @@ sudo apt install libcurl4-openssl-dev
 ### macOS
 ```
 brew install curl
-brew install openssl
 ```
 
 ## Building guide
 
-If you have already downloaded Qt Creator then open the project in Qt Creator run it.
+### Highly recommended
 
-Otherwise you can follow these steps.
+Donwload [Qt Creator](https://www.qt.io/product/development-tools) then open the project in Qt Creator to run it.
+- Open Qt Creator
+- Click on `File`
+- Click on `Open File or Project...`
+- Follow the path where you cloned the repository
+- Go to `src` folder
+- Click on `trading-platform-pp.pro`
+- Click on Open
+- Run  `Ctrl+R`
 
-### Ubuntu
+<br>
+
+Otherwise you can follow these steps for Ubuntu users.
+
 
 Run the following commands on the terminal:
 ```
 sudo apt-get install qt5-default
 ```
 
-### macOS
-
-Run the following commands on the terminal:
-```
-brew install qt5-default
-```
-
 Now you need to run this script that you can find in `scripts\build.sh`:
+
 ```
 rm -rf build
 mkdir build
@@ -97,16 +105,17 @@ make -j8
 ```
 
 # Screenshots of the Project:
+
 Here we will show some screenshots of the projects and instructions to use it.
-## Important Terms:
-#### Portfolio
-A Portfolio is a set of stocks that you choose in order to make orders only with these stocks. It has a unique name and its own performance assessment.
 
 ## Choose Portfolio
+
 The Project starts by showing all previous portfolios that you have created and allows you to create a new one.
+
 ![](images/choosePortfolio.png)
 
 ## Create Portfolio
+
 In case you are going to create a new portfolio, we show the following page:
 
 ![](images/createPortfolio.png)
@@ -115,25 +124,31 @@ In case you are going to create a new portfolio, we show the following page:
 
 - Choose an initial amount of money in USD. 
 
-- Select the stocks you want to trade using symbols (You can start typing "AAP" to find AAPL for example)
+- Select the stocks you want to trade using symbols (You can start typing "AAP" to find AAPL for example).
 
-- Submit
+- Submit.
 
 ## Home Tab
 
 ![](images/homeTab.png)
 
-- On the right, there is a list of symbols in this Portfolio
+- On the right, there is a list of symbols in this Portfolio.
 
 - We display the graph of the price of each stock. You can select 1 day - 3 days - 1 month - 6 months periods. You can also select another stock from Watchlist Symbols on the right to switch to their price graph.
 
+- There is a zoom-in zoom-out and shifting features for the graph for a better user experience.
+
 - Under the graph, there is the Bullish Percentage (Percentage of people who believe that stock will go up) and Bearish Percentage (Percentage of people who believe that stock will go down).
 
-- Under the sentiment analysis, there is a column showing the company news and which you can change by clicking on the arrows to the upper-left of the column
+- Under the sentiment analysis, there is a column showing the company news and which you can change by clicking on the arrows to the upper-left of the column.
 
-## Performance Tab
+## Trade Tab
 
-![](images/performanceTab.png)
+![](images/tradeTab.png)
+
+- Buy or sell stocks from your watchlist as long as you do not end up with a negative remaining balance.
+
+- We will implement other order types in the future but now we only support market order with ETF strategy, no limit price and day only timing.
 
 ## News Tab
 
@@ -156,3 +171,9 @@ The Strategies we have so far are:
 - Momentum
 
 - Linear Regression
+
+# External Libraries we use
+
+- For testing our strategies and measuring their performance we have used a [backtesting environment](https://github.com/evankirkiles/backtest-environment) implemented in C++ and that was pushed into master.
+
+- For Graphing we have used [qcustomplot](https://www.qcustomplot.com/) that was pushed into master.
