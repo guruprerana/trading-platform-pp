@@ -12,6 +12,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QVector>
+#include <QDebug>
 
 using std::string;
 using std::map;

@@ -92,20 +92,27 @@ void StrategyPage::simulateStrategy() {
       strategy->timestamp_mom,
       strategy->price_mom
     );
-    ui->scrollAreaWidgetContents->layout()->addWidget(
-      new SignalCard(strategy->signals_mom.back().first,
-                     strategy->signals_mom.back().second.second));
+
+    if (!strategy->signals_mom.isEmpty()) {
+      ui->scrollAreaWidgetContents->layout()->addWidget(
+        new SignalCard(strategy->signals_mom.back().first,
+                       strategy->signals_mom.back().second.second));
+    }
   }
 
   else if (strategy->get_name() == "LR") {
-    strategyGraph->drawLR(
-      strategy->slope.back(),
-      strategy->intercept.back(),
-      strategy->timestamp_lr
-    );
-    ui->scrollAreaWidgetContents->layout()->addWidget(
-      new SignalCard(strategy->signals_lr.back().first,
-                     strategy->signals_lr.back().second));
+    if (strategy->signals_lr.isEmpty()) {
+      strategyGraph->drawLR(0, 0, strategy->timestamp_lr);
+    } else {
+      strategyGraph->drawLR(
+        strategy->slope.back(),
+        strategy->intercept.back(),
+        strategy->timestamp_lr
+      );
+      ui->scrollAreaWidgetContents->layout()->addWidget(
+        new SignalCard(strategy->signals_lr.back().first,
+                       strategy->signals_lr.back().second));
+    }
   }
 
   ui->scrollAreaWidgetContents->layout()->addItem(
