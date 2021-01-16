@@ -55,8 +55,8 @@ class StockRecord {
   void addStock(qreal price, qreal quantity);
   void removeStock(qreal quantity);
 
-  Stock *stock;
  private:
+  Stock *stock;
   std::multiset <QPair<qreal, qreal>> record; // first = price, second = quantity
 };
 
@@ -68,8 +68,8 @@ class Portfolio {
     initial_money(amount), current_money(amount), stock_watch_list(watchlist) {};
   ~Portfolio();
 
-  qreal stockValuation();
-  qreal valuation();
+  qreal stockValuation() const;
+  qreal valuation() const;
 
   QString getId() const {
     return id;
@@ -90,18 +90,18 @@ class Portfolio {
   void save(QJsonObject &json) const;
 
   void computeRecordFromHistory();
-  QVector <QString> currentOwnedStock();
-  qreal getOwnedQuantity(QString symbol);
-  qreal getOwnedQuantity(std::string symbol);
-  qreal getMarketValue(QString symbol);
-  qreal getMarketValue(std::string symbol);
-  qreal getCostBasis(QString symbol);
-  qreal getCostBasis(std::string symbol);
-  qreal getTotalGainLoss(QString symbol);
-  qreal getTotalGainLoss(std::string symbol);
-  qreal getPercentOfAccount(QString symbol);
-  qreal getPercentOfAccount(std::string symbol);
-  qreal getCurrentMoney() {
+  QVector <QString> currentOwnedStock() const;
+  qreal getOwnedQuantity(QString symbol) const;
+  qreal getOwnedQuantity(std::string symbol) const;
+  qreal getMarketValue(QString symbol) const;
+  qreal getMarketValue(std::string symbol) const;
+  qreal getCostBasis(QString symbol) const;
+  qreal getCostBasis(std::string symbol) const;
+  qreal getTotalGainLoss(QString symbol) const;
+  qreal getTotalGainLoss(std::string symbol) const;
+  qreal getPercentOfAccount(QString symbol) const;
+  qreal getPercentOfAccount(std::string symbol) const;
+  qreal getCurrentMoney() const {
     return current_money;
   }
 

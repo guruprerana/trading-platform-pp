@@ -10,10 +10,6 @@ NewOrder::NewOrder(QWidget *parent) :
   ui(new Ui::NewOrder) {
   ui->setupUi(this);
 
-  // Sets signals to self
-//  connect(this, &NewOrder::newOrderCreated, this,
-//          &NewOrder::computePerformanceTable);
-
   QVBoxLayout *tableLayout = new QVBoxLayout();
 
   for (int i = 0; i < 10; i++) {
@@ -31,6 +27,8 @@ NewOrder::~NewOrder() {
   delete ui;
 }
 
+// Computes and shows on the UI after the computation immediately the
+// performance table.
 void NewOrder::computePerformanceTable(Portfolio *portfolio) {
   QVBoxLayout *tableLayout = new QVBoxLayout();
 
@@ -52,6 +50,9 @@ void NewOrder::computePerformanceTable(Portfolio *portfolio) {
   return;
 }
 
+// Emits signals after the push button is realeased.
+// Emitting:
+//  - newOrderCreated
 void NewOrder::on_orderPushButton_released() {
   TradingOrder *order = new TradingOrder();
 
@@ -63,10 +64,13 @@ void NewOrder::on_orderPushButton_released() {
   }
 }
 
+// Resets editable fields of new-order after realeasing the cancel button.
 void NewOrder::on_cancelPushButton_pressed() {
   setDefault();
 }
 
+// Sets every field in the new-order to be default , or at least makes them
+// become "0"s.
 void NewOrder::setDefault() {
   ui->strategyValueComboBox->setCurrentIndex(0);
   ui->actionsValueComboBox->setCurrentIndex(0);
@@ -85,8 +89,7 @@ void NewOrder::updateWatchlistStocks(QVector<Stock *> watchlistStocks) {
   }
 }
 
-
-
+// Writes the trading order on the UI to a variable, if it satisfies conditions.
 bool NewOrder::write(TradingOrder &trading_order) {
   trading_order.setSymbol(ui->symbolComboBox->currentText());
 
@@ -183,15 +186,18 @@ void NewOrder::updatePricePerQuantityAndEstimateValue() {
                                         trade_quantity, 'f', 4));
 }
 
+// Updates values on the UI when this value is edited.
 void NewOrder::on_symbolComboBox_currentTextChanged(const QString &symbol) {
   updatePricePerQuantityAndEstimateValue();
 }
 
+// Updates values on the UI when this value is edited.
 void NewOrder::on_actionsValueComboBox_currentTextChanged(
   const QString &action) {
   updatePricePerQuantityAndEstimateValue();
 }
 
+// Updates values on the UI when this value is edited.
 void NewOrder::on_quantityValueSpinBox_valueChanged(double quantity) {
   updatePricePerQuantityAndEstimateValue();
 }
