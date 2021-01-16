@@ -172,15 +172,21 @@ void StrategyGraph::drawEMA(const QVector<double> &timestamp_ema6,
 
 void StrategyGraph::drawLR(double slope, double intercept,
                            const QVector<double> &timestamp) {
-  QVector<double> lrTimestamp;
-  lrTimestamp.append(timestamp[timestamp.size() - 30]);
-  lrTimestamp.append(timestamp.back() + 2 * 864000);
-  QVector<double> lrPrice;
-  lrPrice.append(slope * timestamp[timestamp.size() - 30] + intercept);
-  lrPrice.append(slope * (timestamp.back() + 2 * 864000) + intercept);
-  lr->setData(lrTimestamp, lrPrice);
   removeAllGraphs();
   addGraph(lr);
+
+  if (timestamp.isEmpty()) {
+    return;
+  }
+
+  QVector<double> lrTimestamp;
+  lrTimestamp.append(timestamp[std::max(0, timestamp.size() - 30)]);
+  lrTimestamp.append(timestamp.back() + 2 * 864000);
+  QVector<double> lrPrice;
+  lrPrice.append(slope * timestamp[std::max(0,
+                                   timestamp.size() - 30)] + intercept);
+  lrPrice.append(slope * (timestamp.back() + 2 * 864000) + intercept);
+  lr->setData(lrTimestamp, lrPrice);
 }
 
 void StrategyGraph::drawMomentum(const QVector<double> &timestamp,
