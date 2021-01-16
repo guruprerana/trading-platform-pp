@@ -11,5 +11,6 @@
         <file>data/symbols.json</file>
         <file>strategies_on.png</file>
         <file>strategies.png</file>
+        <file>logo.jpeg</file>
     </qresource>
 </RCC>
