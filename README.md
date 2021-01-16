@@ -174,9 +174,8 @@ The Strategies we have so far are:
 
 # External Libraries we use
 
-- In order to call the API [Finnhub](https://finnhub.io/)  , we use [libcurl](https://curl.se/libcurl/). It is a requirement to install it. 
-<br>
-See above.
+- In order to call the API [Finnhub](https://finnhub.io/)  , we use [libcurl](https://curl.se/libcurl/). It is a requirement to install it.  
+[See above.](#building-guide)
 
 - For testing our strategies and measuring their performance we have used a [backtesting environment](https://github.com/evankirkiles/backtest-environment) implemented in C++ and that was pushed into master.
 
