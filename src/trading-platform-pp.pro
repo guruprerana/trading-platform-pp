@@ -33,6 +33,7 @@ SOURCES += \
     gui/strategygraph.cpp \
     gui/strategypage.cpp \
     gui/watchlistcard.cpp \
+    gui/widgets/watchlistsummarycard.cpp \
     gui/widgets/portfoliowidget.cpp \
     gui/widgets/stockperformancerow.cpp \
     main.cpp \
@@ -66,6 +67,7 @@ HEADERS += \
     gui/strategygraph.h \
     gui/strategypage.h \
     gui/watchlistcard.h \
+    gui/widgets/watchlistsummarycard.h \
     gui/widgets/portfoliowidget.h \
     gui/widgets/stockperformancerow.h \
     library/qcustomplot.h \
@@ -89,8 +91,9 @@ FORMS += \
     gui/neworder.ui \
     gui/strategypage.ui \
     gui/watchlistcard.ui \
-    gui/widgets/portfoliowidget.ui \
     gui/widgets/selectwatchlistwidget.ui \
+    gui/widgets/watchlistsummarycard.ui \
+    gui/widgets/portfoliowidget.ui \
     gui/widgets/stockperformancerow.ui
 
 DISTFILES += \

@@ -3,7 +3,9 @@
 #include "companynewscard.h"
 #include "watchlistcard.h"
 #include "helper/helper.h"
-#include "QString"
+#include "./widgets/watchlistsummarycard.h"
+#include <QString>
+#include <QVBoxLayout>
 
 HomePage::HomePage(QWidget *parent) :
   QWidget(parent),
@@ -69,6 +71,8 @@ void HomePage::updateWatchlistStocks(QVector<Stock *> other_watchlistStocks) {
   stockGraphSixMonths->setStock(watchlistStocks[0]);
   stockGraphOneMonth->setStock(watchlistStocks[0]);
   realtimeUpdateStocks();
+
+  displayWatchlistSummaries();
 }
 
 void HomePage::displayNews() {
@@ -178,4 +182,16 @@ void HomePage::on_rightButton_clicked() {
 
   newsId = (newsId + 1) % ui->stackedWidget->count();
   ui->stackedWidget->setCurrentIndex(newsId);
+}
+
+void HomePage::displayWatchlistSummaries() {
+    QWidget *widget = new QWidget();
+    QVBoxLayout *layout = new QVBoxLayout();
+
+  for (Stock *stock : watchlistStocks) {
+    layout->addWidget(new WatchlistSummaryCard(stock,
+        this), 0);
+  }
+  widget->setLayout(layout);
+  ui->watchlistScroll->setWidget(widget);
 }
